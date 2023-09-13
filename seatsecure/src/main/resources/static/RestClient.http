@@ -1,0 +1,52 @@
+GET http://localhost:8080/users
+
+
+###
+GET http://localhost:8080/users/2
+
+###
+DELETE http://localhost:8080/users/1
+
+
+###
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+    "username": "jacques",
+    "password": "123",
+    "email": "jacques123@gmail.com",
+    "fullName": "jacques esque",
+    "phoneNumber" = 90003045,
+    "gender" = "m"
+}
+
+###
+PUT http://localhost:8080/users/2
+Content-Type: application/json
+
+{
+    "username": "jillem"
+}
+
+###
+// GET http://localhost:8080/books/2/reviews
+
+###
+# POST http://localhost:8080/books/1/reviews
+# Content-Type: application/json
+
+# {
+#     "review": "Terrible book!"
+# }
+
+###
+# PUT http://localhost:8080/books/2/reviews/3
+# Content-Type: application/json
+
+# {
+#     "review": "Should be bad!"
+# }
+
+# ###
+# DELETE http://localhost:8080/books/1/reviews/5
