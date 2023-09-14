@@ -6,7 +6,6 @@ import org.springframework.context.ApplicationContext;
 
 import thequeuers.seatsecure.repositories.AdminRepository;
 import thequeuers.seatsecure.repositories.CustomerRepository;
-import thequeuers.seatsecure.customer.*;
 import thequeuers.seatsecure.entities.Admin;
 import thequeuers.seatsecure.entities.Customer;
 
