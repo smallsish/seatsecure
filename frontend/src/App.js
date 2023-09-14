@@ -1,5 +1,4 @@
-// import logo from './logo.svg';
-import './App.css';
+import './global.css';
 import LandingPage from './pages/Landing/LandingPage';
 import LoginPage from './pages/Login/LoginPage';
 import EventsPage from './pages/Events/EventsPage';
