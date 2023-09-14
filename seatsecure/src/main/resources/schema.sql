@@ -1,9 +1,0 @@
-CREATE TABLE IF NOT EXISTS USER_TABLE (
-    userId INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(20) NOT NULL,
-    password VARCHAR(8) NOT NULL,
-    fullName VARCHAR(40) NOT NULL,
-    email VARCHAR(40) NOT NULL,
-    phoneNumber INT(8) NOT NULL,
-    gender CHAR(1) NOT NULL
-);

@@ -1,7 +1,5 @@
 package thequeuers.seatsecure.user;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,13 +9,14 @@ import javax.persistence.Table;
 import lombok.*;
 
 
-@Entity(name = "USER_TABLE")
+@Entity
 @Getter
 @Setter
 @ToString
 // @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@Table(name = "USER_TABLE")
 public class User {
     //private static final AtomicLong counter = new AtomicLong();
     private String username;
