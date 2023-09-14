@@ -1,0 +1,131 @@
+/* ----------------- Navigation Bar ------------------- */
+header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    /* Vertically align elements*/
+    color: #fff;
+    padding: 10px 20px;
+  }
+  
+  header img {
+    cursor: pointer;
+  }
+  
+  nav {
+    justify-self: end;
+  }
+  
+  .nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .nav-item a {
+    text-decoration: none;
+    color: #FFF;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+  }
+  
+  .nav-item a span {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  #login-btn a {
+    text-decoration: none;
+    color: #F4C430;
+    font-family: Inter;
+    font-size: 17px;
+    /* Increase the font size */
+    padding: 8px 30px;
+    /* Adjust padding to increase button size */
+    border: 1px solid #F4C430;
+    /* Optional: Add a border for a button-like appearance */
+    border-radius: 15px;
+    /* Optional: Add border radius for rounded corners */
+    display: inline-block;
+    /* Ensure the button does not disrupt the layout */
+    vertical-align: middle;
+    /* Vertically align the button with the text */
+    line-height: 1;
+    /* Ensure the button's height is determined by its content */
+  }
+  
+  .nav-div button {
+    color: #F4C430;
+    background-color: transparent;
+    border: 1px solid #F4C430;
+    border-radius: 15px;
+    width: 112px;
+    height: 36px;
+    cursor: pointer;
+  }
+  
+  #menu-btn {
+    cursor: pointer;
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+    #menu-btn {
+        display: block;
+        position: absolute;
+        top: 17px;
+        right: 17px;
+    }
+  
+    .header {
+        grid-template-columns: 1fr;
+        /* Change to a single column layout */
+        text-align: center;
+        /* Center-align the contents */
+        background-color: black;
+  
+    }
+  
+    .nav {
+        justify-self: center;
+        /* Center-align the navigation */
+        margin-top: 10px;
+        /* Add some top margin for spacing */
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: none;
+    }
+  
+    .nav-list {
+        list-style: none;
+        grid-auto-flow: row;
+        /* Display options vertically */
+        gap: 0px;
+        width: 100%;
+  
+    }
+  
+    .nav-item {
+        width: 100%;
+        /* margin-bottom: 10px;*/
+        /* Add some bottom margin for spacing */
+        /* border: solid 1px white; */
+        padding-top: 5px;
+        padding-bottom: 5px;
+  
+    }
+  
+     .nav.hidden {
+        display: block;
+    } 
+
+  } 
+  
+  /* ------------------------------------------------- */

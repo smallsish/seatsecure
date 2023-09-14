@@ -1,0 +1,51 @@
+/* ---------------- Landing Content ---------------- */
+.landing-content {
+    width: 100%;
+    display: grid;
+    place-items: center;
+    color: white;
+}
+
+.landing-content .landing-h1 {
+    max-width: 800px;
+    /* min-width: 800px; */
+    text-align: center;
+    color: rgba(255, 255, 255, 0.76);
+    font-family: Inter;
+    font-size: 65px;
+    font-weight: 800;
+    padding-bottom: 200px;
+}
+
+@media (max-width: 768px) {
+    .landing-content h1 {
+        min-width: 400px;
+        font-size: 35px !important;
+        padding-bottom: 0px;
+    }
+}
+
+/* ---------------- Landing Footer ----------------- */
+.landing-footer {
+    width: 100%;
+    height: 56px;
+    background-color: #F4C430;
+    display: grid;
+    place-content: center;
+}
+
+.landing-footer h1 {
+    text-align: center;
+    color: #301934;
+    font-family: Monomaniac One;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+@media (max-width: 768px) {
+    .landing-footer h1 {
+        font-size: 25px !important;
+    }
+}
