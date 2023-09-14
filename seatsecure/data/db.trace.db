@@ -1993,3 +1993,18 @@ select user0_.user_id as user_id1_0_0_, user0_.email as email2_0_0_, user0_.full
 2023-09-14 04:12:29 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USER_TABLE" not found (this database is empty); SQL statement:
 select user0_.user_id as user_id1_0_0_, user0_.email as email2_0_0_, user0_.full_name as full_nam3_0_0_, user0_.gender as gender4_0_0_, user0_.password as password5_0_0_, user0_.phone_number as phone_nu6_0_0_, user0_.username as username7_0_0_ from user_table user0_ where user0_.user_id=? [42104-214]
+2023-09-14 11:35:02 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USER_TABLE" not found (this database is empty); SQL statement:
+select user0_.user_id as user_id1_0_0_, user0_.email as email2_0_0_, user0_.full_name as full_nam3_0_0_, user0_.gender as gender4_0_0_, user0_.password as password5_0_0_, user0_.phone_number as phone_nu6_0_0_, user0_.username as username7_0_0_ from user_table user0_ where user0_.user_id=? [42104-214]
+2023-09-14 11:35:31 jdbc[23]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USER_TABLE" not found (this database is empty); SQL statement:
+insert into user_table (user_id, email, full_name, gender, password, phone_number, username) values (default, ?, ?, ?, ?, ?, ?) [42104-214]
+2023-09-14 11:35:43 jdbc[44]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USER_TABLE" not found (this database is empty); SQL statement:
+select user0_.user_id as user_id1_0_0_, user0_.email as email2_0_0_, user0_.full_name as full_nam3_0_0_, user0_.gender as gender4_0_0_, user0_.password as password5_0_0_, user0_.phone_number as phone_nu6_0_0_, user0_.username as username7_0_0_ from user_table user0_ where user0_.user_id=? [42104-214]
+2023-09-14 11:36:16 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USER_TABLE" not found (this database is empty); SQL statement:
+insert into user_table (user_id, email, full_name, gender, password, phone_number, username) values (default, ?, ?, ?, ?, ?, ?) [42104-214]
+2023-09-14 11:38:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "insert into [*]user (user_id, email, full_name, gender, password, phone_number, username) values (default, ?, ?, ?, ?, ?, ?)"; expected "identifier"; SQL statement:
+insert into user (user_id, email, full_name, gender, password, phone_number, username) values (default, ?, ?, ?, ?, ?, ?) [42001-214]

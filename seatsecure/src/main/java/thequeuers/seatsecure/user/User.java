@@ -19,7 +19,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class User {
-    private static final AtomicLong counter = new AtomicLong();
+    //private static final AtomicLong counter = new AtomicLong();
     private String username;
     private String password;
     private String fullName;
@@ -37,6 +37,6 @@ public class User {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
-        userId = counter.incrementAndGet();
+        //userId = counter.incrementAndGet();
     }
 }
