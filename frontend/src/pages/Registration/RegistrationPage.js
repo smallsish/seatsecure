@@ -11,7 +11,7 @@ function RegistrationPage() {
         <Navbar/>
 
         <div className="landing-content">
-            <div className="form-div">
+            <div className="form-div" style={{paddingBottom:'0px'}}>
                 <span className="material-symbols-outlined">
                     keyboard_backspace
                 </span>
@@ -35,7 +35,7 @@ function RegistrationPage() {
                 <div className="form-text"><Link to="/login">Have an existing account? Sign In</Link></div>
             </div>
         </div>
-        <div className="landing-footer"style={{backgroundColor:'transparent'}} >
+        <div className="registration-footer">
         </div>
     </div>
 
