@@ -7,8 +7,9 @@ import thequeuers.seatsecure.entities.Customer;
 
 
 public interface AdminService {
-    //List<Admin> listAdmins();
-    List<Customer> listCustomers();
+
+    List<Admin> listAdmins();
+
     Admin getAdminById(Long id);
     Admin addAdmin(Admin c);
     Admin updateAdmin(Long id, Admin newAdminInfo);

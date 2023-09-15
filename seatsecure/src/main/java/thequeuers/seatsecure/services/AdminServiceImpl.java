@@ -23,8 +23,8 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public List<Customer> listCustomers() {
-        return customerRepo.findAll();
+    public  List<Admin> listAdmins() {
+        return adminRepo.findAll();
     }
 
     
