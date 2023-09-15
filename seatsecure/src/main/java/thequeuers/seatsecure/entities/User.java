@@ -16,25 +16,25 @@ import lombok.ToString;
 @Setter
 @ToString
 @NotNull
-@Size(max = 30, message = "Fields should not be longer than 30 characters!")
 public class User {
 
+    @Size(max = 20, message = "Username should not be longer than 30 characters!")
     @Pattern(regexp = "^[0-9A-Za-z_]+$", message = "Only alphabets, numbers and underscores are allowed!")
     private String username;
     
+    @Size(max = 20, message = "Password should not be longer than 30 characters!")
     private String password;
 
+    @Size(max = 20, message = "Name should not be longer than 30 characters!")
     @Pattern(regexp = "^[A-Za-z ]+$", message = "Only alphabets and spaces are allowed!")
     private String fullName;
 
     @Email(message = "Invalid email address!")
     private String email;
 
-    @Pattern(regexp = "^(Male|Female)$", message = "An error has occurred. Please try again.") 
     private String gender; // Should be implemented with dropdown boxes (fixed options)
 
-    @Pattern(regexp = "^[8-9][0-9]{7}$", message = "Invalid phone number! (please removing all spacings)")
-    private Integer phoneNumber;
+    private int phoneNumber;
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
