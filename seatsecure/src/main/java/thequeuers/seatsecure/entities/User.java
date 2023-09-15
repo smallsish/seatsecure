@@ -3,6 +3,7 @@ package thequeuers.seatsecure.entities;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -16,6 +17,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @NotNull
+@MappedSuperclass
 public class User {
 
     @Size(max = 20, message = "Username should not be longer than 30 characters!")
@@ -23,6 +25,7 @@ public class User {
     private String username;
     
     @Size(max = 20, message = "Password should not be longer than 30 characters!")
+
     private String password;
 
     @Size(max = 20, message = "Name should not be longer than 30 characters!")
@@ -36,8 +39,6 @@ public class User {
 
     private int phoneNumber;
     
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
 
     public User() {
 
