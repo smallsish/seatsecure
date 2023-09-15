@@ -14,13 +14,13 @@ function Navbar() {
 
   return (
     <header className="header">
-      <a href="/"><img src={logo} alt="Logo" /></a>
+      <Link to="/"><img src={logo} alt="Logo" /></Link>
       <nav className="nav ${isMenuVisible ? 'hidden' : ''}">
         <ul className="nav-list" id="nav-list">
-          <li className="nav-item"><Link to="events">Events</Link></li>
+          <li className="nav-item"><Link to="/events">Events</Link></li>
           <li className="nav-item"><a>FAQ</a></li>
           <li className="nav-item"><a><span className="material-symbols-outlined">search</span></a></li>
-          <li id="login-btn" className="nav-item"><Link to="login">Login</Link></li>
+          <li id="login-btn" className="nav-item"><Link to="/login">Login</Link></li>
         </ul>
       </nav>
       <span id="menu-btn" className="material-symbols-outlined" onClick={displayMenu}>menu</span>

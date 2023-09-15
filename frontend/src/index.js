@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import LoginPage from './pages/Login/LoginPage';
 import EventsPage from './pages/Events/EventsPage';
+import RegistrationPage from './pages/Registration/RegistrationPage';
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,10 @@ const router = createBrowserRouter([
   },{
     path: "Events",
     element: <EventsPage/>,
-  },
+  },{
+    path: "Registration",
+    element: <RegistrationPage/>,
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
