@@ -1,12 +1,12 @@
-package com.seatsecure.seatsecure.services;
+package com.seatsecure.services;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
 
-import com.seatsecure.seatsecure.entities.Admin;
-import com.seatsecure.seatsecure.entities.Customer;
-import com.seatsecure.seatsecure.repositories.AdminRepository;
-import com.seatsecure.seatsecure.repositories.CustomerRepository;
+import com.seatsecure.entities.Admin;
+import com.seatsecure.entities.Customer;
+import com.seatsecure.repositories.AdminRepository;
+import com.seatsecure.repositories.CustomerRepository;
 
 
 

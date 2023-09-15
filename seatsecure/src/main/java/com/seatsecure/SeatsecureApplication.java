@@ -1,13 +1,13 @@
-package com.seatsecure.seatsecure;
+package com.seatsecure;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
-import com.seatsecure.seatsecure.entities.Admin;
-import com.seatsecure.seatsecure.entities.Customer;
-import com.seatsecure.seatsecure.repositories.AdminRepository;
-import com.seatsecure.seatsecure.repositories.CustomerRepository;
+import com.seatsecure.entities.Admin;
+import com.seatsecure.entities.Customer;
+import com.seatsecure.repositories.AdminRepository;
+import com.seatsecure.repositories.CustomerRepository;
 
 
 
