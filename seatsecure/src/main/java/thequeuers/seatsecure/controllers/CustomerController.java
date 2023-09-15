@@ -1,4 +1,4 @@
-package thequeuers.seatsecure.user;
+package thequeuers.seatsecure.controllers;
 
 import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -12,21 +12,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-public class UserController {
-    private UserService userService;
+import thequeuers.seatsecure.entities.Customer;
+import thequeuers.seatsecure.exceptions.CustomerNotFoundException;
+import thequeuers.seatsecure.services.CustomerService;
 
-    public UserController(UserService us){
-        this.userService = us;
+@RestController
+public class CustomerController {
+    private CustomerService customerService;
+
+    public CustomerController(CustomerService cs){
+        this.customerService = cs;
     }
 
     /**
-     * List all books in the system
-     * @return list of all books
+     * List all customers in the system
+     * @return list of all customers
      */
-    @GetMapping("/users")
-    public List<User> getUsers(){
-        return userService.listUsers();
+    @GetMapping("/customers")
+    public List<Customer> getCustomers(){
+        return customerService.listCustomers();
     }
 
     /**
@@ -35,14 +39,14 @@ public class UserController {
      * @param id
      * @return book with the given id
      */
-    @GetMapping("/users/{id}")
-    public User getUser(@PathVariable Long id){
-        User user = userService.getUserById(id);
+    @GetMapping("/customers/{id}")
+    public Customer getCustomer(@PathVariable Long id){
+        Customer customer = customerService.getCustomerById(id);
 
         // Need to handle "book not found" error using proper HTTP status code
         // In this case it should be HTTP 404
-        if(user == null) throw new UserNotFoundException(id);
-        return userService.getUserById(id);
+        if(customer == null) throw new CustomerNotFoundException(id);
+        return customerService.getCustomerById(id);
 
     }
     /**
@@ -52,9 +56,9 @@ public class UserController {
      * @return list of all books
      */
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/users")
-    public User addUser(@RequestBody User user){
-        return userService.addUser(user);
+    @PostMapping("/customers")
+    public Customer addCustomer(@RequestBody Customer customer){
+        return customerService.addCustomer(customer);
     }
 
     /**
@@ -63,12 +67,12 @@ public class UserController {
      * @param newBookInfo
      * @return the updated, or newly added book
      */
-    @PutMapping("/users/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User newBookInfo){
-        User user = userService.updateUser(id, newBookInfo);
-        if(user == null) throw new UserNotFoundException(id);
+    @PutMapping("/customers/{id}")
+    public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer newBookInfo){
+        Customer customer = customerService.updateCustomer(id, newBookInfo);
+        if(customer == null) throw new CustomerNotFoundException(id);
         
-        return user;
+        return customer;
     }
 
     /**
@@ -76,12 +80,12 @@ public class UserController {
      * If there is no book with the given "id", throw a BookNotFoundException
      * @param id
      */
-    @DeleteMapping("/users/{id}")
-    public void deleteUser(@PathVariable Long id){
+    @DeleteMapping("/customers/{id}")
+    public void deleteCustomer(@PathVariable Long id){
         try{
-            userService.deleteUserById(id);
+            customerService.deleteCustomerById(id);
          }catch(EmptyResultDataAccessException e) {
-            throw new UserNotFoundException(id);
+            throw new CustomerNotFoundException(id);
          }
     }
 }

@@ -1,44 +1,47 @@
-package thequeuers.seatsecure.user;
+package thequeuers.seatsecure.services;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+import thequeuers.seatsecure.entities.Customer;
+import thequeuers.seatsecure.repositories.CustomerRepository;
+
 
 @Service
-public class UserServiceImpl implements UserService {
+public class CustomerServiceImpl implements CustomerService {
    
-    private UserRepository users;
+    private CustomerRepository customerRepo;
     
 
-    public UserServiceImpl(UserRepository users){
-        this.users = users;
+    public CustomerServiceImpl(CustomerRepository customerRepo){
+        this.customerRepo = customerRepo;
     }
 
     @Override
-    public List<User> listUsers() {
-        return users.findAll();
+    public List<Customer> listCustomers() {
+        return customerRepo.findAll();
     }
 
     
     @Override
-    public User getUserById(Long userId){
+    public Customer getCustomerById(Long customerId){
         // Using Java Optional, as "findById" of Spring JPA returns an Optional object
         // Optional forces developers to explicitly handle the case of non-existent values
         // Here is an implementation using lambda expression to extract the value from Optional<Book>
-        return users.findById(userId).map(user -> {
-            return user;
+        return customerRepo.findById(customerId).map(c -> {
+            return c;
         }).orElse(null);
     }
     
     @Override
-    public User addUser(User user) {
-        return users.save(user);
+    public Customer addCustomer(Customer c) {
+        return customerRepo.save(c);
     }
     
     @Override
-    public User updateUser(Long id, User newUserInfo){
-        return users.findById(id).map(user -> {user.setPassword(newUserInfo.getPassword());
-            return users.save(user);
+    public Customer updateCustomer(Long id, Customer newCustomerInfo){
+        return customerRepo.findById(id).map(c -> {c.setPassword(newCustomerInfo.getPassword());
+            return customerRepo.save(c);
         }).orElse(null);
 
         /*
@@ -59,9 +62,9 @@ public class UserServiceImpl implements UserService {
      * Cascading: removing a book will also remove all its associated reviews
      */
     @Override
-    public User deleteUserById(Long id){
-        User user = getUserById(id);
-        users.deleteById(id);
+    public Customer deleteCustomerById(Long customerId){
+        Customer user = getCustomerById(customerId);
+        customerRepo.deleteById(customerId);
         return user;
     }
 }
