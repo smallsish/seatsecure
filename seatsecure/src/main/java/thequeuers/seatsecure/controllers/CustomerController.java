@@ -51,8 +51,7 @@ public class CustomerController {
     }
     /**
      * Add a new book with POST request to "/books"
-     * Note the use of @RequestBody
-     * @param book
+     * Note the use of @RequestBod
      * @return list of all books
      */
     @ResponseStatus(HttpStatus.CREATED)

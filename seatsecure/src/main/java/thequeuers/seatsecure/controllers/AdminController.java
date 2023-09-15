@@ -57,6 +57,7 @@ public class AdminController {
     public Admin getAdmin(@PathVariable Long id){
         Admin admin = adminService.getAdminById(id);
 
+
         // Need to handle "book not found" error using proper HTTP status code
         // In this case it should be HTTP 404
         if(admin == null) throw new AdminNotFoundException(id);

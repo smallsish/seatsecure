@@ -3,6 +3,7 @@ package thequeuers.seatsecure.entities;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -15,13 +16,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@NotNull
-@Size(max = 30, message = "Fields should not be longer than 30 characters!")
+@MappedSuperclass
 public class User {
+
 
     @Pattern(regexp = "^[0-9A-Za-z_]+$", message = "Only alphabets, numbers and underscores are allowed!")
     private String username;
-    
+
+    @Pattern(regexp = "^[0-9A-Za-z_]+$", message = "Only alphabets, numbers and underscores are allowed!")
     private String password;
 
     @Pattern(regexp = "^[A-Za-z ]+$", message = "Only alphabets and spaces are allowed!")
@@ -30,14 +32,12 @@ public class User {
     @Email(message = "Invalid email address!")
     private String email;
 
-    @Pattern(regexp = "^(Male|Female)$", message = "An error has occurred. Please try again.") 
+
     private String gender; // Should be implemented with dropdown boxes (fixed options)
 
-    @Pattern(regexp = "^[8-9][0-9]{7}$", message = "Invalid phone number! (please removing all spacings)")
-    private Integer phoneNumber;
+
+    private int phoneNumber;
     
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
 
     public User() {
 
