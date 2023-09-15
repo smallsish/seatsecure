@@ -43,28 +43,19 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepo.findById(id).map(c -> {c.setPassword(newCustomerInfo.getPassword());
             return customerRepo.save(c);
         }).orElse(null);
-
-        /*
-        // You can also handle Optional objects in this way
-        //
-        Optional<Book> b = books.findById(id);
-        if (b.isPresent()){
-            Book book = b.get();
-            book.setTitle(newBookInfo.getTitle());
-            return books.save(book);
-        }else
-            return null;*/
     }
 
     /**
-     * Remove a book with the given id
+     * Remove a customer with the given id
      * Spring Data JPA does not return a value for delete operation
-     * Cascading: removing a book will also remove all its associated reviews
      */
     @Override
     public Customer deleteCustomerById(Long customerId){
-        Customer user = getCustomerById(customerId);
+        Customer customer = getCustomerById(customerId);
+        if (customer == null) {
+            return null;
+        }
         customerRepo.deleteById(customerId);
-        return user;
+        return customer;
     }
 }

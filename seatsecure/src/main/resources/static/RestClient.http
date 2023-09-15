@@ -1,24 +1,25 @@
+### List users
 GET http://localhost:8080/users
 
 
-###
+### 
 GET http://localhost:8080/users/2
 
 ###
 DELETE http://localhost:8080/users/1
 
 
-###
-POST http://localhost:8080/users
+### Create new customer account
+POST http://localhost:8080/customers
 Content-Type: application/json
 
 {
     "username": "jacques",
-    "password": "123",
+    "password": "jackass123",
     "email": "jacques123@gmail.com",
-    "fullName": "jacques esque",
+    "fullName": "Jacques Esque",
     "phoneNumber" = 90003045,
-    "gender" = "m"
+    "gender" = "Male"
 }
 
 ###

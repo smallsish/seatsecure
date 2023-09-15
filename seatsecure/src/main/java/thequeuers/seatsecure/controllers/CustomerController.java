@@ -1,6 +1,10 @@
 package thequeuers.seatsecure.controllers;
 
 import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,64 +32,65 @@ public class CustomerController {
      * List all customers in the system
      * @return list of all customers
      */
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/customers")
     public List<Customer> getCustomers(){
         return customerService.listCustomers();
     }
 
     /**
-     * Search for book with the given id
-     * If there is no book with the given "id", throw a BookNotFoundException
+     * Search for customer with the given id
+     * If there is no customer with the given "id", throw a CustomerNotFoundException
      * @param id
-     * @return book with the given id
+     * @return Customer with the given id
      */
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/customers/{id}")
-    public Customer getCustomer(@PathVariable Long id){
+    public Customer getCustomer(@Pattern(regexp = "[0-9]+") @PathVariable Long id){
         Customer customer = customerService.getCustomerById(id);
 
-        // Need to handle "book not found" error using proper HTTP status code
-        // In this case it should be HTTP 404
         if(customer == null) throw new CustomerNotFoundException(id);
         return customerService.getCustomerById(id);
 
     }
     /**
-     * Add a new book with POST request to "/books"
-     * Note the use of @RequestBody
-     * @param book
-     * @return list of all books
+     * Add a new customer with POST request to "/customers"
+     * @param customer
+     * @return The new customer that was added
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/customers")
-    public Customer addCustomer(@RequestBody Customer customer){
+    public Customer addCustomer(@Valid @RequestBody Customer customer){
         return customerService.addCustomer(customer);
     }
 
     /**
-     * If there is no book with the given "id", throw a BookNotFoundException
+     * Update a customer with new info
+     * If there is no customer with the given "id", throw a CustomerNotFoundException
      * @param id
-     * @param newBookInfo
-     * @return the updated, or newly added book
+     * @param newCustomerInfo
+     * @return the updated customer
      */
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/customers/{id}")
-    public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer newBookInfo){
-        Customer customer = customerService.updateCustomer(id, newBookInfo);
+    public Customer updateCustomer(@PathVariable Long id, @Valid @RequestBody Customer newCustomerInfo){
+        Customer customer = customerService.updateCustomer(id, newCustomerInfo);
         if(customer == null) throw new CustomerNotFoundException(id);
         
         return customer;
     }
 
     /**
-     * Remove a book with the DELETE request to "/books/{id}"
-     * If there is no book with the given "id", throw a BookNotFoundException
+     * Remove a customer with the DELETE request to "/customers/{id}"
+     * If there is no customer with the given "id", throw a CustomerNotFoundException
      * @param id
      */
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/customers/{id}")
     public void deleteCustomer(@PathVariable Long id){
-        try{
-            customerService.deleteCustomerById(id);
-         }catch(EmptyResultDataAccessException e) {
-            throw new CustomerNotFoundException(id);
-         }
+
+        Customer customer = customerService.deleteCustomerById(id);
+        if(customer == null) throw new CustomerNotFoundException(id);
+
     }
 }
