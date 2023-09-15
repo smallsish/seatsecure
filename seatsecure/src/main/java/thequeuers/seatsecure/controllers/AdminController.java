@@ -42,9 +42,9 @@ public class AdminController {
      * List all customers in the system
      * @return list of all customers
      */
-    @GetMapping("/customers")
-    public List<Customer> getCustomers(){
-        return customerService.listCustomers();
+    @GetMapping("/admins")
+    public List<Admin> getAdmin(){
+        return adminService.listAdmins();
     }
 
     /**
