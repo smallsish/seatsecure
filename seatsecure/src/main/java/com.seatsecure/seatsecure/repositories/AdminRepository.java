@@ -1,9 +1,9 @@
-package thequeuers.seatsecure.repositories;
+package com.seatsecure.seatsecure.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import thequeuers.seatsecure.entities.Admin;
+import com.seatsecure.seatsecure.entities.Admin;
 
 /**
  * We only need this interface declaration

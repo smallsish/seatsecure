@@ -1,4 +1,4 @@
-package thequeuers.seatsecure.controllers;
+package com.seatsecure.seatsecure.controllers;
 
 import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import thequeuers.seatsecure.entities.Admin;
-import thequeuers.seatsecure.entities.Customer;
-import thequeuers.seatsecure.exceptions.AdminNotFoundException;
-import thequeuers.seatsecure.services.AdminService;
-import thequeuers.seatsecure.services.CustomerService;
+import com.seatsecure.seatsecure.entities.Admin;
+import com.seatsecure.seatsecure.entities.Customer;
+import com.seatsecure.seatsecure.exceptions.AdminNotFoundException;
+import com.seatsecure.seatsecure.services.AdminService;
+import com.seatsecure.seatsecure.services.CustomerService;
 
 
 
