@@ -1,8 +1,8 @@
-package com.seatsecure.seatsecure.services;
+package com.seatsecure.services;
 
 import java.util.List;
 
-import com.seatsecure.seatsecure.entities.Customer;
+import com.seatsecure.entities.Customer;
 
 public interface CustomerService {
     List<Customer> listCustomers();
