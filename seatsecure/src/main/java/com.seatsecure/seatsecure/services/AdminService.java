@@ -1,9 +1,9 @@
-package thequeuers.seatsecure.services;
+package com.seatsecure.seatsecure.services;
 
 import java.util.List;
 
-import thequeuers.seatsecure.entities.Admin;
-import thequeuers.seatsecure.entities.Customer;
+import com.seatsecure.seatsecure.entities.Admin;
+import com.seatsecure.seatsecure.entities.Customer;
 
 
 public interface AdminService {

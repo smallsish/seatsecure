@@ -1,4 +1,4 @@
-package thequeuers.seatsecure.entities;
+package com.seatsecure.seatsecure.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,14 +7,14 @@ import javax.persistence.Id;
 
 import lombok.*;
 
+
 @Entity
-@Getter
-@Setter
 @ToString
 // @AllArgsConstructor
 // @NoArgsConstructor
+
 @EqualsAndHashCode(callSuper = false)
-public class Customer extends User {
+public class Admin extends User {
 
 
     @Id
@@ -22,12 +22,9 @@ public class Customer extends User {
     private Long userId;
 
 
-    public Customer() {
-
+    public Admin(){
     }
-
-    public Customer(String username, String password, String email, String fullName, int phoneNumber, String gender) {
-        super(username, password, email, fullName, phoneNumber, gender);
-
+    public Admin(String username, String password, String email, String fullName, int phoneNumber, String gender) {
+        super(username,password,email,fullName,phoneNumber,gender);
     }
 }
