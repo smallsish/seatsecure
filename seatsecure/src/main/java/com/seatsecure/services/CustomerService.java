@@ -1,8 +1,8 @@
-package thequeuers.seatsecure.services;
+package com.seatsecure.services;
 
 import java.util.List;
 
-import thequeuers.seatsecure.entities.Customer;
+import com.seatsecure.entities.Customer;
 
 public interface CustomerService {
     List<Customer> listCustomers();

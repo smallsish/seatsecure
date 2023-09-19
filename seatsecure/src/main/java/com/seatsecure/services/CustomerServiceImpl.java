@@ -1,10 +1,10 @@
-package thequeuers.seatsecure.services;
+package com.seatsecure.services;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
 
-import thequeuers.seatsecure.entities.Customer;
-import thequeuers.seatsecure.repositories.CustomerRepository;
+import com.seatsecure.entities.Customer;
+import com.seatsecure.repositories.CustomerRepository;
 
 
 @Service

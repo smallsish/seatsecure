@@ -1,4 +1,4 @@
-package thequeuers.seatsecure.controllers;
+package com.seatsecure.controllers;
 
 import java.util.List;
 
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import thequeuers.seatsecure.entities.Customer;
-import thequeuers.seatsecure.exceptions.CustomerNotFoundException;
-import thequeuers.seatsecure.services.CustomerService;
+import com.seatsecure.entities.Customer;
+import com.seatsecure.exceptions.CustomerNotFoundException;
+import com.seatsecure.services.CustomerService;
 
 @RestController
 public class CustomerController {

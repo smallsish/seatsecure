@@ -1,13 +1,13 @@
-package thequeuers.seatsecure;
+package com.seatsecure;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
- import thequeuers.seatsecure.repositories.AdminRepository;
-import thequeuers.seatsecure.repositories.CustomerRepository;
-import thequeuers.seatsecure.entities.Customer;
-import thequeuers.seatsecure.entities.Admin;
+import com.seatsecure.entities.Admin;
+import com.seatsecure.entities.Customer;
+import com.seatsecure.repositories.AdminRepository;
+import com.seatsecure.repositories.CustomerRepository;
 
 
 

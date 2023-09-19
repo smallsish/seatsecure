@@ -1,4 +1,4 @@
-package thequeuers.seatsecure.entities;
+package com.seatsecure.entities;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

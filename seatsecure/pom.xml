@@ -8,10 +8,10 @@
 		<version>2.7.15</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>thequeuers</groupId>
+	<groupId>com</groupId>
 	<artifactId>seatsecure</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
+	<name>seatsecure</name>
 	<description>Project for CS204</description>
 
 	<properties>
@@ -61,6 +61,10 @@
 					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -1,9 +1,9 @@
-package thequeuers.seatsecure.repositories;
+package com.seatsecure.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import thequeuers.seatsecure.entities.Customer;
+import com.seatsecure.entities.Admin;
 
 /**
  * We only need this interface declaration
@@ -13,6 +13,6 @@ import thequeuers.seatsecure.entities.Customer;
  * For the purpose of this exercise, CrudRepository would also be sufficient
  */
 @Repository
-public interface CustomerRepository extends JpaRepository <Customer, Long> {
+public interface AdminRepository extends JpaRepository <Admin, Long> {
 
 }
