@@ -2051,3 +2051,14 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/carto/s
 	... 156 more
 2023-09-19 04:44:23 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-214]
+2023-09-20 18:06:53 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-214]
+2023-09-20 18:07:26 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]ROLE"; expected "ROLLBACK, REVOKE, RUNSCRIPT, RELEASE"; SQL statement:
+ROLE [42001-214]
+2023-09-20 18:10:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-214]
+2023-09-20 18:10:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-214]
+2023-09-20 20:39:10 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-214]

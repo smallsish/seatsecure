@@ -1,6 +1,5 @@
 package com.seatsecure.backend.entities;
 
 public enum Role {
-    USER
-    
+    ROLE_USER, ROLE_ADMIN;
 }
