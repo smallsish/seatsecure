@@ -18,10 +18,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.*;
 
 @Setter
@@ -52,27 +48,29 @@ public class User implements UserDetails {
 
     // private Integer phoneNumber;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+     @Enumerated(EnumType.STRING)
+    private Role role; // uncomment this to use the ROLE entity
+    //private String role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // TODO Auto-generated method stub
+        //return List.of(new SimpleGrantedAuthority(role.name())); // uncomment this to revert back to ROLE entity
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    @Size(max = 20, message = "Username should not be longer than 30 characters!")
+    @Size(max = 20, message = "Username should not be longer than 20 characters!")
     @Pattern(regexp = "^[0-9A-Za-z_]+$", message = "Only alphabets, numbers and underscores are allowed!")
     private String username;
 
-    @Size(max = 20, message = "Password should not be longer than 30 characters!")
+    //@Size(max = 20, message = "Password should not be longer than 20 characters!") // there should not be size validation since the hash passsword is more than 20
     private String password;
 
-    @Size(max = 20, message = "First name should not be longer than 20 characters!")
+    //@Size(max = 20, message = "First name should not be longer than 20 characters!")
     @Pattern(regexp = "^[A-Za-z]+$", message = "Only alphabets are allowed!")
     private String firstName;
 
-     @Size(max = 20, message = "Last name should not be longer than 20 characters!")
+    //@Size(max = 20, message = "Last name should not be longer than 20 characters!")
     @Pattern(regexp = "^[A-Za-z]+$", message = "Only alphabets are allowed!")
     private String lastName;
 
