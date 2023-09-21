@@ -56,7 +56,7 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // TODO Auto-generated method stub
         //return List.of(new SimpleGrantedAuthority(role.name())); // uncomment this to revert back to ROLE entity
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return role.getAuthorities();
     }
 
     @Size(max = 20, message = "Username should not be longer than 20 characters!")

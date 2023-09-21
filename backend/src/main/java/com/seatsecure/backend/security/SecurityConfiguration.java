@@ -1,6 +1,5 @@
 package com.seatsecure.backend.security;
 
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,7 +9,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import com.seatsecure.backend.entities.Permission;
 import com.seatsecure.backend.entities.Role;
 
 import com.seatsecure.backend.security.jwt.JwtAuthenticationFilter;
@@ -25,6 +28,7 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -35,13 +39,28 @@ public class SecurityConfiguration {
                 //         //.requestMatchers(HttpMethod.GET, "/api/v1/users").hasRole("USER")
                         
                 // )
-                .authorizeHttpRequests(requests -> requests
+                .csrf((csrf) -> csrf.disable())
+                .authorizeHttpRequests(r -> r
                     .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                    //.requestMatchers(new AntPathRequestMatcher("/api/v1/users")).hasRole("USER_ADMIN")
                     .requestMatchers(new AntPathRequestMatcher("/api/v1/auth/**")).permitAll()
-                    //.requestMatchers("/api/v1/users").hasRole("USER")
+
+                    .requestMatchers(new AntPathRequestMatcher("/api/v1/users")).hasRole(Role.ADMIN.name())// the entire page
+
+                    //the resepctive HTTP commands
+                    .requestMatchers(new AntPathRequestMatcher("/api/v1/users/**", "HttpMethod.GET")).hasAuthority(Permission.ADMIN_READ.name())
+                    .requestMatchers(new AntPathRequestMatcher("/api/v1/users/**", "HttpMethod.POST")).hasAuthority(Permission.ADMIN_CREATE.name())
+                    .requestMatchers(new AntPathRequestMatcher("/api/v1/users/**", "HttpMethod.PUT")).hasAuthority(Permission.ADMIN_UPDATE.name())
+                    .requestMatchers(new AntPathRequestMatcher("/api/v1/users/**", "HttpMethod.DELETE")).hasAuthority(Permission.ADMIN_DELETE.name())
+
+                    // .requestMatchers("/api/v1/admins").hasAnyRole(Role.ADMIN.name())
+
+                    // .requestMatchers(HttpMethod.GET, "/api/v1/admins/**").hasAuthority(Permission.ADMIN_READ.name())
+                    // .requestMatchers(HttpMethod.POST, "/api/v1/admins/**").hasAuthority(Permission.ADMIN_CREATE.name())
+                    // .requestMatchers(HttpMethod.PUT, "/api/v1/admins/**").hasAuthority(Permission.ADMIN_UPDATE.name())
+                    // .requestMatchers(HttpMethod.DELETE, "/api/v1/admins/**").hasAuthority(Permission.ADMIN_DELETE.name())
                     .anyRequest().authenticated()
                 )
+                
                 .sessionManagement((sessionManagement) ->
                     sessionManagement
                         // .sessionConcurrency((sessionConcurrency) ->
@@ -55,8 +74,8 @@ public class SecurityConfiguration {
                 )
                 .headers((headers) -> headers.disable())
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .csrf((csrf) -> csrf.disable());
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                
         return http.build();
     }
 }

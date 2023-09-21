@@ -21,5 +21,5 @@ public class RegisterRequest {
     private String gender;
     private Integer phoneNumber; 
     private Role role;
-    //private String role;
+    
 }
