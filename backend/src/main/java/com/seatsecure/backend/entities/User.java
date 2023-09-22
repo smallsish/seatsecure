@@ -21,8 +21,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
-@Setter
-@Getter
+// @Setter
+// @Getter
 @Data
 @Builder
 @NoArgsConstructor
@@ -35,21 +35,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // private String username;
-
-    // private String password;
-
-    // private String firstName;
-
-    // private String lastName;
-
-    // private String email;
-
-    // private String gender; // Should be implemented with dropdown boxes (fixed options)
-
-    // private Integer phoneNumber;
-
-     @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private Role role; // uncomment this to use the ROLE entity
     //private String role;
 
