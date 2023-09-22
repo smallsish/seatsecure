@@ -41,8 +41,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(Long id, User newUserInfo){
         return userRepo.findById(id).map(u -> {u.setPassword(newUserInfo.getPassword());
+            u.setEmail(newUserInfo.getEmail());
+            u.setFirstName(newUserInfo.getFirstName());
+            u.setLastName(newUserInfo.getLastName());
+            u.setGender(newUserInfo.getGender());                   // different fields that user might want to change
+            u.setPhoneNumber(newUserInfo.getPhoneNumber());
+            u.setUsername(newUserInfo.getUsername());
             return userRepo.save(u);
-        }).orElse(null);
+        } ).orElse(null);
     }
 
     /**

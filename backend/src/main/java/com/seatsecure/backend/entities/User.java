@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -60,17 +61,19 @@ public class User implements UserDetails {
     }
 
     @Size(max = 20, message = "Username should not be longer than 20 characters!")
+    @NotNull(message = "Username should not be empty!")
     @Pattern(regexp = "^[0-9A-Za-z_]+$", message = "Only alphabets, numbers and underscores are allowed!")
     private String username;
 
+    @NotNull(message = "Username should not be empty!")
     //@Size(max = 20, message = "Password should not be longer than 20 characters!") // there should not be size validation since the hash passsword is more than 20
     private String password;
 
-    //@Size(max = 20, message = "First name should not be longer than 20 characters!")
+    @Size(max = 20, message = "First name should not be longer than 20 characters!")
     @Pattern(regexp = "^[A-Za-z]+$", message = "Only alphabets are allowed!")
     private String firstName;
 
-    //@Size(max = 20, message = "Last name should not be longer than 20 characters!")
+    @Size(max = 20, message = "Last name should not be longer than 20 characters!")
     @Pattern(regexp = "^[A-Za-z]+$", message = "Only alphabets are allowed!")
     private String lastName;
 

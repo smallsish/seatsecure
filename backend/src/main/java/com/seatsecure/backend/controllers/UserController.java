@@ -19,15 +19,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.User;
 import com.seatsecure.backend.exceptions.UserNotFoundException;
+import com.seatsecure.backend.security.auth.AuthenticationResponse;
+import com.seatsecure.backend.security.auth.AuthenticationService;
+import com.seatsecure.backend.security.auth.RegisterRequest;
 import com.seatsecure.backend.services.UserService;
 
 @RequestMapping("/api/v1")
 @RestController
 public class UserController {
     private UserService userService;
+    private AuthenticationService authService;
 
-    public UserController(UserService us){
+    public UserController(UserService us, AuthenticationService as){
         this.userService = us;
+        this.authService = as;
     }
 
     /**
@@ -62,8 +67,10 @@ public class UserController {
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/users")
-    public User addUser(@Valid @RequestBody User user){
-        return userService.addUser(user);
+    public ResponseEntity<AuthenticationResponse> addUser(
+        @RequestBody RegisterRequest request
+    ) {
+        return ResponseEntity.ok(authService.register(request));
     }
 
     /**

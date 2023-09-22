@@ -32,13 +32,6 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // .authorizeHttpRequests(auth -> auth
-                //         .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                //         .requestMatchers(new AntPathRequestMatcher("/api/v1/auth/**")).permitAll().authenticated()
-                //         //.requestMatchers(new AntPathRequestMatcher("/api/v1/users")).permitAll().anyRequest().hasRole("ADMIN")
-                //         //.requestMatchers(HttpMethod.GET, "/api/v1/users").hasRole("USER")
-                        
-                // )
                 .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests(r -> r
                     .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()

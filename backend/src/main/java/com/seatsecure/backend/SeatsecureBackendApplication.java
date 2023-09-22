@@ -16,16 +16,16 @@ public class SeatsecureBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SeatsecureBackendApplication.class, args);
 	}
-	//@Bean
-	// public CommandLineRunner commandLineRunner(
-	// 	AuthenticationService service
-	// ){
-	// 	return args -> {
-	// 		var admin = RegisterRequest.builder().firstName("admin").lastName("Hi").email("admin@email.com").gender("m").phoneNumber(12345678).password("abcdef").role(Role.ADMIN).build();
-	// 		System.out.println("Admin token:" + service.register(admin).getToken());
+	@Bean
+	public CommandLineRunner commandLineRunner(
+		AuthenticationService service
+	){
+		return args -> {
+			var admin = RegisterRequest.builder().firstName("admin").lastName("Hi").email("admin@email.com").gender("m").username("admin").phoneNumber(12345678).password("abcdef").role(Role.ADMIN).build();
+			System.out.println("Admin token:" + service.register(admin).getToken());
 
-	// 		var cust = RegisterRequest.builder().firstName("user").lastName("Hi").email("user@email.com").gender("m").phoneNumber(12345678).password("abcdefgh").role(Role.USER).build();
-	// 		System.out.println("User token:" + service.register(cust).getToken());
-	// 	};
-	// }
+			var cust = RegisterRequest.builder().firstName("user").lastName("Hi").email("user@email.com").gender("m").username("cust").phoneNumber(12345678).password("abcdefgh").role(Role.USER).build();
+			System.out.println("User token:" + service.register(cust).getToken());
+		};
+	}
 }
