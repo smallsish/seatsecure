@@ -53,7 +53,7 @@ public class UserController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users/{id}")
-    public User getUser(@Pattern(regexp = "[0-9]+") @PathVariable Long id){
+    public User getUser(@PathVariable Long id){
         User user = userService.getUserById(id);
 
         if(user == null) throw new UserNotFoundException(id);
