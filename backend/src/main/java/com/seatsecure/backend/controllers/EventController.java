@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,26 +21,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Event;
-import com.seatsecure.backend.entities.User;
 import com.seatsecure.backend.exceptions.EventCreationError;
 import com.seatsecure.backend.exceptions.EventNotFoundException;
-import com.seatsecure.backend.exceptions.UserNotFoundException;
-import com.seatsecure.backend.security.auth.AuthenticationResponse;
-import com.seatsecure.backend.security.auth.AuthenticationService;
-import com.seatsecure.backend.security.auth.RegisterRequest;
 import com.seatsecure.backend.services.EventService;
-import com.seatsecure.backend.services.UserService;
 
 @RequestMapping("/api/v1")
 @RestController
 public class EventController {
     private EventService eventService;
-    private AuthenticationService authService;
 
     @Autowired
-    public EventController(EventService es, AuthenticationService as){
+    public EventController(EventService es){
         eventService = es;
-        authService = as;
     }
 
     /**
@@ -71,22 +64,10 @@ public class EventController {
      * Add a new event with POST request to "/events"
      * @param event
      * @return The new event that was added
-     
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/events")
-    public ResponseEntity<AuthenticationResponse> addEvent(
-        @RequestBody RegisterRequest request
-    ) {
-        return ResponseEntity.ok(authService.register(request));
-    }*/
-
-    /**
-     * Add a new event with POST request to "/events"
-     * @param event
-     * @return The new event that was added
     */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/events")
+    @PreAuthorize("hasAuthorities('admin:create')")
     public Event addEvent(@Valid @RequestBody Event event) {
         Event e = eventService.addEvent(event);
         
@@ -105,6 +86,7 @@ public class EventController {
      */
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/events/{id}")
+    @PreAuthorize("hasAuthorities('admin:update')")
     public Event updateEvent(@PathVariable Long id, @Valid @RequestBody Event newEventInfo){
         Event event = eventService.updateEvent(id, newEventInfo);
         if(event == null) throw new EventNotFoundException(id);
@@ -119,6 +101,7 @@ public class EventController {
      */
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/events/{id}")
+    @PreAuthorize("hasAuthority('admin:delete')")
     public Event deleteEvent(@PathVariable Long id){
 
         Event event = eventService.deleteEventById(id);
