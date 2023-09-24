@@ -9,8 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import com.seatsecure.backend.entities.Role;
 import com.seatsecure.backend.entities.Venue;
+import com.seatsecure.backend.entities.enums.Gender;
+import com.seatsecure.backend.entities.enums.Role;
 import com.seatsecure.backend.repositories.EventRepository;
 import com.seatsecure.backend.repositories.VenueRepository;
 import com.seatsecure.backend.entities.Event;
@@ -38,11 +39,11 @@ public class SeatsecureBackendApplication {
 	public CommandLineRunner commandLineRunner(
 			AuthenticationService service) {
 		return args -> {
-			var admin = RegisterRequest.builder().firstName("admin").lastName("Hi").email("admin@email.com").gender("m")
+			var admin = RegisterRequest.builder().firstName("admin").lastName("Hi").email("admin@email.com").gender(Gender.MALE)
 					.username("admin").phoneNumber(12345678).password("abcdef").role(Role.ADMIN).build();
 			System.out.println("Admin token:" + service.register(admin).getToken());
 
-			var cust = RegisterRequest.builder().firstName("user").lastName("Hi").email("user@email.com").gender("m")
+			var cust = RegisterRequest.builder().firstName("user").lastName("Hi").email("user@email.com").gender(Gender.FEMALE)
 					.username("cust").phoneNumber(12345678).password("abcdefgh").role(Role.USER).build();
 			System.out.println("User token:" + service.register(cust).getToken());
 

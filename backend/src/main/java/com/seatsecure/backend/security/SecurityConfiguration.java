@@ -13,9 +13,8 @@ import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-import com.seatsecure.backend.entities.Permission;
-import com.seatsecure.backend.entities.Role;
-
+import com.seatsecure.backend.entities.enums.Permission;
+import com.seatsecure.backend.entities.enums.Role;
 import com.seatsecure.backend.security.jwt.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;

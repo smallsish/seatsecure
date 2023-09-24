@@ -5,8 +5,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.seatsecure.backend.entities.Role;
 import com.seatsecure.backend.entities.User;
+import com.seatsecure.backend.entities.enums.Role;
 import com.seatsecure.backend.repositories.UserRepository;
 import com.seatsecure.backend.security.jwt.JwtService;
 
@@ -39,7 +39,7 @@ public class AuthenticationService {
             .build();
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
+        authenticationManager.authenticate( // Throws an error is authentication fails
             new UsernamePasswordAuthenticationToken(
                 request.getUsername(),
                 request.getPassword()

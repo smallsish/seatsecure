@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,9 +36,10 @@ public class EventController {
     private EventService eventService;
     private AuthenticationService authService;
 
+    @Autowired
     public EventController(EventService es, AuthenticationService as){
-        this.eventService = es;
-        this.authService = as;
+        eventService = es;
+        authService = as;
     }
 
     /**
@@ -60,10 +62,9 @@ public class EventController {
     @GetMapping("/events/{id}")
     public Event getEvent(@PathVariable Long id){
         Event event = eventService.getEventById(id);
-
         if(event == null) throw new EventNotFoundException(id);
-        return eventService.getEventById(id);
-
+        
+        return event;
     }
 
     /**
@@ -86,7 +87,7 @@ public class EventController {
     */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/events")
-    public Event addEvent(@RequestBody Event event) {
+    public Event addEvent(@Valid @RequestBody Event event) {
         Event e = eventService.addEvent(event);
         
         if (e == null) throw new EventCreationError();
@@ -118,10 +119,11 @@ public class EventController {
      */
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/events/{id}")
-    public void deleteEvent(@PathVariable Long id){
+    public Event deleteEvent(@PathVariable Long id){
 
         Event event = eventService.deleteEventById(id);
         if(event == null) throw new EventNotFoundException(id);
 
+        return event;
     }
 }
