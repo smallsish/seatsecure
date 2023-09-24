@@ -13,7 +13,6 @@ import com.seatsecure.backend.entities.Venue;
 import com.seatsecure.backend.entities.enums.Gender;
 import com.seatsecure.backend.entities.enums.Role;
 import com.seatsecure.backend.repositories.EventRepository;
-import com.seatsecure.backend.repositories.VenueRepository;
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.security.auth.AuthenticationService;
 import com.seatsecure.backend.security.auth.RegisterRequest;
