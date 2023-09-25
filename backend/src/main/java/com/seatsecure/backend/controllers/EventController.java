@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Event;
+import com.seatsecure.backend.entities.EventVenueDTO;
 import com.seatsecure.backend.exceptions.EventCreationError;
 import com.seatsecure.backend.exceptions.EventNotFoundException;
 import com.seatsecure.backend.services.EventService;
@@ -41,7 +42,7 @@ public class EventController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/events")
-    public List<Event> getEvents(){
+    public List<EventVenueDTO> getEvents(){
         return eventService.listEvents();
     }
 
@@ -53,8 +54,8 @@ public class EventController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/events/{id}")
-    public Event getEvent(@PathVariable Long id){
-        Event event = eventService.getEventById(id);
+    public EventVenueDTO getEvent(@PathVariable Long id){
+        EventVenueDTO event = eventService.getEventVenueById(id);
         if(event == null) throw new EventNotFoundException(id);
         
         return event;
