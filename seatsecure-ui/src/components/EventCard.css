@@ -1,0 +1,77 @@
+.event-card-container {
+    width: 275px;
+    height: 190px;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    background-image: url('../images/events/event-card-1.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 10px;
+    position: relative; /* Create a positioning context */
+}
+
+.event-card-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.4); /* Adjust the alpha (last value) to control darkness */
+    z-index: 1; /* Ensure the overlay is above the background image */
+}
+
+.find-out-more-div {
+    z-index: 2;
+}
+
+.event-card-header h1 {
+    color: #FFF;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+.event-card-header {
+    z-index: 2;
+}
+
+.event-card-header h2 {
+    color: #FFF;
+    font-family: Inter;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+.event-card-button {
+    height: 38px;
+    width: 150px;
+    background-color: #2D2F34;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    text-align: center;
+    
+}
+
+.gg-arrow-top-right {
+    color: #F4C430;
+    /* margin-bottom: 5px; */
+}
+
+.find-out-more-text {
+    color: #FFF;
+    text-align: right;
+    font-family: Inter;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    padding-right: 15px;
+}
