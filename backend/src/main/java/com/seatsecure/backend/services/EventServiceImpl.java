@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.EventVenueDTO;
-import com.seatsecure.backend.entities.EventVenueDTOmapper;
 import com.seatsecure.backend.repositories.EventRepository;
 
 @Service

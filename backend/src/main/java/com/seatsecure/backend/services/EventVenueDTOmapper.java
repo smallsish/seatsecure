@@ -1,8 +1,11 @@
-package com.seatsecure.backend.entities;
+package com.seatsecure.backend.services;
 
 import java.util.function.Function;
 
 import org.springframework.stereotype.Service;
+
+import com.seatsecure.backend.entities.Event;
+import com.seatsecure.backend.entities.EventVenueDTO;
 
 @Service
 public class EventVenueDTOmapper implements Function<Event,EventVenueDTO>{

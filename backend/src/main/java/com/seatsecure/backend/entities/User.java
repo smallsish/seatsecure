@@ -21,6 +21,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.*;
 
@@ -72,6 +73,9 @@ public class User implements UserDetails {
     private Gender gender;
 
     private Integer phoneNumber; // Check validity
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
     @Override
     public boolean isAccountNonExpired() {
