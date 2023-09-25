@@ -1,0 +1,127 @@
+########################
+### GLOBAL VARIABLES ###
+########################
+@baseurl = http://localhost:8080/api/v1
+@bearertoken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTY0OTg1MSwiZXhwIjoxNjk1NjUxMjkxfQ.yKChxZno7LGlsR5UPykZo88AmBwG32D24A9SnjPUbVo
+
+
+####################
+### USER METHODS ###
+####################
+
+// Register new user
+POST {{baseurl}}/auth/register
+Content-Type: application/json
+
+{
+    "firstName" : "Evan",
+    "lastName" : "Walker",
+    "username" : "evanwalks",
+    "email" : "evaniswalking@gmail.com",
+    "password" : "password",
+    "gender" : "MALE",
+    "phoneNumber" : 98247183
+
+}
+
+###
+
+// Authenticate user
+POST {{baseurl}}/auth/authenticate
+Content-Type: application/json
+
+{
+    "username" : "evanwalks",
+    "password" : "password"
+}
+
+#####################
+### EVENT METHODS ###
+#####################
+
+// Get events
+GET {{baseurl}}/events
+Authorization: Bearer {{bearertoken}}
+
+###
+
+// Get an event
+GET {{baseurl}}/events/1
+Authorization: Bearer {{bearertoken}}
+
+###
+
+// Add an event
+POST {{baseurl}}/events
+Content-Type: application/json
+Authorization: Bearer {{bearertoken}}
+
+{
+    "name" : "The Genesis Event",
+    "startDate" : "2023-09-25T21:30",
+    "endDate" : "2023-09-27T19:00"
+}
+
+###
+
+// Update an event
+PUT {{baseurl}}/events/1
+Content-Type: application/json
+Authorization: Bearer {{bearertoken}}
+
+{
+    "name" : "The Genesys Event",
+    "startDate" : "2023-09-27T19:00",
+    "endDate" : "2023-09-30T21:00"
+}
+
+###
+
+// Delete an event
+DELETE {{baseurl}}/events/1
+Authorization: Bearer {{bearertoken}}
+
+#####################
+### VENUE METHODS ###
+#####################
+
+// Get venues
+GET {{baseurl}}/venues
+Authorization: Bearer {{bearertoken}}
+
+###
+
+// Get an venue
+GET {{baseurl}}/venues/1
+Authorization: Bearer {{bearertoken}}
+
+###
+
+// Add an venue
+POST {{baseurl}}/venues
+Content-Type: application/json
+Authorization: Bearer {{bearertoken}}
+
+{
+    "name" : "The Genesis Stadium",
+    "address" : "Your mom's house"
+}
+
+###
+
+// Update a venue
+PUT {{baseurl}}/venues/1
+Content-Type: application/json
+Authorization: Bearer {{bearertoken}}
+
+{
+    "name" : "The Genesys Stadium",
+    "address" : "Your dad's house"
+}
+
+###
+
+// Delete an venue
+DELETE {{baseurl}}/venues/1
+Authorization: Bearer {{bearertoken}}
+

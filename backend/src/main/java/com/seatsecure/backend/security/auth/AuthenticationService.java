@@ -30,7 +30,8 @@ public class AuthenticationService {
             .phoneNumber(request.getPhoneNumber())
             .username(request.getUsername())
             .password(passwordEncoder.encode(request.getPassword()))
-            .role(request.getRole())
+            .role(Role.USER)
+            //.role(request.getRole())
             .build();
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
@@ -39,7 +40,7 @@ public class AuthenticationService {
             .build();
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate( // Throws an error is authentication fails
+        authenticationManager.authenticate( // Throws an error if authentication fails
             new UsernamePasswordAuthenticationToken(
                 request.getUsername(),
                 request.getPassword()
