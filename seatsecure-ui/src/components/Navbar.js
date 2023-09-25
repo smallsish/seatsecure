@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import './Navbar.css';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../images/Logo.svg';
+import useAuth from '../hooks/useAuth';
 
 function Navbar() {
+  
+
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
   
