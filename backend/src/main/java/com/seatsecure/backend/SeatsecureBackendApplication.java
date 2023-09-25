@@ -1,6 +1,8 @@
 package com.seatsecure.backend;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
@@ -13,7 +15,6 @@ import com.seatsecure.backend.entities.Venue;
 import com.seatsecure.backend.entities.enums.Gender;
 import com.seatsecure.backend.entities.enums.Role;
 import com.seatsecure.backend.repositories.EventRepository;
-import com.seatsecure.backend.repositories.VenueRepository;
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.security.auth.AuthenticationService;
 import com.seatsecure.backend.security.auth.RegisterRequest;
@@ -24,14 +25,21 @@ public class SeatsecureBackendApplication {
 	public static void main(String[] args) {
 		ApplicationContext ac = SpringApplication.run(SeatsecureBackendApplication.class, args);
 
-		Event event = Event.builder().name("First event").startDate(new Date(System.currentTimeMillis()))
+		Event event1 = Event.builder().name("First event").startDate(new Date(System.currentTimeMillis()))
 				.endDate(new Date(System.currentTimeMillis())).build();
+		
+		Event event2 = Event.builder().name("Second event").startDate(new Date(System.currentTimeMillis()))
+				.endDate(new Date(System.currentTimeMillis())).build();
+		
 		Venue venue = Venue.builder().name("National stadium").address("Address of national stadium")
-				.eventsList(List.of(event)).build();
-		event.setVenue(venue);
+				.eventsList(new ArrayList<>(Arrays.asList(event1))).build();
 
+		event1.setVenue(venue);
+		event2.setVenue(venue);
+		venue.getEventsList().add(event2);
 		EventRepository eventRepo = ac.getBean(EventRepository.class);
-		eventRepo.save(event); // Automatically inserts new venue into venueRepo
+		eventRepo.save(event1);
+		eventRepo.save(event2); // Automatically inserts new venue into venueRepo
 
 	}
 
