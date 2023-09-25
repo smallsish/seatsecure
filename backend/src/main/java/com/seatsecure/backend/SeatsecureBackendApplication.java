@@ -49,11 +49,11 @@ public class SeatsecureBackendApplication {
 		return args -> {
 			var admin = RegisterRequest.builder().firstName("admin").lastName("Hi").email("admin@email.com").gender(Gender.MALE)
 					.username("admin").phoneNumber(12345678).password("abcdef").role(Role.ADMIN).build();
-			System.out.println("Admin token:" + service.register(admin).getToken());
+			System.out.println("Admin token:" + service.register(admin).getAccessToken());
 
 			var cust = RegisterRequest.builder().firstName("user").lastName("Hi").email("user@email.com").gender(Gender.FEMALE)
 					.username("cust").phoneNumber(12345678).password("abcdefgh").role(Role.USER).build();
-			System.out.println("User token:" + service.register(cust).getToken());
+			System.out.println("User token:" + service.register(cust).getAccessToken());
 
 		};
 	}
