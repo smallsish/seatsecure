@@ -1,6 +1,7 @@
 package com.seatsecure.backend.security.auth;
 
-import com.seatsecure.backend.entities.Role;
+import com.seatsecure.backend.entities.enums.Gender;
+import com.seatsecure.backend.entities.enums.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,7 @@ public class RegisterRequest {
     private String username;
     private String email;
     private String password;
-    private String gender;
+    private Gender gender;
     private Integer phoneNumber; 
     private Role role;
     

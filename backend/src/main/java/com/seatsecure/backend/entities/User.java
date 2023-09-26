@@ -7,6 +7,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.seatsecure.backend.entities.enums.Gender;
+import com.seatsecure.backend.entities.enums.Role;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -21,6 +24,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+
 // @Setter
 // @Getter
 @Data
@@ -33,16 +37,16 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
+    
     private Role role; // uncomment this to use the ROLE entity
     //private String role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // TODO Auto-generated method stub
-        //return List.of(new SimpleGrantedAuthority(role.name())); // uncomment this to revert back to ROLE entity
         return role.getAuthorities();
     }
 
@@ -52,7 +56,6 @@ public class User implements UserDetails {
     private String username;
 
     @NotNull(message = "Username should not be empty!")
-    //@Size(max = 20, message = "Password should not be longer than 20 characters!") // there should not be size validation since the hash passsword is more than 20
     private String password;
 
     @Size(max = 20, message = "First name should not be longer than 20 characters!")
@@ -66,9 +69,10 @@ public class User implements UserDetails {
     @Email(message = "Invalid email address!")
     private String email;
 
-    private String gender; // Should be implemented with dropdown boxes (fixed options)
+    @Enumerated
+    private Gender gender;
 
-    private Integer phoneNumber;
+    private Integer phoneNumber; // Check validity
 
     @Override
     public boolean isAccountNonExpired() {
