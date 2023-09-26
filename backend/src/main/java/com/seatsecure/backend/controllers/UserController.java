@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,18 +62,6 @@ public class UserController {
         if(user == null) throw new UserNotFoundException(id);
         return userService.getUserById(id);
 
-    }
-    /**
-     * Add a new user with POST request to "/users"
-     * @param user
-     * @return The new user that was added
-     */
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/users")
-    public ResponseEntity<AuthenticationResponse> addUser(
-        @RequestBody RegisterRequest request
-    ) {
-        return ResponseEntity.ok(authService.register(request));
     }
 
     /**

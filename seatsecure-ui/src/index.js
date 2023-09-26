@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { AuthProvider } from './context/AuthProvider';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -10,27 +11,31 @@ import LoginPage from './pages/Login/LoginPage';
 import EventsPage from './pages/Events/EventsPage';
 import RegistrationPage from './pages/Registration/RegistrationPage';
 
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App/>,
+    element: <App />,
   },
   {
     path: "Login",
-    element: <LoginPage/>,
-  },{
+    element: <LoginPage />,
+  }, {
     path: "Events",
-    element: <EventsPage/>,
-  },{
+    element: <EventsPage />,
+  }, {
     path: "Registration",
-    element: <RegistrationPage/>,
+    element: <RegistrationPage />,
   }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+
   </React.StrictMode>
 );
 
