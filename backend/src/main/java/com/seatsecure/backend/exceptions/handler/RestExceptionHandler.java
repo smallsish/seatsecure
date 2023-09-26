@@ -65,57 +65,45 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     // }
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
-    public ResponseEntity<String> handleNoSuchElementFoundException(
+    public ResponseEntity<Object> handleNoSuchElementFoundException(
       UsernameAlreadyExistsException exception
     ) {
-      return ResponseEntity
-          .status(HttpStatus.CONFLICT)
-          .body(exception.getMessage());
+      return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.CONFLICT, null);
     }
 
     @ExceptionHandler(EventCreationError.class)
-    public ResponseEntity<String> handleEventCreationError(
+    public ResponseEntity<Object> handleEventCreationError(
       EventCreationError exception
     ) {
-      return ResponseEntity
-          .status(HttpStatus.NOT_FOUND)
-          .body(exception.getMessage());
+      return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.NOT_FOUND, null);
     }
 
     @ExceptionHandler(EventNotFoundException.class)
-    public ResponseEntity<String> handleEventNotFoundException(
+    public ResponseEntity<Object> handleEventNotFoundException(
       EventNotFoundException exception
     ) {
-      return ResponseEntity
-          .status(HttpStatus.NOT_FOUND)
-          .body(exception.getMessage());
+      return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.NOT_FOUND, null);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> handleUserNotFoundException(
+    public ResponseEntity<Object> handleUserNotFoundException(
       UserNotFoundException exception
     ) {
-      return ResponseEntity
-          .status(HttpStatus.NOT_FOUND)
-          .body(exception.getMessage());
+      return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.NOT_FOUND, null);
     }
 
     @ExceptionHandler(VenueCreationError.class)
-    public ResponseEntity<String> handleVenueCreationError (
+    public ResponseEntity<Object> handleVenueCreationError (
       VenueCreationError exception
     ) {
-      return ResponseEntity
-          .status(HttpStatus.NOT_FOUND)
-          .body(exception.getMessage());
+      return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.NOT_FOUND, null);
     }
 
     @ExceptionHandler(VenueNotFoundException.class)
-    public ResponseEntity<String> handleVenueNotFoundException(
+    public ResponseEntity<Object> handleVenueNotFoundException(
       VenueNotFoundException exception
     ) {
-      return ResponseEntity
-          .status(HttpStatus.NOT_FOUND)
-          .body(exception.getMessage());
+      return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.NOT_FOUND, null);
     }
 
 }
