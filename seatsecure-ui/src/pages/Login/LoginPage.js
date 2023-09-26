@@ -13,7 +13,7 @@ function LoginPage() {
 
     // For back button
     const navigate = useNavigate();
-
+    
     const userRef = useRef();
     const errRef = useRef();
 
@@ -41,9 +41,11 @@ function LoginPage() {
                     withCredentials: true
                 }
             );
-            console.log(JSON.stringify(response?.data));
+            // console.log(JSON.stringify(response?.data));
             const token = response?.data?.token;
-            setAuth({token});
+            const isLoggedIn = true;
+            // console.log(token);
+            setAuth({token, isLoggedIn});
             setUser('');
             setPwd('');
             setSuccess(true);
