@@ -38,15 +38,19 @@ function RegistrationPage() {
                     withCredentials: true
                 }
             );
-            // console.log(JSON.stringify(response?.data));
-            // const token = response?.data?.token;
-            // const isLoggedIn = true;
-            // Commented out authentication because user level auth is not capable of retrieving user info
-            // setAuth({ token, isLoggedIn });
+                // .then()
+                // .catch(err => {setErrMsg(err.toString())})
+        // console.log(JSON.stringify(response?.data));
+        // const token = response?.data?.token;
+        // const isLoggedIn = true;
+        // Commented out authentication because user level auth is not capable of retrieving user info
+        // setAuth({ token, isLoggedIn });
+            // console.log(errMsg);
             navigate('/login');
             alert("Successfully registered, please log in.");
         } catch (err) {
-            alert("Registration failed. Ensure the fields are correct and try again.");
+            setErrMsg(err.response.data.message);
+            //console.log(err);
         }
     }
 
@@ -93,6 +97,7 @@ function RegistrationPage() {
                             <input type="password" value={rPassword} name="" id="register-password" onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                         </div>
                         <div className="registration-input-icon submit" id='register-submit'><input type="submit" value="Sign Up" /></div>
+                        <div className="error">{errMsg}</div>
                     </form>
                     <div className="form-text"><Link to="/login">Have an existing account? <span style={{ color: '#F4C430' }}>Sign In</span></Link></div>
                 </div>
