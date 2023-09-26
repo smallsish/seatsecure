@@ -20,8 +20,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import com.seatsecure.backend.configs.CorsConfig;
-import com.seatsecure.backend.entities.Permission;
-import com.seatsecure.backend.entities.Role;
 
 import com.seatsecure.backend.entities.enums.Role;
 import com.seatsecure.backend.security.jwt.JwtAuthenticationFilter;

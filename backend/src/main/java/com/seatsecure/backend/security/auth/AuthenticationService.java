@@ -6,11 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.User;
-<<<<<<< HEAD
 import com.seatsecure.backend.entities.enums.Role;
-=======
 import com.seatsecure.backend.exceptions.UsernameAlreadyExistsException;
->>>>>>> 26b805ec9d4b5c15bedac112c3d3a8018ced3761
 import com.seatsecure.backend.repositories.UserRepository;
 import com.seatsecure.backend.security.jwt.JwtService;
 
@@ -47,7 +44,6 @@ public class AuthenticationService {
         } else {
             throw new UsernameAlreadyExistsException("The username '"+ uName + "' already exists.");
         }
->>>>>>> 26b805ec9d4b5c15bedac112c3d3a8018ced3761
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate( // Throws an error if authentication fails
