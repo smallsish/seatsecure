@@ -10,7 +10,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import com.seatsecure.backend.entities.enums.Role;
 import com.seatsecure.backend.security.jwt.JwtAuthenticationFilter;
@@ -33,7 +32,9 @@ public class SecurityConfiguration {
                 .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests(r -> r
                     .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/api/v1/auth/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/api/v1/auth/register-user")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/api/v1/auth/authenticate")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/api/v1/auth/register-admin")).hasRole(Role.ADMIN.name())
 
                     //.requestMatchers(new AntPathRequestMatcher("/api/v1/users")).hasRole(Role.ADMIN.name())// this is only use for uniform access, if method based have to look into the controller
                     .anyRequest().authenticated()

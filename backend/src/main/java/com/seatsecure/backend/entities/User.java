@@ -40,6 +40,7 @@ public class User implements UserDetails {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    
     private Role role; // uncomment this to use the ROLE entity
     //private String role;
 

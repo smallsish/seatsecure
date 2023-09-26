@@ -9,7 +9,7 @@ function LoginPage() {
     const navigate = useNavigate();
     
     return (
-        <div className="landing-container">
+        <div id='login-container' className="landing-container">
 
             <Navbar />
 
@@ -21,17 +21,17 @@ function LoginPage() {
                     <form>
                         <h1>Welcome back!</h1>
                         <div className="input-icon">
-                            <input type="email" name="" id="" placeholder="Enter your email" />
+                            <input type="email" name="" id="" placeholder="Email" />
                             <i className="fa fa-envelope icon"></i>
                         </div>
                         <div className="input-icon">
-                            <input type="password" name="" id="" placeholder="Enter your password" />
+                            <input type="password" name="" id="" placeholder="Password" />
                             <i className="fa fa-eye icon"></i>
                         </div>
                         <div className="input-icon"><input type="submit" value="Sign In" /></div>
 
                     </form>
-                    <div className="form-text"><Link to="/registration">I don't have an account? Sign Up</Link></div>
+                    <div className="form-text"><Link to="/registration">I don't have an account? <span style={{color:'#F4C430'}}>Sign Up</span></Link></div>
                     <div className="form-divider">
                         <div className="form-divider-line"></div>
                         <div> OR </div>
