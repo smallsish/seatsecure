@@ -15,7 +15,4 @@ public class EventVenueDTO{
     private Date startDate;
     private Date endDate;
     private String venueName;
-
-    
 }
-

@@ -31,8 +31,8 @@ POST {{baseurl}}/auth/authenticate
 Content-Type: application/json
 
 {
-    "username" : "evanwalks",
-    "password" : "password"
+    "username" : "admin",
+    "password" : "abcdef"
 }
 
 #####################
