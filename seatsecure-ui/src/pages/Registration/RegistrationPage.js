@@ -97,7 +97,8 @@ function RegistrationPage() {
                             <input type="password" value={rPassword} name="" id="register-password" onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                         </div>
                         <div className="registration-input-icon submit" id='register-submit'><input type="submit" value="Sign Up" /></div>
-                        <div className="error">{errMsg}</div>
+                        {/* <div className="error">{errMsg}</div> */}
+                        { errMsg && <div className="error"> { errMsg } </div> }
                     </form>
                     <div className="form-text"><Link to="/login">Have an existing account? <span style={{ color: '#F4C430' }}>Sign In</span></Link></div>
                 </div>
