@@ -7,19 +7,14 @@ import axios from '../api/axios';
 
 function Navbar() {
   const auth = useAuth();
-
   const token = auth.auth.token;
   const isLoggedIn = auth.auth.isLoggedIn;
-
   const [data, setData] = useState(null);
-  
-
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
 
   const displayMenu = () => {
     var nav = document.querySelector('.nav');
-    // Toggle the 'hidden' class on the nav element to hide/show it
     nav.classList.toggle('hidden');
     console.log("Menu Clicked");
   };
@@ -64,12 +59,13 @@ function Navbar() {
           <li className="nav-item"><Link to="/events">Events</Link></li>
           <li className="nav-item" onClick={showData}><a>FAQ</a></li>
           <li className="nav-item"><a><span className="material-symbols-outlined">search</span></a></li>
-          {/* {!isLoginPage && (
-            <li id="login-btn" className="nav-item"><Link to="/login">Login</Link></li>
-          )} */}
           {isLoginPage ? null : isLoggedIn ? (
             <li id="login-btn" className="nav-item">
-              <span>username</span>
+              {data && data.length > 0 ? (
+                <span className='nav-username'>{data[0].username}</span>
+              ) : (
+                <span className='nav-username'></span>
+              )}
             </li>
           ) : (
             <li id="login-btn" className="nav-item">

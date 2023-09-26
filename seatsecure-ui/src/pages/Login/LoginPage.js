@@ -10,13 +10,9 @@ const LOGIN_URL = '/api/v1/auth/authenticate'
 
 function LoginPage() {
     const { setAuth } = useContext(AuthContext);
-
-    // For back button
     const navigate = useNavigate();
-    
     const userRef = useRef();
     const errRef = useRef();
-
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
@@ -30,12 +26,11 @@ function LoginPage() {
         setErrMsg('');
     }, [user, pwd])
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ username:user, password:pwd }),
+                JSON.stringify({ username: user, password: pwd }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -45,7 +40,7 @@ function LoginPage() {
             const token = response?.data?.token;
             const isLoggedIn = true;
             // console.log(token);
-            setAuth({token, isLoggedIn});
+            setAuth({ token, isLoggedIn });
             setUser('');
             setPwd('');
             setSuccess(true);
@@ -65,9 +60,7 @@ function LoginPage() {
 
     return (
         <div id='login-container' className="landing-container">
-
             <Navbar />
-
             <div className="landing-content">
                 <div className="form-div">
                     <span className="material-symbols-outlined" style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
