@@ -11,7 +11,6 @@ import LoginPage from './pages/Login/LoginPage';
 import EventsPage from './pages/Events/EventsPage';
 import RegistrationPage from './pages/Registration/RegistrationPage';
 
-
 const router = createBrowserRouter([
   {
     path: "/",

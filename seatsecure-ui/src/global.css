@@ -11,6 +11,22 @@
     background-color: black;
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed; /* Keep the background fixed */
     display: grid;
     grid-template-rows: auto 1fr auto;
   }
+
+  html::-webkit-scrollbar {
+    width: 12px;
+}
+
+html::-webkit-scrollbar-track {
+    /* border-radius: 8px; */
+    background-color: black;
+    border: 1px solid black;
+}
+
+html::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: rgb(86, 20, 0);
+}
