@@ -57,4 +57,10 @@
     color: red;
     background-color: lightyellow;
     border: 1px solid grey;
+    margin-bottom: 5px;
+}
+
+.text-color {
+    color: #999;
+    font-family: Inter;
 }

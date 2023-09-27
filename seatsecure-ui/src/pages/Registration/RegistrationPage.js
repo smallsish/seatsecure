@@ -82,7 +82,41 @@ function RegistrationPage() {
                             <input type="text" name="" value={rLName} id="register-last-name" onChange={(e) => setLName(e.target.value)} placeholder="Last Name" />
                         </div>
                         <div className="registration-input-icon">
-                            <input type="text" name="" value={rGender} id="register-gender" onChange={(e) => setGender(e.target.value)} placeholder="Gender" />
+                            <table>
+                                <tr>
+                                    <td><div className="registration-input-icon">Gender:</div></td>
+                                    <td></td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                
+                                                <td>
+                                                    <input type="radio" name="gender" value="MALE" onChange={(e) => setGender(e.target.value)}/>
+                                                </td>
+                                                <td>
+                                                    <label>Male</label>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                
+                                                <td>
+                                                    <input type="radio" name="gender" value="FEMALE" onChange={(e) => setGender(e.target.value)}/>
+                                                </td>
+                                                <td>
+                                                    <label>Female</label>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            {/* <input type="text" name="" value={rGender} id="register-gender" onChange={(e) => setGender(e.target.value)} placeholder="Gender" /> */}
                         </div>
                         <div className="registration-input-icon">
                             <input type="tel" name="" value={rPhone} id="register-phone" onChange={(e) => setPhone(e.target.value)} placeholder="Phone Number" />
