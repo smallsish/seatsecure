@@ -55,13 +55,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleRegistrationValidationError(RegistrationValidationError ex) {
     String errorMsg = ex.getMessage();
     BindingResult bindingResult = ex.getBindingResult();
+    List<String> fieldErrors = new ArrayList<>();
 
     errorMsg += "\nErrors detected with the following fields:\n";
-    for (FieldError err : bindingResult.getFieldErrors()) { 
-      errorMsg += "\n- " + err.getField() + "\n";
+    for (FieldError err : bindingResult.getFieldErrors()) {
+      String fieldName = err.getField();
+      errorMsg += "\n- " + fieldName + "\n";
+      fieldErrors.add(fieldName);
     }
 
-    return ResponseHandler.generateResponse(errorMsg, HttpStatus.CONFLICT, null);
+    return ResponseHandler.generateResponse(errorMsg, HttpStatus.CONFLICT, fieldErrors);
   }
 
   // @ExceptionHandler({ ConstraintViolationException.class })
