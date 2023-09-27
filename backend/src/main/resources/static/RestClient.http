@@ -20,10 +20,10 @@ POST {{baseurl}}/auth/register-user
 Content-Type: application/json
 
 {
-    "firstName" : "Levan",
+    "firstName" : "Evan",
     "lastName" : "Walker",
-    "username" : "evanwalkeroo",
-    "email" : "levano@gmail.com",
+    "username" : "evanwalkeroo00",
+    "email" : "fassfhahiha",
     "password" : "password",
     "gender" : "MALE",
     "phoneNumber" : 98247183
