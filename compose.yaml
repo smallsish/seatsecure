@@ -1,0 +1,39 @@
+services:
+  database:
+    container_name: docker-seatsecure
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: seatsecure_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgres/data
+    networks:
+      - spring-boot-network
+  backend-app:
+    container_name: seatsecure-spring
+    image: seatsecure-backend
+    ports:
+      - "8080:8080"
+    networks:
+      - spring-boot-network
+    depends_on:
+      - database
+  frontend-app:
+    container_name: seatsecure-react
+    image: react-latest-image
+    ports:
+      - "3000:3000"
+    networks:
+      - spring-boot-network
+    depends_on:
+      - database
+      - backend-app
+volumes:
+  postgres:
+
+networks:
+  spring-boot-network:
+    driver: bridge
