@@ -1,7 +1,5 @@
 package com.seatsecure.backend.entities;
 
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,20 +18,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Ticket {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Seat {
+    @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Integer seatNum;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = false)
-    @JoinColumn(name = "seat_num")
-    private Seat seat;
+    @ManyToOne
+    @JoinColumn(name = "venue_id")
+    private Venue venue;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToOne
+    @JoinColumn(name = "cat_id")
+    private Category cat;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "run_num")
-    private Run run;
+    @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Ticket ticket;
+
+
     
 }
