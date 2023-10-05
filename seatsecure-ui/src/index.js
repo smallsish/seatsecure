@@ -10,6 +10,7 @@ import {
 import LoginPage from './pages/Login/LoginPage';
 import EventsPage from './pages/Events/EventsPage';
 import RegistrationPage from './pages/Registration/RegistrationPage';
+import EventDetailsPage from './pages/EventDetails/EventDetailsPage';
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,12 @@ const router = createBrowserRouter([
   }, {
     path: "Registration",
     element: <RegistrationPage />,
+  } , {
+    path:"EventDetails",
+    element:<EventDetailsPage/>,
+
   }
+
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

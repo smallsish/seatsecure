@@ -5,6 +5,7 @@ import Navbar from '../../components/Navbar';
 import EventCard from '../../components/EventCard';
 
 
+
 function EventsPage() {
     const [users, setUsers] = useState([]);
 
@@ -40,6 +41,7 @@ function EventsPage() {
                         <EventCard />
                         <EventCard />
                         <EventCard />
+                
                     </div>
                 </section>
                 <section>
