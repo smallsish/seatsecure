@@ -1,5 +1,7 @@
 package com.seatsecure.backend.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -8,6 +10,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -25,6 +28,9 @@ public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    @Autowired
+    @Qualifier("delegatedAuthenticationEntryPoint")
+    AuthenticationEntryPoint authEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -40,6 +46,10 @@ public class SecurityConfiguration {
 
                     //.requestMatchers(new AntPathRequestMatcher("/api/v1/users")).hasRole(Role.ADMIN.name())// this is only use for uniform access, if method based have to look into the controller
                     .anyRequest().authenticated()
+                )
+
+                .exceptionHandling((exceptionHandling) -> exceptionHandling
+                    .authenticationEntryPoint(authEntryPoint)
                 )
                 
                 .sessionManagement((sessionManagement) ->

@@ -46,15 +46,17 @@ function LoginPage() {
             setSuccess(true);
             navigate('/');
         } catch (err) {
-            if (!err?.response) {
-                setErrMsg('No Server Response');
-            } else if (err.response?.status === 400) {
-                setErrMsg('Missing Username or Password');
-            } else if (err.response?.status === 401) {
-                setErrMsg('Unauthorized');
-            } else {
-                setErrMsg('Login Failed');
-            }
+            // if (!err?.response) {
+            //     setErrMsg('No Server Response');
+            // } else if (err.response?.status === 400) {
+            //     setErrMsg('Missing Username or Password');
+            // } else if (err.response?.status === 401) {
+            //     setErrMsg('Unauthorized');
+            // } else {
+            //     setErrMsg('Login Failed');
+            // }
+            // console.log(err);
+            setErrMsg(err.response.data.message);
         }
     }
 
@@ -93,7 +95,7 @@ function LoginPage() {
                             <i className="fa fa-eye icon"></i>
                         </div>
                         <div className="input-icon"><input type="submit" value="Sign In" /></div>
-
+                        { errMsg && <div className="error"> { errMsg } </div> }
                     </form>
                     <div className="form-text"><Link to="/registration">I don't have an account? <span style={{ color: '#F4C430' }}>Sign Up</span></Link></div>
                     <div className="form-divider">
