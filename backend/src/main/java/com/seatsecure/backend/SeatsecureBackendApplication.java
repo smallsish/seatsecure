@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,46 +16,128 @@ import com.seatsecure.backend.entities.Venue;
 import com.seatsecure.backend.entities.enums.Gender;
 import com.seatsecure.backend.entities.enums.Role;
 import com.seatsecure.backend.repositories.EventRepository;
+import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Event;
+import com.seatsecure.backend.entities.Run;
+import com.seatsecure.backend.entities.Seat;
+import com.seatsecure.backend.entities.Ticket;
 import com.seatsecure.backend.security.auth.AuthenticationService;
 import com.seatsecure.backend.security.auth.RegisterRequest;
+import com.seatsecure.backend.services.EventService;
 
 @SpringBootApplication
 public class SeatsecureBackendApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext ac = SpringApplication.run(SeatsecureBackendApplication.class, args);
-
-		Event event1 = Event.builder().name("First event").startDate(new Date(System.currentTimeMillis()))
-				.endDate(new Date(System.currentTimeMillis())).build();
-		
-		Event event2 = Event.builder().name("Second event").startDate(new Date(System.currentTimeMillis()))
-				.endDate(new Date(System.currentTimeMillis())).build();
-		
-		Venue venue = Venue.builder().name("National stadium").address("Address of national stadium")
-				.eventsList(new ArrayList<>(Arrays.asList(event1))).build();
-
-		event1.setVenue(venue);
-		event2.setVenue(venue);
-		venue.getEventsList().add(event2);
-		EventRepository eventRepo = ac.getBean(EventRepository.class);
-		eventRepo.save(event1);
-		eventRepo.save(event2); // Automatically inserts new venue into venueRepo
-
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(
-			AuthenticationService service) {
+	public CommandLineRunner addMocks(AuthenticationService as, EventService es) {
 		return args -> {
-			var admin = RegisterRequest.builder().firstName("admin").lastName("Hi").email("admin@email.com").gender(Gender.MALE)
+			// Create mock user / admin
+			RegisterRequest admin = RegisterRequest.builder().firstName("admin").lastName("Hi").email("admin@email.com")
+					.gender(Gender.MALE)
 					.username("admin").phoneNumber(12345678).password("abcdef").role(Role.ADMIN).build();
-			System.out.println("Admin token:" + service.register(admin, true).getToken());
 
-			var cust = RegisterRequest.builder().firstName("user").lastName("Hi").email("user@email.com").gender(Gender.FEMALE)
+			RegisterRequest cust = RegisterRequest.builder().firstName("user").lastName("Hi").email("user@email.com")
+					.gender(Gender.FEMALE)
 					.username("cust").phoneNumber(12345678).password("abcdefgh").role(Role.USER).build();
-			System.out.println("User token:" + service.register(cust, false).getToken());
 
+			// Create new events
+			Event event1 = Event.builder().name("First event").startDate(new Date(System.currentTimeMillis()))
+					.endDate(new Date(System.currentTimeMillis())).venue(null).categories(new ArrayList<Category>())
+					.runs(new ArrayList<Run>()).build();
+
+			Event event2 = Event.builder().name("Second event").startDate(new Date(System.currentTimeMillis()))
+					.endDate(new Date(System.currentTimeMillis())).venue(null).categories(new ArrayList<Category>())
+					.runs(new ArrayList<Run>()).build();
+
+			// // Create new venues
+			// Venue venue1 = Venue.builder().name("National stadium").address("Address of
+			// national stadium")
+			// .events(new ArrayList<Event>()).seats(new ArrayList<Seat>()).build();
+
+			// Venue venue2 = Venue.builder().name("Indoor stadium").address("Address of
+			// indoor stadium")
+			// .events(new ArrayList<Event>()).seats(new ArrayList<Seat>()).build();
+
+			// // Create new cats
+			// Category event1_cat1 =
+			// Category.builder().name("Event1_Cat1").description("Category 1 of event
+			// 1").price(10)
+			// .event(null)
+			// .seats(new ArrayList<Seat>()).build();
+			// Category event1_cat2 =
+			// Category.builder().name("Event1_Cat2").description("Category 2 of event
+			// 1").price(11)
+			// .event(null)
+			// .seats(new ArrayList<Seat>()).build();
+			// Category event2_cat1 =
+			// Category.builder().name("Event2_Cat1").description("Category 2 of event
+			// 1").price(12)
+			// .event(null)
+			// .seats(new ArrayList<Seat>()).build();
+			// Category event2_cat2 =
+			// Category.builder().name("Event2_Cat2").description("Category 2 of event
+			// 2").price(13)
+			// .event(null)
+			// .seats(new ArrayList<Seat>()).build();
+
+			// // Create new runs
+			// Run event1_run1 = Run.builder().name("Event1_Run1").description("Run 1 of
+			// event 1")
+			// .startDate(new Date(System.currentTimeMillis())).endDate(new
+			// Date(System.currentTimeMillis()))
+			// .event(null).tickets(new ArrayList<Ticket>()).build();
+			// Run event2_run1 = Run.builder().name("Event2_Run1").description("Run 1 of
+			// event 2")
+			// .startDate(new Date(System.currentTimeMillis())).endDate(new
+			// Date(System.currentTimeMillis()))
+			// .event(null).tickets(new ArrayList<Ticket>()).build();
+
+			// // Create seats
+			// Seat seat1 = Seat.builder().venue(null).cat(null).ticket(null).build();
+			// Seat seat2 = Seat.builder().venue(null).cat(null).ticket(null).build();
+			// Seat seat3 = Seat.builder().venue(null).cat(null).ticket(null).build();
+
+			// // Create tickets
+			// Ticket ticket1 = Ticket.builder().seat(null).user(null).run(null).build();
+			// Ticket ticket2 = Ticket.builder().seat(null).user(null).run(null).build();
+			// Ticket ticket3 = Ticket.builder().seat(null).user(null).run(null).build();
+
+			// Save users (and print token)
+			System.out.println("Admin token:" + as.register(admin,
+					true).getToken());
+			System.out.println("User token:" + as.register(cust, false).getToken());
+
+			// Save events
+			es.addEvent(event1);
+			es.addEvent(event2);
 		};
+
 	}
+
+	// @Bean
+	// public CommandLineRunner commandLineRunner(
+	// AuthenticationService as, EventService es) {
+	// return args -> addMocks(as, es);
+	// {
+	// Create mock user / admin
+	// var admin =
+	// RegisterRequest.builder().firstName("admin").lastName("Hi").email("admin@email.com")
+	// .gender(Gender.MALE)
+	// .username("admin").phoneNumber(12345678).password("abcdef").role(Role.ADMIN).build();
+	// System.out.println("Admin token:" + as.register(admin,
+	// true).getToken());
+
+	// var cust =
+	// RegisterRequest.builder().firstName("user").lastName("Hi").email("user@email.com")
+	// .gender(Gender.FEMALE)
+	// .username("cust").phoneNumber(12345678).password("abcdefgh").role(Role.USER).build();
+	// System.out.println("User token:" + as.register(cust, false).getToken());
+
+	// };
+
+	// }
 }

@@ -34,12 +34,18 @@ public class Run {
     private Long runId;
 
     @NonNull
+    @Size(max = 100, message = "Name is too long!")
+    private String name;
+
+    @NonNull
     @Size(max = 1000, message = "Description is too long!")
     private String description;
 
-    private Date date;
+    @NonNull
+    private Date startDate;
 
-    private Time duration;
+    @NonNull
+    private Date endDate;
 
     @ManyToOne
     @JoinColumn(name = "event_id")

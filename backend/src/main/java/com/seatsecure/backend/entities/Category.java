@@ -34,11 +34,13 @@ public class Category {
     @Size(max = 1000, message = "Description is too long!")
     private String description;
 
+    private double price;
+
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "cat", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Seat> seats;
     
 }
