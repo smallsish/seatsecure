@@ -2,12 +2,18 @@ import React, { useEffect, useState } from 'react';
 import '../../global.css';
 import './EventsDetails.css';
 import Navbar from '../../components/Navbar';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate , useLocation} from 'react-router-dom';
 import Faq from 'react-faq-component';
 
 
 
-function EventDetailsPage() {
+const EventDetailsPage = (props)  =>{
+
+
+   const location = useLocation();
+   const state = location.state;
+
+   
 
     const title ="SAVE-THE-DAY CONCERT BY COLDPLAY 2023"
     const description = "Following the spectacular sellos newly announced January and February 2024 dates in Asia, the band have today announced additional dates as part of their record-breaking Music Of The Spheres World Tour , Already making history for announcing an unprecedented four-show run at Singapore’s largest venue, Coldplay will now be the first act ever to play five nights at Singapore’s National Stadium. The band also broke Singapore’s record for most tickets sold by an artist in a single day, surpassing 200,000.";
@@ -38,11 +44,11 @@ function EventDetailsPage() {
             <Navbar />
             <div className="landing-content">
                 <div className="event-div">
-                        <div className ="event-div-title">{title}
+                        <div className ="event-div-title">{state.eventName}
                         </div>
                         <div className="event-picture">
-                                 <div className="event-date">Date</div>
-                                 <div className="event-location">Location</div>
+                                 <div className="event-date">Date:{state.startDate} to {state.endDate}</div>
+                                 <div className="event-location">Location:{state.venueName}</div>
                         </div>
                         <div className="event-button">  
                          <input className="event-button-input" type="button" value="Purchase" />
