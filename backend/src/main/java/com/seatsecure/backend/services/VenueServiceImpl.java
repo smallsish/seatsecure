@@ -3,9 +3,9 @@ package com.seatsecure.backend.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Venue;
 import com.seatsecure.backend.repositories.VenueRepository;
 
@@ -14,7 +14,6 @@ public class VenueServiceImpl implements VenueService {
    
     private VenueRepository venueRepo;
 
-    @Autowired
     public VenueServiceImpl(VenueRepository venueRepo){
         this.venueRepo = venueRepo;
     }
@@ -27,16 +26,10 @@ public class VenueServiceImpl implements VenueService {
     
     @Override
     public Venue getVenueById(Long venueId){
-        // Using Java Optional, as "findById" of Spring JPA returns an Optional object
-        // Optional forces developers to explicitly handle the case of non-existent values
-        // Here is an implementation using lambda expression to extract the value from Optional<Book>
         Optional<Venue> e = venueRepo.findById(venueId);
         if (e.isEmpty()) return null;
 
         return e.get();
-        // return venueRepo.findById(venueId).map(e -> {
-        //     return e;
-        // }).orElse(null);
     }
     
     @Override
@@ -57,17 +50,39 @@ public class VenueServiceImpl implements VenueService {
         return e;
     }
 
-    /**
-     * Remove a venue with the given id
-     * Spring Data JPA does not return a value for delete operation
-     */
     @Override
     public Venue deleteVenueById(Long venueId){
         Venue venue = getVenueById(venueId);
-        if (venue == null) {
-            return null;
-        }
+        if (venue == null) return null;
+
         venueRepo.deleteById(venueId);
         return venue;
     }
+
+    @Override
+    public Seat getSeatByNum(Long venueId, Integer seatNum) {
+        Venue venue = getVenueById(venueId);
+        if (venue == null) return null;
+
+        List<Seat> venueSeats = venue.getSeats();
+
+        // Find the seat with the specified id
+        for (Seat s : venueSeats) {
+            if ((long) s.getSeatNum() == seatNum) return s;
+        }
+        return null;
+    }
+
+    @Override
+    public Venue addSeatsToVenue(Long id, int numSeats) {
+        Venue venue = getVenueById(id);
+        if (venue == null) return null;
+
+        List<Seat> venueSeats = venue.getSeats();
+
+        for (int i = 0; i < numSeats; i++) venueSeats.add(new Seat());
+        
+        return venue;
+    }
+
 }

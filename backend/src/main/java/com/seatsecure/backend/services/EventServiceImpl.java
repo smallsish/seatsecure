@@ -4,23 +4,27 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.EventVenueDTO;
 import com.seatsecure.backend.entities.EventVenueDTOmapper;
+import com.seatsecure.backend.entities.Run;
+import com.seatsecure.backend.entities.Seat;
+import com.seatsecure.backend.entities.Venue;
 import com.seatsecure.backend.repositories.EventRepository;
 
 @Service
 public class EventServiceImpl implements EventService {
-   
+
     private EventRepository eventRepo;
+    private VenueService vs;
     private EventVenueDTOmapper eventVenueDTOmapper;
 
-    @Autowired
-    public EventServiceImpl(EventRepository eventRepo, EventVenueDTOmapper evDTO){
+    public EventServiceImpl(EventRepository eventRepo, VenueService vs, EventVenueDTOmapper evDTO) {
         this.eventRepo = eventRepo;
+        this.vs = vs;
         this.eventVenueDTOmapper = evDTO;
     }
 
@@ -29,37 +33,41 @@ public class EventServiceImpl implements EventService {
         return eventRepo.findAll().stream().map(eventVenueDTOmapper).collect(Collectors.toList());
     }
 
-    
     @Override
-    public EventVenueDTO getEventVenueById(Long eventId){
-        // Using Java Optional, as "findById" of Spring JPA returns an Optional object
-        // Optional forces developers to explicitly handle the case of non-existent values
-        // Here is an implementation using lambda expression to extract the value from Optional<Book>
+    public EventVenueDTO getEventVenueById(Long eventId) {
         Optional<Event> e = eventRepo.findById(eventId);
-        if (e.isEmpty()) return null;
+        if (e.isEmpty())
+            return null;
 
         return e.map(eventVenueDTOmapper).get();
-        // return eventRepo.findById(eventId).map(e -> {
-        //     return e;
-        // }).orElse(null);
     }
 
-    
+    @Override
+    public Event getEventById(Long id) {
+        Optional<Event> e = eventRepo.findById(id);
+        if (e.isEmpty())
+            return null;
+
+        return e.get();
+    }
+
     @Override
     public Event addEvent(Event u) {
         return eventRepo.save(u);
     }
-    
+
     @Override
-    public Event updateEvent(Long id, Event newEventInfo){
+    public Event updateEvent(Long id, Event newEventInfo) {
         Optional<Event> event = eventRepo.findById(id);
-        if (event.isEmpty()) return null; // Event not found
+        if (event.isEmpty())
+            return null; // Event not found
 
         Event e = event.get();
         e.setName(newEventInfo.getName());
         e.setStartDate(newEventInfo.getStartDate());
         e.setEndDate(newEventInfo.getEndDate());
         e.setVenue(newEventInfo.getVenue());
+        e.setRuns(newEventInfo.getRuns());
         eventRepo.save(e);
 
         return e;
@@ -70,7 +78,7 @@ public class EventServiceImpl implements EventService {
      * Spring Data JPA does not return a value for delete operation
      */
     @Override
-    public Event deleteEventById(Long eventId){
+    public Event deleteEventById(Long eventId) {
         Event event = getEventById(eventId);
         if (event == null) {
             return null;
@@ -80,10 +88,77 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event getEventById(Long id) {
-        // TODO Auto-generated method stub
-        Optional<Event> e = eventRepo.findById(id);
-        if (e.isEmpty()) return null;
-        return e.get();
+    public Venue getVenueOfEvent(Long eventId) {
+        Event e = getEventById(eventId);
+        if (e == null) return null;
+
+        return e.getVenue();
+    }
+
+    @Override
+    public Event setVenueForEvent(Long eventId, Long venueId) {
+        Event e = getEventById(eventId);
+        Venue v = vs.getVenueById(venueId);
+        if (e == null || v == null) return null;
+        e.setVenue(v);
+
+        // Update database
+        updateEvent(eventId, e);
+        return e;
+    }
+
+    @Override
+    public Event addNewRunToEvent(Long eventId, Run run) {
+        Event e = getEventById(eventId);
+        if (e == null || run == null) return null;
+
+        e.getRuns().add(run);
+
+        // Update database
+        updateEvent(eventId, e);
+        return e;
+    }
+
+    @Override
+    public Event addNewCatToEvent(Long eventId, Category cat) {
+        Event e = getEventById(eventId);
+        if (e == null || cat == null) return null;
+
+        e.getCats().add(cat);
+
+        // Update database
+        updateEvent(eventId, e);
+        return e;
+    }
+
+    @Override
+    public List<Category> getCatsOfEvent(Long id) {
+        Event e = getEventById(id);
+        if (e == null) return null;
+
+        return e.getCats();
+    }
+
+    @Override
+    public Event assignCatsToSeats(Long eventId, int startSeatNum, int endSeatNum, Category cat) {
+        Event e = getEventById(eventId);
+        if (e == null) return null;
+
+        Venue v = e.getVenue();
+        if (v == null) return null;
+
+        // Assign new cat to range of seats
+        for (int i = startSeatNum; i <= endSeatNum; i++) {
+            Seat s = vs.getSeatByNum(eventId, i);
+            if (s == null) break;
+
+            s.setCat(cat);
+        }
+
+        // Update the database
+        updateEvent(eventId, e);
+
+        return e;
+
     }
 }
