@@ -16,7 +16,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +30,10 @@ import lombok.NoArgsConstructor;
 public class Run {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long runId;
+    private Long id;
+
+    @NonNull
+    private Integer runNum;
 
     @NonNull
     @Size(max = 100, message = "Name is too long!")

@@ -98,10 +98,6 @@ public class SeatsecureBackendApplication {
 			es.addEvent(event1);
 			es.addEvent(event2);
 
-			// Add new seats to venue
-			vs.addSeatsToVenue(venue1.getId(), 10);
-			vs.addSeatsToVenue(venue2.getId(), 10);
-
 			// Update events with venue
 			es.setVenueForEvent(event1.getId(), venue1.getId());
 			es.setVenueForEvent(event2.getId(), venue2.getId());
@@ -111,35 +107,24 @@ public class SeatsecureBackendApplication {
 			es.addNewCatToEvent(event1.getId(), event1_cat2);
 			es.addNewCatToEvent(event2.getId(), event2_cat1);
 			es.addNewCatToEvent(event2.getId(), event2_cat2);
-
+			
 			// Update events with runs
 			es.addNewRunToEvent(event1.getId(), event1_run1);
 			es.addNewRunToEvent(event2.getId(), event2_run1);
 
+			// Add new seats to venue
+			vs.addSeatsToVenue(venue1.getId(), 10);
+			vs.addSeatsToVenue(venue2.getId(), 10);
+
+			// // Assign cats to seats in event 1
+			// es.assignCatsToSeats(event1.getId(), 0, 4, event1_cat1);
+			// es.assignCatsToSeats(event1.getId(), 5, 9, event1_cat2);
+
+			// // Assign cats to seats in event 2
+			// es.assignCatsToSeats(event2.getId(), 0, 4, event1_cat1);
+			// es.assignCatsToSeats(event2.getId(), 5, 9, event1_cat2);
+
 		};
 
 	}
-
-	// @Bean
-	// public CommandLineRunner commandLineRunner(
-	// AuthenticationService as, EventService es) {
-	// return args -> addMocks(as, es);
-	// {
-	// Create mock user / admin
-	// var admin =
-	// RegisterRequest.builder().firstName("admin").lastName("Hi").email("admin@email.com")
-	// .gender(Gender.MALE)
-	// .username("admin").phoneNumber(12345678).password("abcdef").role(Role.ADMIN).build();
-	// System.out.println("Admin token:" + as.register(admin,
-	// true).getToken());
-
-	// var cust =
-	// RegisterRequest.builder().firstName("user").lastName("Hi").email("user@email.com")
-	// .gender(Gender.FEMALE)
-	// .username("cust").phoneNumber(12345678).password("abcdefgh").role(Role.USER).build();
-	// System.out.println("User token:" + as.register(cust, false).getToken());
-
-	// };
-
-	// }
 }

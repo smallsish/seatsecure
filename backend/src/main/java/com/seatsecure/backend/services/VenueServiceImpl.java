@@ -7,15 +7,18 @@ import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Venue;
+import com.seatsecure.backend.repositories.SeatRepository;
 import com.seatsecure.backend.repositories.VenueRepository;
 
 @Service
 public class VenueServiceImpl implements VenueService {
    
     private VenueRepository venueRepo;
+    private SeatRepository seatRepo;
 
-    public VenueServiceImpl(VenueRepository venueRepo){
+    public VenueServiceImpl(VenueRepository venueRepo, SeatRepository seatRepo){
         this.venueRepo = venueRepo;
+        this.seatRepo = seatRepo;
     }
 
     @Override
@@ -64,11 +67,12 @@ public class VenueServiceImpl implements VenueService {
         Venue venue = getVenueById(venueId);
         if (venue == null) return null;
 
-        List<Seat> venueSeats = venue.getSeats();
+        // Get the venue's seats from repo
+        List<Seat> venueSeats = seatRepo.getSeatsByVenue(venue);
 
         // Find the seat with the specified id
         for (Seat s : venueSeats) {
-            if ((long) s.getSeatNum() == seatNum) return s;
+            if (s.getSeatNum() == seatNum) return s;
         }
         return null;
     }
@@ -78,9 +82,9 @@ public class VenueServiceImpl implements VenueService {
         Venue venue = getVenueById(id);
         if (venue == null) return null;
 
-        List<Seat> venueSeats = venue.getSeats();
-
-        for (int i = 0; i < numSeats; i++) venueSeats.add(new Seat());
+        for (int i = 0; i < numSeats; i++) {
+            seatRepo.save(Seat.builder().venue(venue).build());
+        }
         
         return venue;
     }

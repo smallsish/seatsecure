@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Category {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long catId;
+    private Long id;
 
     @NonNull
     @Size(max = 100, message = "Name is too long!")

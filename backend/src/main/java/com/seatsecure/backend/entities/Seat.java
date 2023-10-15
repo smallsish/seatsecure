@@ -1,5 +1,6 @@
 package com.seatsecure.backend.entities;
 
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,6 +21,9 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Seat {
     @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NonNull
     private Integer seatNum;
 
     @ManyToOne

@@ -13,17 +13,23 @@ import com.seatsecure.backend.entities.EventVenueDTOmapper;
 import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Venue;
+import com.seatsecure.backend.repositories.CatRepository;
 import com.seatsecure.backend.repositories.EventRepository;
+import com.seatsecure.backend.repositories.RunRepository;
 
 @Service
 public class EventServiceImpl implements EventService {
 
     private EventRepository eventRepo;
+    private CatRepository catRepo;
+    private RunRepository runRepo;
     private VenueService vs;
     private EventVenueDTOmapper eventVenueDTOmapper;
 
-    public EventServiceImpl(EventRepository eventRepo, VenueService vs, EventVenueDTOmapper evDTO) {
+    public EventServiceImpl(EventRepository eventRepo, CatRepository catRepo, RunRepository runRepo, VenueService vs, EventVenueDTOmapper evDTO) {
         this.eventRepo = eventRepo;
+        this.catRepo = catRepo;
+        this.runRepo = runRepo;
         this.vs = vs;
         this.eventVenueDTOmapper = evDTO;
     }
@@ -67,7 +73,8 @@ public class EventServiceImpl implements EventService {
         e.setStartDate(newEventInfo.getStartDate());
         e.setEndDate(newEventInfo.getEndDate());
         e.setVenue(newEventInfo.getVenue());
-        e.setRuns(newEventInfo.getRuns());
+        // e.setRuns(newEventInfo.getRuns());
+        // e.setCats(newEventInfo.getCats());
         eventRepo.save(e);
 
         return e;
@@ -112,10 +119,10 @@ public class EventServiceImpl implements EventService {
         Event e = getEventById(eventId);
         if (e == null || run == null) return null;
 
-        e.getRuns().add(run);
+        // Add new run to database
+        run.setEvent(e);
+        runRepo.save(run);
 
-        // Update database
-        updateEvent(eventId, e);
         return e;
     }
 
@@ -124,10 +131,12 @@ public class EventServiceImpl implements EventService {
         Event e = getEventById(eventId);
         if (e == null || cat == null) return null;
 
-        e.getCats().add(cat);
+        // Add new cat to database
+        cat.setEvent(e);
+        catRepo.save(cat);
 
         // Update database
-        updateEvent(eventId, e);
+        // updateEvent(eventId, e);
         return e;
     }
 
