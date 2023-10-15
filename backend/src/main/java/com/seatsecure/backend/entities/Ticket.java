@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.seatsecure.backend.entities;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -38,10 +37,3 @@ public class Ticket {
     private Run run;
     
 }
-=======
-package com.seatsecure.backend.entities;
-
-public class Ticket {
-    
-}
->>>>>>> 6421d053512ad97b0385a89b988bceb10ff095e8

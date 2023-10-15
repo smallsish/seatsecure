@@ -40,5 +40,8 @@ public class Category {
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Seat> seats;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<TicketUserQueue> queue;
     
 }
