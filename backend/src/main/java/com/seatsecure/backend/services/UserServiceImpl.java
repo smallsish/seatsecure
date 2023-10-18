@@ -1,6 +1,8 @@
 package com.seatsecure.backend.services;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.User;
@@ -25,12 +27,10 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public User getUserById(Long userId){
-        // Using Java Optional, as "findById" of Spring JPA returns an Optional object
-        // Optional forces developers to explicitly handle the case of non-existent values
-        // Here is an implementation using lambda expression to extract the value from Optional<Book>
-        return userRepo.findById(userId).map(u -> {
-            return u;
-        }).orElse(null);
+        Optional<User> user = userRepo.findById(userId);
+        if (user.isEmpty()) return null;
+        
+        return user.get();
     }
     
     @Override
@@ -40,15 +40,21 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public User updateUser(Long id, User newUserInfo){
-        return userRepo.findById(id).map(u -> {u.setPassword(newUserInfo.getPassword());
-            u.setEmail(newUserInfo.getEmail());
-            u.setFirstName(newUserInfo.getFirstName());
-            u.setLastName(newUserInfo.getLastName());
-            u.setGender(newUserInfo.getGender());                   // different fields that user might want to change
-            u.setPhoneNumber(newUserInfo.getPhoneNumber());
-            u.setUsername(newUserInfo.getUsername());
-            return userRepo.save(u);
-        } ).orElse(null);
+        // Check if user exists
+        User u = getUserById(id);
+        if (u == null) return null;
+
+        // Update user
+        u.setPassword(newUserInfo.getPassword());
+        u.setEmail(newUserInfo.getEmail());
+        u.setFirstName(newUserInfo.getFirstName());
+        u.setLastName(newUserInfo.getLastName());
+        u.setGender(newUserInfo.getGender());
+        u.setPhoneNumber(newUserInfo.getPhoneNumber());
+        u.setUsername(newUserInfo.getUsername());
+        userRepo.save(u);
+        
+        return u;
     }
 
     /**

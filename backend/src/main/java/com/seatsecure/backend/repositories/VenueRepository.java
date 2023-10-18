@@ -13,4 +13,5 @@ import com.seatsecure.backend.entities.Venue;
 @Repository
 public interface VenueRepository extends JpaRepository<Venue,Long> {
     Optional<Venue> findById(Long id);
+    //Optional<Venue> getVenueByEvent(Event e);
 }

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Event;
-import com.seatsecure.backend.entities.EventVenueDTO;
+import com.seatsecure.backend.entities.DTOs.EventVenueDTO;
 import com.seatsecure.backend.exceptions.EventCreationError;
 import com.seatsecure.backend.exceptions.EventNotFoundException;
 import com.seatsecure.backend.services.EventService;
@@ -31,7 +31,6 @@ import com.seatsecure.backend.services.EventService;
 public class EventController {
     private EventService eventService;
 
-    @Autowired
     public EventController(EventService es){
         eventService = es;
     }
@@ -68,7 +67,7 @@ public class EventController {
     */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/events")
-    @PreAuthorize("hasAuthorities('admin:create')")
+    @PreAuthorize("hasAuthority('admin:create')")
     public Event addEvent(@Valid @RequestBody Event event) {
         Event e = eventService.addEvent(event);
         
@@ -87,12 +86,14 @@ public class EventController {
      */
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/events/{id}")
-    @PreAuthorize("hasAuthorities('admin:update')")
-    public Event updateEvent(@PathVariable Long id, @Valid @RequestBody Event newEventInfo){
+    @PreAuthorize("hasAuthority('admin:update')")
+    public EventVenueDTO updateEvent(@PathVariable Long id, @Valid @RequestBody Event newEventInfo){
         Event event = eventService.updateEvent(id, newEventInfo);
         if(event == null) throw new EventNotFoundException(id);
         
-        return event;
+        EventVenueDTO dto = eventService.getEventVenueById(id);
+
+        return dto;
     }
 
     /**

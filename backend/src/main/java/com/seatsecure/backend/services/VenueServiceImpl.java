@@ -5,20 +5,17 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.seatsecure.backend.entities.Seat;
+import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.repositories.SeatRepository;
 import com.seatsecure.backend.repositories.VenueRepository;
 
 @Service
 public class VenueServiceImpl implements VenueService {
    
     private VenueRepository venueRepo;
-    private SeatRepository seatRepo;
 
-    public VenueServiceImpl(VenueRepository venueRepo, SeatRepository seatRepo){
+    public VenueServiceImpl(VenueRepository venueRepo){
         this.venueRepo = venueRepo;
-        this.seatRepo = seatRepo;
     }
 
     @Override
@@ -42,19 +39,22 @@ public class VenueServiceImpl implements VenueService {
     
     @Override
     public Venue updateVenue(Long id, Venue newVenueInfo){
-        Optional<Venue> venue = venueRepo.findById(id);
-        if (venue.isEmpty()) return null; // Venue not found
+        // Check if venue exists
+        Venue v = getVenueById(id);
+        if (v == null) return null;
 
-        Venue e = venue.get();
-        e.setName(newVenueInfo.getName());
-        e.setAddress(newVenueInfo.getAddress());
-        venueRepo.save(e);
+        // Update venue
 
-        return e;
+        v.setName(newVenueInfo.getName());
+        v.setAddress(newVenueInfo.getAddress());
+        venueRepo.save(v);
+
+        return v;
     }
 
     @Override
     public Venue deleteVenueById(Long venueId){
+        // Check if venue exists
         Venue venue = getVenueById(venueId);
         if (venue == null) return null;
 
@@ -62,31 +62,5 @@ public class VenueServiceImpl implements VenueService {
         return venue;
     }
 
-    @Override
-    public Seat getSeatByNum(Long venueId, Integer seatNum) {
-        Venue venue = getVenueById(venueId);
-        if (venue == null) return null;
-
-        // Get the venue's seats from repo
-        List<Seat> venueSeats = seatRepo.getSeatsByVenue(venue);
-
-        // Find the seat with the specified id
-        for (Seat s : venueSeats) {
-            if (s.getSeatNum() == seatNum) return s;
-        }
-        return null;
-    }
-
-    @Override
-    public Venue addSeatsToVenue(Long id, int numSeats) {
-        Venue venue = getVenueById(id);
-        if (venue == null) return null;
-
-        for (int i = 0; i < numSeats; i++) {
-            seatRepo.save(Seat.builder().venue(venue).build());
-        }
-        
-        return venue;
-    }
 
 }

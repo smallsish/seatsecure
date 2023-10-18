@@ -17,7 +17,10 @@ import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Ticket;
 import com.seatsecure.backend.security.auth.AuthenticationService;
 import com.seatsecure.backend.security.auth.RegisterRequest;
+import com.seatsecure.backend.services.CatService;
 import com.seatsecure.backend.services.EventService;
+import com.seatsecure.backend.services.RunService;
+import com.seatsecure.backend.services.SeatService;
 import com.seatsecure.backend.services.VenueService;
 
 @SpringBootApplication
@@ -28,7 +31,7 @@ public class SeatsecureBackendApplication {
 	}
 
 	@Bean
-	public CommandLineRunner addMocks(AuthenticationService as, EventService es, VenueService vs) {
+	public CommandLineRunner addMocks(AuthenticationService as, EventService es, VenueService vs, CatService cs, RunService rs, SeatService ss) {
 		return args -> {
 			// Create mock user / admin
 			RegisterRequest admin = RegisterRequest.builder().firstName("admin").lastName("Hi").email("admin@email.com")
@@ -98,31 +101,31 @@ public class SeatsecureBackendApplication {
 			es.addEvent(event1);
 			es.addEvent(event2);
 
+			// Add new seats to venue
+			ss.addNewSeatsToVenue(venue1.getId(), 10);
+			ss.addNewSeatsToVenue(venue2.getId(), 10);
+
 			// Update events with venue
 			es.setVenueForEvent(event1.getId(), venue1.getId());
 			es.setVenueForEvent(event2.getId(), venue2.getId());
 
 			// Update events with cats
-			es.addNewCatToEvent(event1.getId(), event1_cat1);
-			es.addNewCatToEvent(event1.getId(), event1_cat2);
-			es.addNewCatToEvent(event2.getId(), event2_cat1);
-			es.addNewCatToEvent(event2.getId(), event2_cat2);
+			cs.addNewCatToEvent(event1.getId(), event1_cat1);
+			cs.addNewCatToEvent(event1.getId(), event1_cat2);
+			cs.addNewCatToEvent(event2.getId(), event2_cat1);
+			cs.addNewCatToEvent(event2.getId(), event2_cat2);
 			
 			// Update events with runs
-			es.addNewRunToEvent(event1.getId(), event1_run1);
-			es.addNewRunToEvent(event2.getId(), event2_run1);
+			rs.addNewRunToEvent(event1.getId(), event1_run1);
+			rs.addNewRunToEvent(event2.getId(), event2_run1);
 
-			// Add new seats to venue
-			vs.addSeatsToVenue(venue1.getId(), 10);
-			vs.addSeatsToVenue(venue2.getId(), 10);
+			// Assign cats to seats in event 1
+			ss.assignCatsToSeats(event1.getId(), 0, 4, event1_cat1);
+			ss.assignCatsToSeats(event1.getId(), 5, 9, event1_cat2);
 
-			// // Assign cats to seats in event 1
-			// es.assignCatsToSeats(event1.getId(), 0, 4, event1_cat1);
-			// es.assignCatsToSeats(event1.getId(), 5, 9, event1_cat2);
-
-			// // Assign cats to seats in event 2
-			// es.assignCatsToSeats(event2.getId(), 0, 4, event1_cat1);
-			// es.assignCatsToSeats(event2.getId(), 5, 9, event1_cat2);
+			// Assign cats to seats in event 2
+			ss.assignCatsToSeats(event2.getId(), 0, 4, event1_cat1);
+			ss.assignCatsToSeats(event2.getId(), 5, 9, event1_cat2);
 
 		};
 

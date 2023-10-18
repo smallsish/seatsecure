@@ -33,9 +33,6 @@ public class Run {
     private Long id;
 
     @NonNull
-    private Integer runNum;
-
-    @NonNull
     @Size(max = 100, message = "Name is too long!")
     private String name;
 
