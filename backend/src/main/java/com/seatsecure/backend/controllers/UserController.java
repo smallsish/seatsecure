@@ -3,16 +3,11 @@ package com.seatsecure.backend.controllers;
 import java.util.List;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
-
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +15,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.User;
+import com.seatsecure.backend.entities.DTOs.UserDTO;
+import com.seatsecure.backend.entities.DTOs.UserDetailsDTO;
+import com.seatsecure.backend.entities.DTOs.mappers.UserDTOmapper;
 import com.seatsecure.backend.exceptions.UserNotFoundException;
-import com.seatsecure.backend.security.auth.AuthenticationResponse;
 import com.seatsecure.backend.security.auth.AuthenticationService;
-import com.seatsecure.backend.security.auth.RegisterRequest;
 import com.seatsecure.backend.services.UserService;
 
 @RequestMapping("/api/v1")
@@ -32,10 +28,12 @@ import com.seatsecure.backend.services.UserService;
 public class UserController {
     private UserService userService;
     private AuthenticationService authService;
+    private UserDTOmapper userDTOmapper;
 
-    public UserController(UserService us, AuthenticationService as){
+    public UserController(UserService us, AuthenticationService as, UserDTOmapper userDTOmapper){
         this.userService = us;
         this.authService = as;
+        this.userDTOmapper = userDTOmapper;
     }
 
     /**
@@ -44,8 +42,10 @@ public class UserController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users")
-    public List<User> getUsers(){
-        return userService.listUsers();
+    @PreAuthorize("hasAuthority('admin:read')")
+    public List<UserDTO> getUsers(){
+        List<User> users = userService.listUsers();
+        return users.stream().map(userDTOmapper).toList();
     }
 
     /**
@@ -56,11 +56,11 @@ public class UserController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users/{id}")
-    public User getUser(@PathVariable Long id){
-        User user = userService.getUserById(id);
-
+    public UserDetailsDTO getUserDetails(@PathVariable Long id){
+        UserDetailsDTO user = userService.getUserDetailsDTO(id);
         if(user == null) throw new UserNotFoundException(id);
-        return userService.getUserById(id);
+        
+        return user;
 
     }
 

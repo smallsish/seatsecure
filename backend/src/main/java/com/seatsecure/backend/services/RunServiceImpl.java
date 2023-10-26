@@ -91,11 +91,6 @@ public class RunServiceImpl implements RunService {
         if (run == null)
             return null;
 
-        // // Get event of run
-        // Event event = getEventOfRun(runId);
-        // if (event == null)
-        //     return null;
-
         // Delete run from database
         runRepo.deleteById(runId);
 

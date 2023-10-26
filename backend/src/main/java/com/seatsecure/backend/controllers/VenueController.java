@@ -3,11 +3,8 @@ package com.seatsecure.backend.controllers;
 import java.util.List;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,31 +12,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.entities.User;
+import com.seatsecure.backend.entities.DTOs.VenueDTO;
+import com.seatsecure.backend.entities.DTOs.VenueEventsDTO;
+import com.seatsecure.backend.entities.DTOs.mappers.VenueDTOmapper;
 import com.seatsecure.backend.exceptions.VenueCreationError;
 import com.seatsecure.backend.exceptions.VenueNotFoundException;
-import com.seatsecure.backend.exceptions.UserNotFoundException;
-import com.seatsecure.backend.security.auth.AuthenticationResponse;
-import com.seatsecure.backend.security.auth.AuthenticationService;
-import com.seatsecure.backend.security.auth.RegisterRequest;
 import com.seatsecure.backend.services.VenueService;
-import com.seatsecure.backend.services.UserService;
 
 @RequestMapping("/api/v1")
 @RestController
 public class VenueController {
     private VenueService venueService;
-    private AuthenticationService authService;
+    private VenueDTOmapper venueDTOmapper;
 
-    @Autowired
-    public VenueController(VenueService es, AuthenticationService as){
-        venueService = es;
-        authService = as;
+    public VenueController(VenueService vs, VenueDTOmapper vDTOmapper){
+        venueService = vs;
+        venueDTOmapper = vDTOmapper;
     }
 
     /**
@@ -48,8 +40,9 @@ public class VenueController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/venues")
-    public List<Venue> getVenues(){
-        return venueService.listVenues();
+    public List<VenueDTO> getVenues(){
+        List<Venue> venues = venueService.listVenues();
+        return venues.stream().map(venueDTOmapper).toList();
     }
 
     /**
@@ -60,25 +53,12 @@ public class VenueController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/venues/{id}")
-    public Venue getVenue(@PathVariable Long id){
+    public VenueDTO getVenue(@PathVariable Long id){
         Venue venue = venueService.getVenueById(id);
         if(venue == null) throw new VenueNotFoundException(id);
         
-        return venue;
+        return venueDTOmapper.apply(venue);
     }
-
-    /**
-     * Add a new venue with POST request to "/venues"
-     * @param venue
-     * @return The new venue that was added
-     
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/venues")
-    public ResponseEntity<AuthenticationResponse> addVenue(
-        @RequestBody RegisterRequest request
-    ) {
-        return ResponseEntity.ok(authService.register(request));
-    }*/
 
     /**
      * Add a new venue with POST request to "/venues"
@@ -87,12 +67,12 @@ public class VenueController {
     */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/venues")
-    public Venue addVenue(@Valid @RequestBody Venue venue) {
-        Venue e = venueService.addVenue(venue);
+    @PreAuthorize("hasAuthority('admin:create')")
+    public VenueDTO addVenue(@Valid @RequestBody Venue venue) {
+        Venue v = venueService.addVenue(venue);
+        if (v == null) throw new VenueCreationError();
         
-        if (e == null) throw new VenueCreationError();
-        
-        return venue;
+        return venueDTOmapper.apply(v);
     }
 
 
@@ -105,11 +85,12 @@ public class VenueController {
      */
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/venues/{id}")
-    public Venue updateVenue(@PathVariable Long id, @Valid @RequestBody Venue newVenueInfo){
+    @PreAuthorize("hasAuthority('admin:update')")
+    public VenueDTO updateVenue(@PathVariable Long id, @Valid @RequestBody Venue newVenueInfo){
         Venue venue = venueService.updateVenue(id, newVenueInfo);
         if(venue == null) throw new VenueNotFoundException(id);
         
-        return venue;
+        return venueDTOmapper.apply(venue);
     }
 
     /**
@@ -119,10 +100,24 @@ public class VenueController {
      */
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/venues/{id}")
+    @PreAuthorize("hasAuthority('admin:delete')")
     public Venue deleteVenue(@PathVariable Long id){
-
         Venue venue = venueService.deleteVenueById(id);
         if(venue == null) throw new VenueNotFoundException(id);
+
+        return venue;
+    }
+
+    /**
+     * List events at the venue
+     * If there is no venue with the given "id", throw an VenueNotFoundException
+     * @param id
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/venues/{id}/events")
+    public VenueEventsDTO getEventsAtVenue(@PathVariable Long id){
+        VenueEventsDTO venue = venueService.getVenueEventsDTO(id);
+        if (venue == null) throw new VenueNotFoundException(id);
 
         return venue;
     }

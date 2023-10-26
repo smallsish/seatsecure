@@ -1,7 +1,12 @@
 package com.seatsecure.backend.security.auth;
 
+import java.security.Principal;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +28,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request, Boolean isAdminAccount) {
-        String uName = request.getUsername();
+        String uName = request.getUsername().toLowerCase();
         if (!userRepository.findByUsername(uName).isPresent()) {
             var user = User.builder()
                 .firstName(request.getFirstName())
@@ -60,5 +65,19 @@ public class AuthenticationService {
             .token(jwtToken)
             .username(user.getUsername())
             .build();
+    }
+
+    // Check if the username in the parameter is that of the user in the current security context
+    public Boolean isCurrentUser(String username) {
+        SecurityContext sc = SecurityContextHolder.getContext();
+        if (sc == null) return null; // throw error
+
+        Object p = sc.getAuthentication().getPrincipal();
+        if (p != null && p instanceof UserDetails) {
+            UserDetails ud = (UserDetails) p;
+            return ud.getUsername().toLowerCase().equals(username.toLowerCase());
+        }
+
+        return null; // throw error
     }
 }

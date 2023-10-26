@@ -8,37 +8,62 @@ import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.entities.DTOs.EventVenueDTO;
-import com.seatsecure.backend.entities.DTOs.EventVenueDTOmapper;
+import com.seatsecure.backend.entities.DTOs.EventDTO;
+import com.seatsecure.backend.entities.DTOs.EventDetailsDTO;
+import com.seatsecure.backend.entities.DTOs.VenueEventsDTO;
+import com.seatsecure.backend.entities.DTOs.mappers.EventDetailsDTOmapper;
+import com.seatsecure.backend.entities.DTOs.mappers.VenueEventsDTOmapper;
 import com.seatsecure.backend.repositories.EventRepository;
+
+import lombok.NoArgsConstructor;
 
 @Service
 public class EventServiceImpl implements EventService {
 
     private EventRepository eventRepo;
     private VenueService vs;
-    private EventVenueDTOmapper eventVenueDTOmapper;
+    private EventDetailsDTOmapper eventDetailsDTOmapper;
 
-    public EventServiceImpl(VenueService vs, EventRepository eventRepo, EventVenueDTOmapper evDTO) {
+    public EventServiceImpl(VenueService vs, EventRepository eventRepo, EventDetailsDTOmapper evDTO) {
         this.eventRepo = eventRepo;
         this.vs = vs;
-        this.eventVenueDTOmapper = evDTO;
+        this.eventDetailsDTOmapper = evDTO;
+    }
+
+    // DTO methods
+    @Override
+    public List<EventDetailsDTO> listEventDetailsDTOs() {
+        return eventRepo.findAll().stream().map(eventDetailsDTOmapper).collect(Collectors.toList());
     }
 
     @Override
-    public List<EventVenueDTO> listEvents() {
-        return eventRepo.findAll().stream().map(eventVenueDTOmapper).collect(Collectors.toList());
+    public EventDetailsDTO getEventDetailsDTOById(Long id) {
+        // Check if event exists
+        Event event = getEventById(id);
+        if (event == null) return null;
+
+        return eventDetailsDTOmapper.apply(event);
+
     }
 
     @Override
-    public EventVenueDTO getEventVenueById(Long eventId) {
-        Optional<Event> e = eventRepo.findById(eventId);
-        if (e.isEmpty())
-            return null;
+    public VenueEventsDTO listEventDTOsOfVenue(Long id) {
+        Venue venue = vs.getVenueById(id);
+        if (venue == null) return null;
 
-        return e.map(eventVenueDTOmapper).get();
+        return new VenueEventsDTOmapper().apply(venue);
     }
 
+    // @Override
+    // public EventVenueDTO getEventVenueById(Long eventId) {
+    //     Optional<Event> e = eventRepo.findById(eventId);
+    //     if (e.isEmpty())
+    //         return null;
+
+    //     return e.map(eventVenueDTOmapper).get();
+    // }
+
+    // Service methods
     @Override
     public Event getEventById(Long id) {
         Optional<Event> e = eventRepo.findById(id);
@@ -61,6 +86,16 @@ public class EventServiceImpl implements EventService {
             return null;
 
         return v;
+    }
+
+    public List<Event> getEventsOfVenue(Long venueId) {
+        // Check if venue exists
+        Venue v = vs.getVenueById(venueId);
+        if (v == null)
+            return null;
+
+        // Get events of that venue
+        return eventRepo.findByVenue(v);
     }
 
     @Override
@@ -87,12 +122,13 @@ public class EventServiceImpl implements EventService {
     public Event setVenueForEvent(Long eventId, Long venueId) {
         Event e = getEventById(eventId);
         Venue v = vs.getVenueById(venueId);
-        if (e == null || v == null) return null;
+        if (e == null || v == null)
+            return null;
 
         // Update database
         e.setVenue(v);
         eventRepo.save(e);
-        
+
         return e;
     }
 
@@ -110,12 +146,13 @@ public class EventServiceImpl implements EventService {
         // Get venue of event
         // Venue venue = getVenueOfEvent(eventId);
         // if (venue == null)
-        //     return null;
+        // return null;
 
         // Delete event from database
         eventRepo.deleteById(eventId);
 
         return event;
     }
+
 
 }

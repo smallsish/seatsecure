@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Event;
-import com.seatsecure.backend.entities.DTOs.EventVenueDTO;
+import com.seatsecure.backend.entities.DTOs.EventDetailsDTO;
 import com.seatsecure.backend.exceptions.EventCreationError;
 import com.seatsecure.backend.exceptions.EventNotFoundException;
 import com.seatsecure.backend.services.EventService;
@@ -41,8 +41,8 @@ public class EventController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/events")
-    public List<EventVenueDTO> getEvents(){
-        return eventService.listEvents();
+    public List<EventDetailsDTO> getEvents(){
+        return eventService.listEventDetailsDTOs();
     }
 
     /**
@@ -53,8 +53,8 @@ public class EventController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/events/{id}")
-    public EventVenueDTO getEvent(@PathVariable Long id){
-        EventVenueDTO event = eventService.getEventVenueById(id);
+    public EventDetailsDTO getEvent(@PathVariable Long id){
+        EventDetailsDTO event = eventService.getEventDetailsDTOById(id);
         if(event == null) throw new EventNotFoundException(id);
         
         return event;
@@ -68,12 +68,11 @@ public class EventController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/events")
     @PreAuthorize("hasAuthority('admin:create')")
-    public Event addEvent(@Valid @RequestBody Event event) {
+    public EventDetailsDTO addEvent(@Valid @RequestBody Event event) {
         Event e = eventService.addEvent(event);
-        
         if (e == null) throw new EventCreationError();
         
-        return event;
+        return eventService.getEventDetailsDTOById(e.getId());
     }
 
 
@@ -87,13 +86,11 @@ public class EventController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/events/{id}")
     @PreAuthorize("hasAuthority('admin:update')")
-    public EventVenueDTO updateEvent(@PathVariable Long id, @Valid @RequestBody Event newEventInfo){
+    public EventDetailsDTO updateEvent(@PathVariable Long id, @Valid @RequestBody Event newEventInfo){
         Event event = eventService.updateEvent(id, newEventInfo);
         if(event == null) throw new EventNotFoundException(id);
-        
-        EventVenueDTO dto = eventService.getEventVenueById(id);
 
-        return dto;
+        return eventService.getEventDetailsDTOById(id);
     }
 
     /**
