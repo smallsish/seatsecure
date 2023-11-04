@@ -64,4 +64,14 @@ public class UserServiceImpl implements UserService {
         userRepo.deleteById(userId);
         return user;
     }
+
+    @Override
+    public Boolean validateUser(Long userId){
+        try{
+            getUserById(userId);
+        }   catch(NullPointerException n){
+            return false;
+        }
+        return true;
+    }
 }

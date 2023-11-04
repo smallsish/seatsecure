@@ -25,7 +25,7 @@ public class Ticket {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = false)
-    @JoinColumn(name = "seat_num")
+    @JoinColumn(name = "seat_id")
     private Seat seat;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -33,7 +33,7 @@ public class Ticket {
     private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "run_num")
+    @JoinColumn(name = "run_id")
     private Run run;
     
 }

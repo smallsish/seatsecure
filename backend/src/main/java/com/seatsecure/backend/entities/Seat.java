@@ -32,7 +32,5 @@ public class Seat {
 
     @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL, orphanRemoval = true)
     private Ticket ticket;
-
-
     
 }

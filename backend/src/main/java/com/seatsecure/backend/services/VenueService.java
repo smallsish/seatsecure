@@ -2,6 +2,7 @@ package com.seatsecure.backend.services;
 
 import java.util.List;
 
+import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Venue;
 
 public interface VenueService {
@@ -10,4 +11,7 @@ public interface VenueService {
     Venue addVenue(Venue e);
     Venue updateVenue(Long id, Venue newVenueInfo);
     Venue deleteVenueById(Long id);
+
+    Seat getSeatByNum(Long venueId, Integer seatNum);
+    Venue addSeatsToVenue(Long id, int numSeats);
 }

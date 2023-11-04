@@ -10,4 +10,5 @@ public interface UserService {
     User addUser(User u);
     User updateUser(Long id, User newUserInfo);
     User deleteUserById(Long id);
+    Boolean validateUser(Long id);
 }
