@@ -5,6 +5,8 @@ import Navbar from '../../components/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/AuthProvider';
 import axios from '../../api/axios';
+import UserContext from '../../context/UserIDProvider';
+
 
 const LOGIN_URL = '/api/v1/auth/authenticate'
 
@@ -17,6 +19,7 @@ function LoginPage() {
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
+    const { setUserID } = useContext(UserContext);
 
     useEffect(() => {
         userRef.current.focus();
@@ -35,16 +38,24 @@ function LoginPage() {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
-            );
+
+
+            )
+            ;
             // console.log(JSON.stringify(response?.data));
+            
+            console.log(response);
             const token = response?.data?.token;
+            const ID = response?.data?.id;
             const isLoggedIn = true;
-            // console.log(token);
-            setAuth({ token, isLoggedIn });
+            console.log(ID);
+            setUserID({ID});
+            setAuth({ token, isLoggedIn });;
             setUser('');
             setPwd('');
             setSuccess(true);
             navigate('/');
+            
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No Server Response');
@@ -73,7 +84,7 @@ function LoginPage() {
                                 type="text"
                                 id="username"
                                 ref={userRef}
-                                placeholder="Username"
+                               placeholder="Username"
                                 autoComplete='off'
                                 onChange={(e) => setUser(e.target.value)}
                                 value={user}

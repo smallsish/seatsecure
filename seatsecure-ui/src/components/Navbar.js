@@ -4,14 +4,25 @@ import { Link, useLocation } from 'react-router-dom';
 import logo from '../images/Logo.svg';
 import useAuth from '../hooks/useAuth';
 import axios from '../api/axios';
+import useUser from '../hooks/useUser';
+import UserProfilePage from '../pages/UserProfile/UserProfilePage';
+
+
 
 function Navbar() {
   const auth = useAuth();
+  const user = useUser();
+  var IDValue = parseInt(user.userID.ID);
   const token = auth.auth.token;
   const isLoggedIn = auth.auth.isLoggedIn;
   const [data, setData] = useState(null);
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
+
+
+
+
+  
 
   const displayMenu = () => {
     var nav = document.querySelector('.nav');
@@ -21,6 +32,7 @@ function Navbar() {
 
   const showData = () => {
     console.log(data[0].username);
+    console.log(user.userID.ID);
   };
 
   useEffect(() => {
@@ -29,6 +41,8 @@ function Navbar() {
     }
 
   }, [location.pathname]);
+
+
 
   const makeAuthenticatedRequest = async () => {
     try {
@@ -62,9 +76,13 @@ function Navbar() {
           {isLoginPage ? null : isLoggedIn ? (
             <li id="login-btn" className="nav-item">
               {data && data.length > 0 ? (
-                <span className='nav-username'>{data[0].username}</span>
+                <Link to ="/UserProfile">
+                <span className='nav-username'>{data[IDValue-1].username}</span>
+                </Link>
               ) : (
-                <span className='nav-username'></span>
+                
+                <span className='nav-username'> </span>
+
               )}
             </li>
           ) : (
