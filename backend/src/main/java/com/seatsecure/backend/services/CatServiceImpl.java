@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Event;
-import com.seatsecure.backend.entities.Seat;
-import com.seatsecure.backend.entities.Venue;
 import com.seatsecure.backend.repositories.CatRepository;
 
 @Service

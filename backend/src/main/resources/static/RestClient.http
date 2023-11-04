@@ -2,7 +2,9 @@
 ### GLOBAL VARIABLES ###
 ########################
 @baseurl = http://localhost:8080/api/v1
-@bearertoken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NzYzNzUwMCwiZXhwIjoxNjk3NjM4OTQwfQ.0qPcYTlJzsOWgbCTYoiHO0rW0kX6O4_E_MeGSIMCkSw
+@bearertoken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTEwNTU1OCwiZXhwIjoxNjk5MTA2OTk4fQ.EwPXBv5_euM-PMQAswKj49PNXmavUgwDEZEArsWL1js
+@userbearertoken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5MTA1NTU4LCJleHAiOjE2OTkxMDY5OTh9.9v_a5OOi9EXmEOjJ8_AMqW0pUSpPLamTA2itPepDOPk
+
 ####################
 ### USER METHODS ###
 ####################
@@ -10,6 +12,12 @@
 /// Get users
 GET {{baseurl}}/users
 Authorization: Bearer {{bearertoken}}
+
+###
+
+// Get details of user
+GET {{baseurl}}/users/2
+Authorization: Bearer {{userbearertoken}}
 
 ###
 
@@ -21,7 +29,7 @@ Content-Type: application/json
     "firstName" : "Evan",
     "lastName" : "Walker",
     "username" : "evanwalkeroo00",
-    "email" : "fassfhahiha",
+    "email" : "evan@gmail.com",
     "password" : "password",
     "gender" : "MALE",
     "phoneNumber" : 98247183
@@ -68,7 +76,7 @@ Authorization: Bearer {{bearertoken}}
 
 ###
 
-// Update an event
+// Update an event's details (not including venue, cat and runs)
 PUT {{baseurl}}/events/1
 Content-Type: application/json
 Authorization: Bearer {{bearertoken}}
@@ -81,9 +89,57 @@ Authorization: Bearer {{bearertoken}}
 
 ###
 
+// Update an event's venue
+PUT {{baseurl}}/events/1/venue/2
+Authorization: Bearer {{bearertoken}}
+
+###
+
+// Add new run to event
+POST {{baseurl}}/events/1/runs
+Content-Type: application/json
+Authorization: Bearer {{bearertoken}}
+
+{
+    "name" : "Special run for event 1",
+    "description" : "The special run for event 1.",
+    "startDate" : "2023-11-04T15:00",
+    "endDate" : "2023-11-05T12:00"
+}
+
+###
+
+// Get runs of event
+GET {{baseurl}}/events/1/runs
+Authorization: Bearer {{bearertoken}}
+
+###
+
+// Update run
+PUT {{baseurl}}/runs/1
+Content-Type: application/json
+Authorization: Bearer {{bearertoken}}
+
+{
+    "name" : "An updated run",
+    "description" : "Run for testing update run method.",
+    "startDate" : "2023-11-04T20:00",
+    "endDate" : "2023-11-05T20:00"
+}
+
+###
+
+// Delete run
+DELETE {{baseurl}}/runs/1
+Authorization: Bearer {{bearertoken}}
+
+###
+
 // Delete an event
 DELETE {{baseurl}}/events/1
 Authorization: Bearer {{bearertoken}}
+
+
 
 #####################
 ### VENUE METHODS ###
@@ -95,7 +151,7 @@ Authorization: Bearer {{bearertoken}}
 
 ###
 
-// Get an venue
+// Get a venue
 GET {{baseurl}}/venues/1
 Authorization: Bearer {{bearertoken}}
 

@@ -2,7 +2,6 @@ package com.seatsecure.backend.entities.DTOs;
 
 import java.util.List;
 
-import com.seatsecure.backend.entities.Ticket;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

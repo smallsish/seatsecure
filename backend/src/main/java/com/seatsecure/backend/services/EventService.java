@@ -4,9 +4,6 @@ import java.util.List;
 
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.entities.DTOs.EventDTO;
-import com.seatsecure.backend.entities.DTOs.EventDetailsDTO;
-import com.seatsecure.backend.entities.DTOs.VenueEventsDTO;
 
 public interface EventService {
     // DTO methods

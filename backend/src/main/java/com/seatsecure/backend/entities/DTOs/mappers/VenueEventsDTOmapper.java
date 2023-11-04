@@ -12,7 +12,6 @@ import com.seatsecure.backend.entities.DTOs.EventDTO;
 import com.seatsecure.backend.entities.DTOs.VenueDTO;
 import com.seatsecure.backend.entities.DTOs.VenueEventsDTO;
 import com.seatsecure.backend.services.EventService;
-import com.seatsecure.backend.services.EventServiceImpl;
 
 @Component
 public class VenueEventsDTOmapper implements Function<Venue,VenueEventsDTO>{

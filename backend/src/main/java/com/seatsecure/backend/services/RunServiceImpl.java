@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Run;
-import com.seatsecure.backend.entities.Venue;
 import com.seatsecure.backend.repositories.RunRepository;
 
 @Service

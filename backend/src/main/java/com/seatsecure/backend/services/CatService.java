@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Event;
-import com.seatsecure.backend.entities.Venue;
 
 public interface CatService {
 

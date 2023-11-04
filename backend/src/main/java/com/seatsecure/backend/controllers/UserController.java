@@ -26,7 +26,6 @@ import com.seatsecure.backend.services.UserService;
 
 @RequestMapping("/api/v1")
 @RestController
-@PreAuthorize("hasRole('ADMIN')")
 public class UserController {
     private UserService userService;
     private AuthenticationService authService;
@@ -42,11 +41,11 @@ public class UserController {
 
     /**
      * List all users in the system
-     * @return list of all users
+     * @return list of all users (mapped to basic DTO)
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users")
-    @PreAuthorize("hasAuthority('admin:read')")
+    @PreAuthorize("hasRole('ADMIN') and hasAuthority('admin:read')")
     public List<UserDTO> getUsers(){
         List<User> users = userService.listUsers();
         return users.stream().map(userDTOmapper).toList();
@@ -56,10 +55,11 @@ public class UserController {
      * Search for user with the given id
      * If there is no user with the given "id", throw a UserNotFoundException
      * @param id
-     * @return User with the given id, with confidential details
+     * @return User with the given id, with confidential details (mapped to detailed DTO)
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users/{id}")
+    @PreAuthorize("hasRole('USER')")
     public UserDetailsDTO getUserDetails(@PathVariable Long id){
         User user = userService.getUserById(id);
         if(user == null) throw new UserNotFoundException(id);
@@ -77,28 +77,42 @@ public class UserController {
      * If there is no user with the given "id", throw a UserNotFoundException
      * @param id
      * @param newUserInfo
-     * @return the updated user
+     * @return the updated user (mapped to detailed DTO)
      */
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/users/{id}")
-    public User updateUser(@PathVariable Long id, @Valid @RequestBody User newUserInfo){
-        User user = userService.updateUser(id, newUserInfo);
+    @PreAuthorize("hasRole('USER')")
+    public UserDetailsDTO updateUser(@PathVariable Long id, @Valid @RequestBody User newUserInfo){
+        User user = userService.getUserById(id);
         if(user == null) throw new UserNotFoundException(id);
-        
-        return user;
+
+        if (authService.isCurrentUser(user.getUsername())) {
+            user = userService.updateUser(id, newUserInfo);
+            // Do mapping if authorized
+            return userDetailsDTOmapper.apply(user);
+        } else {
+            throw new UnauthorizedUserException();
+        }
     }
 
     /**
      * Remove a user with the DELETE request to "/users/{id}"
      * If there is no user with the given "id", throw a UserNotFoundException
      * @param id
+     * @return the deleted user (mapped to simple DTO)
      */
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/users/{id}")
-    public void deleteUser(@PathVariable Long id){
-
-        User user = userService.deleteUserById(id);
+    @PreAuthorize("hasRole('USER')")
+    public UserDTO deleteUser(@PathVariable Long id){
+        User user = userService.getUserById(id);
         if(user == null) throw new UserNotFoundException(id);
 
+        if (authService.isCurrentUser(user.getUsername())) {
+            user = userService.deleteUserById(id);
+            return userDTOmapper.apply(user);
+        } else {
+            throw new UnauthorizedUserException();
+        }
     }
 }

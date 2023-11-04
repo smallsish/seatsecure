@@ -1,13 +1,9 @@
 package com.seatsecure.backend.entities;
 
-import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
-import javax.print.attribute.standard.DateTimeAtCompleted;
-
 import io.micrometer.common.lang.NonNull;
-import jakarta.annotation.Generated;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -104,11 +104,11 @@ public class VenueController {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/venues/{id}")
     @PreAuthorize("hasAuthority('admin:delete')")
-    public Venue deleteVenue(@PathVariable Long id){
+    public VenueDTO deleteVenue(@PathVariable Long id){
         Venue venue = venueService.deleteVenueById(id);
         if(venue == null) throw new VenueNotFoundException(id);
 
-        return venue;
+        return venueDTOmapper.apply(venue);
     }
 
     /**

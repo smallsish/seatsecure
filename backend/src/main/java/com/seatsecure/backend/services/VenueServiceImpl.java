@@ -6,30 +6,17 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.entities.DTOs.VenueEventsDTO;
-import com.seatsecure.backend.entities.DTOs.mappers.VenueEventsDTOmapper;
 import com.seatsecure.backend.repositories.VenueRepository;
 
 @Service
 public class VenueServiceImpl implements VenueService {
 
     private VenueRepository venueRepo;
-    //private VenueEventsDTOmapper venueEventsDTOmapper;
 
-    public VenueServiceImpl(VenueRepository venueRepo){ //}, VenueEventsDTOmapper veDTOmapper) {
+    public VenueServiceImpl(VenueRepository venueRepo){
         this.venueRepo = venueRepo;
-        //venueEventsDTOmapper = veDTOmapper;
+
     }
-
-    // DTO methods
-
-    // @Override
-    // public VenueEventsDTO getVenueEventsDTO(Long id) {
-    //     Venue venue = getVenueById(id);
-    //     if (venue == null) return null;
-
-    //     return venueEventsDTOmapper.apply(venue);
-    // }
 
     @Override
     public List<Venue> listVenues() {
@@ -46,8 +33,10 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
-    public Venue addVenue(Venue u) {
-        return venueRepo.save(u);
+    public Venue addVenue(Venue venueInfo) {
+        Venue v = Venue.builder().name(venueInfo.getName()).address(venueInfo.getAddress()).build();
+        
+        return venueRepo.save(v);
     }
 
     @Override
@@ -61,9 +50,9 @@ public class VenueServiceImpl implements VenueService {
 
         v.setName(newVenueInfo.getName());
         v.setAddress(newVenueInfo.getAddress());
-        venueRepo.save(v);
 
-        return v;
+
+        return venueRepo.save(v);
     }
 
     @Override

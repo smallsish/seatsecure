@@ -1,21 +1,15 @@
 package com.seatsecure.backend.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 
+import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Event;
+import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.entities.DTOs.EventDTO;
-import com.seatsecure.backend.entities.DTOs.EventDetailsDTO;
-import com.seatsecure.backend.entities.DTOs.VenueEventsDTO;
-import com.seatsecure.backend.entities.DTOs.mappers.EventDetailsDTOmapper;
-import com.seatsecure.backend.entities.DTOs.mappers.VenueEventsDTOmapper;
 import com.seatsecure.backend.repositories.EventRepository;
-
-import lombok.NoArgsConstructor;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -27,28 +21,7 @@ public class EventServiceImpl implements EventService {
         this.eventRepo = eventRepo;
         this.vs = vs;
     }
-
-    // DTO methods
-
-    // @Override
-    // public VenueEventsDTO listEventDTOsOfVenue(Long id) {
-    //     Venue venue = vs.getVenueById(id);
-    //     if (venue == null) return null;
-
-    //     return new VenueEventsDTOmapper().apply(venue);
-    // }
-
-    // @Override
-    // public EventVenueDTO getEventVenueById(Long eventId) {
-    //     Optional<Event> e = eventRepo.findById(eventId);
-    //     if (e.isEmpty())
-    //         return null;
-
-    //     return e.map(eventVenueDTOmapper).get();
-    // }
-
-    // Service methods
-
+    
     @Override
     public List<Event> getAll() {
         return eventRepo.findAll();
@@ -90,8 +63,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event addEvent(Event u) {
-        return eventRepo.save(u);
+    public Event addEvent(Event eventInfo) {
+        Event e = Event.builder().name(eventInfo.getName())
+        .startDate(eventInfo.getStartDate())
+        .endDate(eventInfo.getEndDate())
+        .venue(null)
+        .cats(new ArrayList<Category>())
+        .runs(new ArrayList<Run>())
+        .build();
+
+        return eventRepo.save(e);
     }
 
     @Override
@@ -104,9 +85,8 @@ public class EventServiceImpl implements EventService {
         e.setName(newEventInfo.getName());
         e.setStartDate(newEventInfo.getStartDate());
         e.setEndDate(newEventInfo.getEndDate());
-        eventRepo.save(e);
 
-        return e;
+        return eventRepo.save(e);
     }
 
     @Override
@@ -118,9 +98,8 @@ public class EventServiceImpl implements EventService {
 
         // Update database
         e.setVenue(v);
-        eventRepo.save(e);
-
-        return e;
+        
+        return eventRepo.save(e);
     }
 
     /**
@@ -133,11 +112,6 @@ public class EventServiceImpl implements EventService {
         Event event = getEventById(eventId);
         if (event == null)
             return null;
-
-        // Get venue of event
-        // Venue venue = getVenueOfEvent(eventId);
-        // if (venue == null)
-        // return null;
 
         // Delete event from database
         eventRepo.deleteById(eventId);

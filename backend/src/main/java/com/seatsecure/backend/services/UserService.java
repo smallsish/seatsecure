@@ -3,7 +3,6 @@ package com.seatsecure.backend.services;
 import java.util.List;
 
 import com.seatsecure.backend.entities.User;
-import com.seatsecure.backend.entities.DTOs.UserDetailsDTO;
 
 public interface UserService {
     // DTO methods

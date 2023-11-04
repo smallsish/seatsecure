@@ -1,7 +1,5 @@
 package com.seatsecure.backend.entities;
 
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -94,12 +94,12 @@ public class SeatsecureBackendApplication {
 			System.out.println("User token:" + as.register(cust, false).getToken());
 
 			// Save venue
-			vs.addVenue(venue1);
-			vs.addVenue(venue2);
+			venue1 = vs.addVenue(venue1);
+			venue2 = vs.addVenue(venue2);
 
 			// Save events
-			es.addEvent(event1);
-			es.addEvent(event2);
+			event1 = es.addEvent(event1);
+			event2 = es.addEvent(event2);
 
 			// Add new seats to venue
 			ss.addNewSeatsToVenue(venue1.getId(), 10);

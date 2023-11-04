@@ -5,7 +5,6 @@ import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Event;
@@ -19,7 +18,6 @@ import com.seatsecure.backend.entities.DTOs.VenueDTO;
 import com.seatsecure.backend.services.CatService;
 import com.seatsecure.backend.services.EventService;
 import com.seatsecure.backend.services.RunService;
-import com.seatsecure.backend.services.VenueService;
 
 @Component
 public class EventDetailsDTOmapper implements Function<Event, EventDetailsDTO>{
@@ -50,7 +48,7 @@ public class EventDetailsDTOmapper implements Function<Event, EventDetailsDTO>{
         EventDTO eventDTO = eventDTOmapper.apply(e);
 
         Venue venue = es.getVenueOfEvent(eventDTO.getId());
-        VenueDTO venueDTO = venueDTOmapper.apply(venue);
+        VenueDTO venueDTO = venue == null ? null : venueDTOmapper.apply(venue);
 
         List<Run> runs = rs.getRunsOfEvent(e.getId());
         List<RunDTO> runDTOs = runs.stream().map(runDTOmapper).toList();
