@@ -17,31 +17,30 @@ import com.seatsecure.backend.security.auth.AuthenticationService;
 public class UserServiceImpl implements UserService {
    
     private UserRepository userRepo;
-    private AuthenticationService as;
-    private UserDetailsDTOmapper userDetailsDTOmapper;
+    //private UserDetailsDTOmapper userDetailsDTOmapper;
     
 
-    public UserServiceImpl(UserRepository userRepo, AuthenticationService as, UserDetailsDTOmapper udDTOmapper){
+    public UserServiceImpl(UserRepository userRepo) { // AuthenticationService as){ //}, UserDetailsDTOmapper udDTOmapper){
         this.userRepo = userRepo;
-        this.as = as;
-        udDTOmapper = userDetailsDTOmapper;
+        //this.as = as;
+        //udDTOmapper = userDetailsDTOmapper;
     }
 
-    // DTO methods
-    public UserDetailsDTO getUserDetailsDTO(Long id) {
-        // Check if requested user exists
-        User requestedUser = getUserById(id);
-        if (requestedUser == null) return null;
+    // // DTO methods
+    // public UserDetailsDTO getUserDetailsDTO(Long id) {
+    //     // Check if requested user exists
+    //     User requestedUser = getUserById(id);
+    //     if (requestedUser == null) return null;
 
-        // Check if current user is authenticated and is the right user
-        if (as.isCurrentUser(requestedUser.getUsername())) {
-            // Do mapping if authorized
-            return userDetailsDTOmapper.apply(requestedUser);
-        } else {
-            throw new UnauthorizedUserException();
-        }
+    //     // Check if current user is authenticated and is the right user
+    //     if (as.isCurrentUser(requestedUser.getUsername())) {
+    //         // Do mapping if authorized
+    //         return userDetailsDTOmapper.apply(requestedUser);
+    //     } else {
+    //         throw new UnauthorizedUserException();
+    //     }
         
-    }
+    // }
 
 
     // Service methods

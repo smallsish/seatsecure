@@ -19,6 +19,7 @@ import com.seatsecure.backend.entities.Venue;
 import com.seatsecure.backend.entities.DTOs.VenueDTO;
 import com.seatsecure.backend.entities.DTOs.VenueEventsDTO;
 import com.seatsecure.backend.entities.DTOs.mappers.VenueDTOmapper;
+import com.seatsecure.backend.entities.DTOs.mappers.VenueEventsDTOmapper;
 import com.seatsecure.backend.exceptions.VenueCreationError;
 import com.seatsecure.backend.exceptions.VenueNotFoundException;
 import com.seatsecure.backend.services.VenueService;
@@ -28,10 +29,12 @@ import com.seatsecure.backend.services.VenueService;
 public class VenueController {
     private VenueService venueService;
     private VenueDTOmapper venueDTOmapper;
+    private VenueEventsDTOmapper venueEventsDTOmapper;
 
-    public VenueController(VenueService vs, VenueDTOmapper vDTOmapper){
+    public VenueController(VenueService vs, VenueDTOmapper vDTOmapper, VenueEventsDTOmapper veDTOmapper){
         venueService = vs;
         venueDTOmapper = vDTOmapper;
+        venueEventsDTOmapper = veDTOmapper;
     }
 
     /**
@@ -116,9 +119,9 @@ public class VenueController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/venues/{id}/events")
     public VenueEventsDTO getEventsAtVenue(@PathVariable Long id){
-        VenueEventsDTO venue = venueService.getVenueEventsDTO(id);
+        Venue venue = venueService.getVenueById(id);
         if (venue == null) throw new VenueNotFoundException(id);
 
-        return venue;
+        return venueEventsDTOmapper.apply(venue);
     }
 }

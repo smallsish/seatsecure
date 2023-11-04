@@ -10,15 +10,11 @@ import com.seatsecure.backend.entities.DTOs.VenueEventsDTO;
 
 public interface EventService {
     // DTO methods
-    List<EventDetailsDTO> listEventDetailsDTOs();
-
-    EventDetailsDTO getEventDetailsDTOById(Long id);
-
-    VenueEventsDTO listEventDTOsOfVenue(Long id);
-
-    // EventVenueDTO getEventVenueById(Long id);
 
     // Service methods
+
+    List<Event> getAll();
+
     Event getEventById(Long id);
 
     Venue getVenueOfEvent(Long eventId);

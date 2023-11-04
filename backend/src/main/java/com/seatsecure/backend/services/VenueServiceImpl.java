@@ -14,22 +14,22 @@ import com.seatsecure.backend.repositories.VenueRepository;
 public class VenueServiceImpl implements VenueService {
 
     private VenueRepository venueRepo;
-    private VenueEventsDTOmapper venueEventsDTOmapper;
+    //private VenueEventsDTOmapper venueEventsDTOmapper;
 
-    public VenueServiceImpl(VenueRepository venueRepo, VenueEventsDTOmapper veDTOmapper) {
+    public VenueServiceImpl(VenueRepository venueRepo){ //}, VenueEventsDTOmapper veDTOmapper) {
         this.venueRepo = venueRepo;
-        venueEventsDTOmapper = veDTOmapper;
+        //venueEventsDTOmapper = veDTOmapper;
     }
 
     // DTO methods
 
-    @Override
-    public VenueEventsDTO getVenueEventsDTO(Long id) {
-        Venue venue = getVenueById(id);
-        if (venue == null) return null;
+    // @Override
+    // public VenueEventsDTO getVenueEventsDTO(Long id) {
+    //     Venue venue = getVenueById(id);
+    //     if (venue == null) return null;
 
-        return venueEventsDTOmapper.apply(venue);
-    }
+    //     return venueEventsDTOmapper.apply(venue);
+    // }
 
     @Override
     public List<Venue> listVenues() {

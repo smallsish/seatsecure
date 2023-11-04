@@ -1,6 +1,7 @@
 package com.seatsecure.backend.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.DTOs.EventDetailsDTO;
+import com.seatsecure.backend.entities.DTOs.mappers.EventDetailsDTOmapper;
 import com.seatsecure.backend.exceptions.EventCreationError;
 import com.seatsecure.backend.exceptions.EventNotFoundException;
 import com.seatsecure.backend.services.EventService;
@@ -30,9 +32,11 @@ import com.seatsecure.backend.services.EventService;
 @RestController
 public class EventController {
     private EventService eventService;
+    private EventDetailsDTOmapper eventDetailsDTOmapper;
 
-    public EventController(EventService es){
+    public EventController(EventService es, EventDetailsDTOmapper edDTOmapper){
         eventService = es;
+        eventDetailsDTOmapper = edDTOmapper;
     }
 
     /**
@@ -42,7 +46,7 @@ public class EventController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/events")
     public List<EventDetailsDTO> getEvents(){
-        return eventService.listEventDetailsDTOs();
+        return eventService.getAll().stream().map(eventDetailsDTOmapper).collect(Collectors.toList());
     }
 
     /**
@@ -54,10 +58,11 @@ public class EventController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/events/{id}")
     public EventDetailsDTO getEvent(@PathVariable Long id){
-        EventDetailsDTO event = eventService.getEventDetailsDTOById(id);
-        if(event == null) throw new EventNotFoundException(id);
-        
-        return event;
+        // Check if event exists
+        Event event = eventService.getEventById(id);
+        if (event == null) return null;
+
+        return eventDetailsDTOmapper.apply(event);
     }
 
     /**
@@ -72,7 +77,7 @@ public class EventController {
         Event e = eventService.addEvent(event);
         if (e == null) throw new EventCreationError();
         
-        return eventService.getEventDetailsDTOById(e.getId());
+        return eventDetailsDTOmapper.apply(e);
     }
 
 
@@ -90,7 +95,7 @@ public class EventController {
         Event event = eventService.updateEvent(id, newEventInfo);
         if(event == null) throw new EventNotFoundException(id);
 
-        return eventService.getEventDetailsDTOById(id);
+        return eventDetailsDTOmapper.apply(event);
     }
 
     /**

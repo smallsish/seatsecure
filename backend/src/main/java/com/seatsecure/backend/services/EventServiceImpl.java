@@ -22,37 +22,21 @@ public class EventServiceImpl implements EventService {
 
     private EventRepository eventRepo;
     private VenueService vs;
-    private EventDetailsDTOmapper eventDetailsDTOmapper;
 
-    public EventServiceImpl(VenueService vs, EventRepository eventRepo, EventDetailsDTOmapper evDTO) {
+    public EventServiceImpl(VenueService vs, EventRepository eventRepo) {
         this.eventRepo = eventRepo;
         this.vs = vs;
-        this.eventDetailsDTOmapper = evDTO;
     }
 
     // DTO methods
-    @Override
-    public List<EventDetailsDTO> listEventDetailsDTOs() {
-        return eventRepo.findAll().stream().map(eventDetailsDTOmapper).collect(Collectors.toList());
-    }
 
-    @Override
-    public EventDetailsDTO getEventDetailsDTOById(Long id) {
-        // Check if event exists
-        Event event = getEventById(id);
-        if (event == null) return null;
+    // @Override
+    // public VenueEventsDTO listEventDTOsOfVenue(Long id) {
+    //     Venue venue = vs.getVenueById(id);
+    //     if (venue == null) return null;
 
-        return eventDetailsDTOmapper.apply(event);
-
-    }
-
-    @Override
-    public VenueEventsDTO listEventDTOsOfVenue(Long id) {
-        Venue venue = vs.getVenueById(id);
-        if (venue == null) return null;
-
-        return new VenueEventsDTOmapper().apply(venue);
-    }
+    //     return new VenueEventsDTOmapper().apply(venue);
+    // }
 
     // @Override
     // public EventVenueDTO getEventVenueById(Long eventId) {
@@ -64,6 +48,13 @@ public class EventServiceImpl implements EventService {
     // }
 
     // Service methods
+
+    @Override
+    public List<Event> getAll() {
+        return eventRepo.findAll();
+    }
+
+
     @Override
     public Event getEventById(Long id) {
         Optional<Event> e = eventRepo.findById(id);

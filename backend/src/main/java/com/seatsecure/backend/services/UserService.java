@@ -7,7 +7,7 @@ import com.seatsecure.backend.entities.DTOs.UserDetailsDTO;
 
 public interface UserService {
     // DTO methods
-    UserDetailsDTO getUserDetailsDTO(Long id);
+    //UserDetailsDTO getUserDetailsDTO(Long id);
 
     // Service methods
     List<User> listUsers();

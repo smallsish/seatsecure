@@ -8,7 +8,7 @@ import com.seatsecure.backend.entities.DTOs.VenueEventsDTO;
 public interface VenueService {
 
     // DTO methods
-    VenueEventsDTO getVenueEventsDTO(Long id);
+    //VenueEventsDTO getVenueEventsDTO(Long id);
 
     // Service methods
     List<Venue> listVenues();

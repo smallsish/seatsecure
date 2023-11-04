@@ -18,6 +18,8 @@ import com.seatsecure.backend.entities.User;
 import com.seatsecure.backend.entities.DTOs.UserDTO;
 import com.seatsecure.backend.entities.DTOs.UserDetailsDTO;
 import com.seatsecure.backend.entities.DTOs.mappers.UserDTOmapper;
+import com.seatsecure.backend.entities.DTOs.mappers.UserDetailsDTOmapper;
+import com.seatsecure.backend.exceptions.UnauthorizedUserException;
 import com.seatsecure.backend.exceptions.UserNotFoundException;
 import com.seatsecure.backend.security.auth.AuthenticationService;
 import com.seatsecure.backend.services.UserService;
@@ -29,11 +31,13 @@ public class UserController {
     private UserService userService;
     private AuthenticationService authService;
     private UserDTOmapper userDTOmapper;
+    private UserDetailsDTOmapper userDetailsDTOmapper;
 
-    public UserController(UserService us, AuthenticationService as, UserDTOmapper userDTOmapper){
+    public UserController(UserService us, AuthenticationService as, UserDTOmapper userDTOmapper, UserDetailsDTOmapper userDetailsDTOmapper){
         this.userService = us;
         this.authService = as;
         this.userDTOmapper = userDTOmapper;
+        this.userDetailsDTOmapper = userDetailsDTOmapper;
     }
 
     /**
@@ -52,16 +56,20 @@ public class UserController {
      * Search for user with the given id
      * If there is no user with the given "id", throw a UserNotFoundException
      * @param id
-     * @return User with the given id
+     * @return User with the given id, with confidential details
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users/{id}")
     public UserDetailsDTO getUserDetails(@PathVariable Long id){
-        UserDetailsDTO user = userService.getUserDetailsDTO(id);
+        User user = userService.getUserById(id);
         if(user == null) throw new UserNotFoundException(id);
-        
-        return user;
 
+        if (authService.isCurrentUser(user.getUsername())) {
+            // Do mapping if authorized
+            return userDetailsDTOmapper.apply(user);
+        } else {
+            throw new UnauthorizedUserException();
+        }
     }
 
     /**
