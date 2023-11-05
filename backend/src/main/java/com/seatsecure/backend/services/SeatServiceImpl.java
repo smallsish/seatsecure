@@ -3,6 +3,8 @@ package com.seatsecure.backend.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Category;
@@ -14,17 +16,11 @@ import com.seatsecure.backend.repositories.SeatRepository;
 @Service
 public class SeatServiceImpl implements SeatService {
 
+    // Due to the large number of dependencies, lazy setter injection is used (setter injectors are below)
     private SeatRepository seatRepo;
-    private EventService es;
-    private VenueService vs;
-    private CatService cs;
-
-    public SeatServiceImpl(SeatRepository seatRepo, EventService es, VenueService vs, CatService cs) {
-        this.seatRepo = seatRepo;
-        this.es = es;
-        this.vs = vs;
-        this.cs = cs;
-    }
+    private EventService eventService;
+    private VenueService venueService;
+    private CatService catService;
 
     @Override
     public Seat getSeatById(Long id) {
@@ -40,7 +36,7 @@ public class SeatServiceImpl implements SeatService {
     @Override
     public List<Seat> getSeatsOfVenue(Long venueId) {
         // Check if venue exists
-        Venue v = vs.getVenueById(venueId);
+        Venue v = venueService.getVenueById(venueId);
         if (v == null) {
             return null;
         }
@@ -52,7 +48,7 @@ public class SeatServiceImpl implements SeatService {
     @Override
     public List<Seat> getSeatsOfCat(Long catId) {
         // Check if cat exists
-        Category cat = cs.getCatById(catId);
+        Category cat = catService.getCatById(catId);
         if (cat == null)
             return null;
 
@@ -77,7 +73,7 @@ public class SeatServiceImpl implements SeatService {
     @Override
     public Venue addNewSeatsToVenue(Long id, int numSeats) {
         // Check if venue exists
-        Venue v = vs.getVenueById(id);
+        Venue v = venueService.getVenueById(id);
         if (v == null) {
             return null;
         }
@@ -92,14 +88,14 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public Event assignCatsToSeats(Long eventId, int startRangeIndex, int endRangeIndex, Category cat) {
+    public Event assignCatToSeats(Long eventId, int startRangeIndex, int endRangeIndex, Category cat) {
         // Check if event exists
-        Event e = es.getEventById(eventId);
+        Event e = eventService.getEventById(eventId);
         if (e == null)
             return null;
 
         // Check if event venue exists
-        Venue v = es.getVenueOfEvent(eventId);
+        Venue v = eventService.getVenueOfEvent(eventId);
         if (v == null)
             return null;
 
@@ -132,6 +128,34 @@ public class SeatServiceImpl implements SeatService {
         seatRepo.deleteById(id);
 
         return v;
+    }
+
+        /*
+     * SETTER INJECTORS
+     */
+
+    @Lazy
+    @Autowired
+    public void injectSeatRepo(SeatRepository sr) {
+        seatRepo = sr;
+    }
+
+    @Lazy
+    @Autowired
+    public void injectEventService(EventService es) {
+        eventService = es;
+    }
+
+    @Lazy
+    @Autowired
+    public void injectVenueService(VenueService vs) {
+        venueService = vs;
+    }
+
+    @Lazy
+    @Autowired
+    public void injectCatService(CatService cs) {
+        catService = cs;
     }
 
 }

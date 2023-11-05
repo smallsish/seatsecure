@@ -13,8 +13,8 @@ public class VenueServiceImpl implements VenueService {
 
     private VenueRepository venueRepo;
 
-    public VenueServiceImpl(VenueRepository venueRepo){
-        this.venueRepo = venueRepo;
+    public VenueServiceImpl(VenueRepository vr){
+        venueRepo = vr;
 
     }
 

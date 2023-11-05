@@ -2,6 +2,8 @@ package com.seatsecure.backend;
 
 import java.sql.Date;
 import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,12 +17,15 @@ import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Ticket;
+import com.seatsecure.backend.entities.User;
 import com.seatsecure.backend.security.auth.AuthenticationService;
 import com.seatsecure.backend.security.auth.RegisterRequest;
 import com.seatsecure.backend.services.CatService;
 import com.seatsecure.backend.services.EventService;
 import com.seatsecure.backend.services.RunService;
 import com.seatsecure.backend.services.SeatService;
+import com.seatsecure.backend.services.TicketService;
+import com.seatsecure.backend.services.UserService;
 import com.seatsecure.backend.services.VenueService;
 
 @SpringBootApplication
@@ -31,7 +36,10 @@ public class SeatsecureBackendApplication {
 	}
 
 	@Bean
-	public CommandLineRunner addMocks(AuthenticationService as, EventService es, VenueService vs, CatService cs, RunService rs, SeatService ss) {
+	@Autowired
+	public CommandLineRunner addMocks(AuthenticationService as, EventService es,
+	VenueService vs, CatService cs, RunService rs, SeatService ss,
+	TicketService ts, UserService us) {
 		return args -> {
 			// Create mock user / admin
 			RegisterRequest admin = RegisterRequest.builder().firstName("admin").lastName("Hi").email("admin@email.com")
@@ -84,14 +92,12 @@ public class SeatsecureBackendApplication {
 					.startDate(new Date(System.currentTimeMillis())).endDate(new Date(System.currentTimeMillis()))
 					.event(null).tickets(new ArrayList<Ticket>()).build();
 
-			// // Create tickets
-			// Ticket ticket1 = Ticket.builder().seat(null).user(null).run(null).build();
-			// Ticket ticket2 = Ticket.builder().seat(null).user(null).run(null).build();
-			// Ticket ticket3 = Ticket.builder().seat(null).user(null).run(null).build();
 
 			// Save users (and print token)
 			System.out.println("Admin token:" + as.register(admin, true).getToken());
 			System.out.println("User token:" + as.register(cust, false).getToken());
+			User a = us.getUserByUsername(admin.getUsername());
+			User c = us.getUserByUsername(cust.getUsername());
 
 			// Save venue
 			venue1 = vs.addVenue(venue1);
@@ -104,6 +110,9 @@ public class SeatsecureBackendApplication {
 			// Add new seats to venue
 			ss.addNewSeatsToVenue(venue1.getId(), 10);
 			ss.addNewSeatsToVenue(venue2.getId(), 10);
+
+			// Add tickets to seats
+			ts.addNewTicketsToSeats(1, 10);
 
 			// Update events with venue
 			es.setVenueForEvent(event1.getId(), venue1.getId());
@@ -120,13 +129,16 @@ public class SeatsecureBackendApplication {
 			rs.addNewRunToEvent(event2.getId(), event2_run1);
 
 			// Assign cats to seats in event 1
-			ss.assignCatsToSeats(event1.getId(), 0, 4, event1_cat1);
-			ss.assignCatsToSeats(event1.getId(), 5, 9, event1_cat2);
+			ss.assignCatToSeats(event1.getId(), 1, 5, event1_cat1);
+			ss.assignCatToSeats(event1.getId(), 6, 10, event1_cat2);
 
 			// Assign cats to seats in event 2
-			ss.assignCatsToSeats(event2.getId(), 0, 4, event1_cat1);
-			ss.assignCatsToSeats(event2.getId(), 5, 9, event1_cat2);
+			ss.assignCatToSeats(event2.getId(), 1, 5, event2_cat1);
+			ss.assignCatToSeats(event2.getId(), 6, 10, event2_cat2);
 
+			// Assign ticket to user
+			ts.assignTicketToUser(c.getId(), (long) 5);
+			ts.assignTicketToUser(c.getId(), (long) 6);
 		};
 
 	}

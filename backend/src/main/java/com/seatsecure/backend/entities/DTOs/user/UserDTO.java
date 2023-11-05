@@ -1,4 +1,4 @@
-package com.seatsecure.backend.entities.DTOs;
+package com.seatsecure.backend.entities.DTOs.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

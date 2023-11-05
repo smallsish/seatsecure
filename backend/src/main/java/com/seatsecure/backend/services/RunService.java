@@ -14,7 +14,7 @@ public interface RunService {
     List<Run> getRunsOfEvent(Long eventId);
 
     Event addNewRunToEvent(Long eventId, Run run);
-
+    
     Run updateRun(Long id, Run newRunInfo);
 
     Run deleteRunById(Long runId);

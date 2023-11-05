@@ -2,8 +2,8 @@
 ### GLOBAL VARIABLES ###
 ########################
 @baseurl = http://localhost:8080/api/v1
-@bearertoken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTEwNTU1OCwiZXhwIjoxNjk5MTA2OTk4fQ.EwPXBv5_euM-PMQAswKj49PNXmavUgwDEZEArsWL1js
-@userbearertoken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5MTA1NTU4LCJleHAiOjE2OTkxMDY5OTh9.9v_a5OOi9EXmEOjJ8_AMqW0pUSpPLamTA2itPepDOPk
+@adminBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTE4MDY4MiwiZXhwIjoxNjk5MTgyMTIyfQ.xeyp_0nn_5XO_gehqsusSzuEkkskQWh0GkcyZk_RAn
+@userBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5MTgwNjgyLCJleHAiOjE2OTkxODIxMjJ9.UGRgvj4dr-GSggOHMmFndjjw-dkZfLxEuYLgBzqvdwM
 
 ####################
 ### USER METHODS ###
@@ -11,13 +11,13 @@
 
 /// Get users
 GET {{baseurl}}/users
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 ###
 
 // Get details of user
 GET {{baseurl}}/users/2
-Authorization: Bearer {{userbearertoken}}
+Authorization: Bearer {{userBearerToken}}
 
 ###
 
@@ -53,20 +53,20 @@ Content-Type: application/json
 
 // Get events
 GET {{baseurl}}/events
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 ###
 
 // Get an event
 GET {{baseurl}}/events/1
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 ###
 
 // Add an event
 POST {{baseurl}}/events
 Content-Type: application/json
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 {
     "name" : "The Genesis Event",
@@ -79,7 +79,7 @@ Authorization: Bearer {{bearertoken}}
 // Update an event's details (not including venue, cat and runs)
 PUT {{baseurl}}/events/1
 Content-Type: application/json
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 {
     "name" : "The Genesys Event",
@@ -91,14 +91,14 @@ Authorization: Bearer {{bearertoken}}
 
 // Update an event's venue
 PUT {{baseurl}}/events/1/venue/2
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 ###
 
 // Add new run to event
 POST {{baseurl}}/events/1/runs
 Content-Type: application/json
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 {
     "name" : "Special run for event 1",
@@ -111,14 +111,14 @@ Authorization: Bearer {{bearertoken}}
 
 // Get runs of event
 GET {{baseurl}}/events/1/runs
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 ###
 
 // Update run
 PUT {{baseurl}}/runs/1
 Content-Type: application/json
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 {
     "name" : "An updated run",
@@ -131,13 +131,13 @@ Authorization: Bearer {{bearertoken}}
 
 // Delete run
 DELETE {{baseurl}}/runs/1
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 ###
 
 // Delete an event
 DELETE {{baseurl}}/events/1
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 
 
@@ -147,20 +147,20 @@ Authorization: Bearer {{bearertoken}}
 
 // Get venues
 GET {{baseurl}}/venues
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 ###
 
 // Get a venue
 GET {{baseurl}}/venues/1
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 ###
 
 // Add an venue
 POST {{baseurl}}/venues
 Content-Type: application/json
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 {
     "name" : "The Genesis Stadium",
@@ -172,7 +172,7 @@ Authorization: Bearer {{bearertoken}}
 // Update a venue
 PUT {{baseurl}}/venues/1
 Content-Type: application/json
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
 {
     "name" : "The Genesys Stadium",
@@ -183,5 +183,19 @@ Authorization: Bearer {{bearertoken}}
 
 // Delete an venue
 DELETE {{baseurl}}/venues/1
-Authorization: Bearer {{bearertoken}}
+Authorization: Bearer {{adminBearerToken}}
 
+
+######################
+### TICKET METHODS ###
+######################
+
+// Get user's tickets
+GET {{baseurl}}/users/2/tickets
+Authorization: Bearer {{userBearerToken}}
+
+###
+
+// Assign new ticket to user
+PUT {{baseurl}}/users/2/tickets/3
+Authorization: Bearer {{userBearerToken}}

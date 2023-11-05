@@ -1,11 +1,11 @@
-package com.seatsecure.backend.entities.DTOs.mappers;
+package com.seatsecure.backend.entities.DTO_mappers.venue;
 
 import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
 import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.entities.DTOs.VenueDTO;
+import com.seatsecure.backend.entities.DTOs.venue.VenueDTO;
 
 @Component
 public class VenueDTOmapper implements Function<Venue,VenueDTO>{

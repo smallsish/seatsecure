@@ -1,6 +1,8 @@
-package com.seatsecure.backend.entities.DTOs;
+package com.seatsecure.backend.entities.DTOs.event;
 
 import java.util.List;
+
+import com.seatsecure.backend.entities.DTOs.cat.CatDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventDetailsDTO{
+public class EventCatsDTO{
     private EventDTO event;
-    private VenueDTO venue;
-    private List<RunDTO> runs;
     private List<CatDTO> cats;
 }

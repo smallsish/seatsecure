@@ -11,13 +11,12 @@ import com.seatsecure.backend.repositories.CatRepository;
 @Service
 public class CatServiceImpl implements CatService {
 
-    private EventService es;
-    // private SeatService ss;
+    private EventService eventService;
     private CatRepository catRepo;
 
-    public CatServiceImpl(EventService es, CatRepository catRepo) {
-        this.es = es;
-        this.catRepo = catRepo;
+    public CatServiceImpl(EventService es, CatRepository cr) {
+        eventService = es;
+        catRepo = cr;
     }
 
     @Override
@@ -48,7 +47,7 @@ public class CatServiceImpl implements CatService {
     @Override
     public List<Category> getCatsOfEvent(Long eventId) {
         // Check if event exists
-        Event e = es.getEventById(eventId);
+        Event e = eventService.getEventById(eventId);
         if (e == null)
             return null;
 
@@ -57,18 +56,18 @@ public class CatServiceImpl implements CatService {
     }
 
     @Override
-    public Event addNewCatToEvent(Long eventId, Category cat) {
+    public Category addNewCatToEvent(Long eventId, Category cat) {
         // Check if event exists
-        Event e = es.getEventById(eventId);
+        Event e = eventService.getEventById(eventId);
         if (e == null)
             return null;
 
         // Set cat's event to e, save new cat to database
-        cat.setEvent(e);
-        catRepo.save(cat);
+        Category c = Category.builder().name(cat.getName()).description(cat.getDescription()).price(cat.getPrice()).build();
+        c.setEvent(e);
+        catRepo.save(c);
 
-        return e;
-
+        return c;
     }
 
     @Override
@@ -92,11 +91,6 @@ public class CatServiceImpl implements CatService {
         Category c = getCatById(id);
         if (c == null)
             return null;
-
-        // Get event of cat
-        // Event e = getEventOfCat(id);
-        // if (e == null)
-        //     return null;
 
         // Delete cat from database
         catRepo.deleteById(id);

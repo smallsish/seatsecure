@@ -1,13 +1,10 @@
 package com.seatsecure.backend.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Run;
-import com.seatsecure.backend.entities.DTOs.EventDetailsDTO;
-import com.seatsecure.backend.entities.DTOs.RunDTO;
-import com.seatsecure.backend.entities.DTOs.mappers.EventDetailsDTOmapper;
-import com.seatsecure.backend.entities.DTOs.mappers.RunDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.event.EventDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.event.EventDetailsDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.event.EventRunsDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.event.EventVenueDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.run.RunDTOmapper;
+import com.seatsecure.backend.entities.DTOs.event.EventDTO;
+import com.seatsecure.backend.entities.DTOs.event.EventDetailsDTO;
+import com.seatsecure.backend.entities.DTOs.event.EventRunsDTO;
+import com.seatsecure.backend.entities.DTOs.event.EventVenueDTO;
+import com.seatsecure.backend.entities.DTOs.run.RunDTO;
 import com.seatsecure.backend.exceptions.EventCreationError;
 import com.seatsecure.backend.exceptions.EventNotFoundException;
 import com.seatsecure.backend.exceptions.RunNotFoundException;
@@ -36,25 +39,30 @@ import com.seatsecure.backend.services.RunService;
 public class EventController {
     private EventService eventService;
     private RunService runService;
-    private EventDetailsDTOmapper eventDetailsDTOmapper;
+    private EventVenueDTOmapper eventVenueDTOmapper;
     private RunDTOmapper runDTOmapper;
+    private EventDTOmapper eventDTOmapper;
+    private EventRunsDTOmapper eventRunsDTOmapper;
 
-    public EventController(EventService es, EventDetailsDTOmapper edDTOmapper, RunService rs, RunDTOmapper rDTOmapper) {
+    public EventController(EventService es, EventVenueDTOmapper evDTOmapper,
+    RunService rs, RunDTOmapper rDTOmapper, EventDTOmapper eDTOmapper, EventRunsDTOmapper erDTOmapper) {
         eventService = es;
         runService = rs;
-        eventDetailsDTOmapper = edDTOmapper;
+        eventVenueDTOmapper = evDTOmapper;
         runDTOmapper = rDTOmapper;
+        eventDTOmapper = eDTOmapper;
+        eventRunsDTOmapper = erDTOmapper;
     }
 
     /**
-     * List all existing events
+     * List all existing events and their venues
      * 
-     * @return list of all events (all mapped to DTO)
+     * @return list of all events and their venues (mapped to DTO)
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/events")
-    public List<EventDetailsDTO> getEvents() {
-        return eventService.getAll().stream().map(eventDetailsDTOmapper).collect(Collectors.toList());
+    public List<EventVenueDTO> getEventVenues() {
+        return eventService.getAll().stream().map(eventVenueDTOmapper).collect(Collectors.toList());
     }
 
     /**
@@ -66,30 +74,14 @@ public class EventController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/events/{id}")
-    public EventDetailsDTO getEvent(@PathVariable Long id) {
+    public EventVenueDTO getEventVenue(@PathVariable Long id) {
         // Check if event exists
         Event event = eventService.getEventById(id);
         if (event == null)
             throw new EventNotFoundException(id);
 
-        return eventDetailsDTOmapper.apply(event);
+        return eventVenueDTOmapper.apply(event);
     }
-
-    // @ResponseStatus(HttpStatus.OK)
-    // @GetMapping("/events/{id}/runs")
-    // public ResponseEntity<List<Object>> getRunsOfEvent(@PathVariable Long id){
-    // // Check if event exists
-    // Event e = eventService.getEventById(id);
-    // if (e == null) throw new EventNotFoundException(id);
-
-    // List<Run> runs = runService.getRunsOfEvent(id);
-    // EventDetailsDTO edDTO = eventDetailsDTOmapper.apply(e);
-    // List<Object> eventAndRuns = new ArrayList<>();
-    // eventAndRuns.add(runs);
-    // eventAndRuns.add(edDTO);
-
-    // return ResponseEntity.of(eventAndRuns);
-    // }
 
     /**
      * Add a new event with POST request to "/events"
@@ -102,12 +94,12 @@ public class EventController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/events")
     @PreAuthorize("hasAuthority('admin:create')")
-    public EventDetailsDTO addEvent(@Valid @RequestBody Event event) {
+    public EventDTO addEvent(@Valid @RequestBody Event event) {
         Event e = eventService.addEvent(event);
         if (e == null)
             throw new EventCreationError();
 
-        return eventDetailsDTOmapper.apply(e);
+        return eventDTOmapper.apply(e);
     }
 
     /**
@@ -121,12 +113,12 @@ public class EventController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/events/{id}")
     @PreAuthorize("hasAuthority('admin:update')")
-    public EventDetailsDTO updateEvent(@PathVariable Long id, @Valid @RequestBody Event newEventInfo) {
+    public EventDTO updateEventBasic(@PathVariable Long id, @Valid @RequestBody Event newEventInfo) {
         Event event = eventService.updateEvent(id, newEventInfo);
         if (event == null)
             throw new EventNotFoundException(id);
 
-        return eventDetailsDTOmapper.apply(event);
+        return eventDTOmapper.apply(event);
     }
 
     /**
@@ -138,13 +130,13 @@ public class EventController {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/events/{id}")
     @PreAuthorize("hasAuthority('admin:delete')")
-    public void deleteEvent(@PathVariable Long id) {
+    public EventDTO deleteEvent(@PathVariable Long id) {
 
         Event event = eventService.deleteEventById(id);
         if (event == null)
             throw new EventNotFoundException(id);
 
-        // return eventDetailsDTOmapper.apply(event);
+        return eventDTOmapper.apply(event);
     }
 
     /**
@@ -157,13 +149,13 @@ public class EventController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/events/{eventId}/venue/{venueId}")
     @PreAuthorize("hasAuthority('admin:update')")
-    public EventDetailsDTO updateVenueOfEvent(@PathVariable("eventId") Long eventId,
+    public EventVenueDTO updateVenueOfEvent(@PathVariable("eventId") Long eventId,
             @PathVariable("venueId") Long venueId) {
         Event e = eventService.setVenueForEvent(eventId, venueId);
         if (e == null)
             throw new EventNotFoundException(eventId);
 
-        return eventDetailsDTOmapper.apply(e);
+        return eventVenueDTOmapper.apply(e);
     }
 
     /**
@@ -176,12 +168,12 @@ public class EventController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/events/{id}/runs")
     @PreAuthorize("hasAuthority('admin:create')")
-    public EventDetailsDTO addRunToEvent(@PathVariable Long id, @Valid @RequestBody Run runInfo) {
+    public EventRunsDTO addRunToEvent(@PathVariable Long id, @Valid @RequestBody Run runInfo) {
         Event e = runService.addNewRunToEvent(id, runInfo);
         if (e == null)
             throw new EventNotFoundException(id);
 
-        return eventDetailsDTOmapper.apply(e);
+        return eventRunsDTOmapper.apply(e);
     }
 
     /**
@@ -220,7 +212,7 @@ public class EventController {
     }
 
     /**
-     * Delete an existing run
+     * Delete an existing run v
      * @param runId
      * @return the deleted run (mapped to DTO)
      */

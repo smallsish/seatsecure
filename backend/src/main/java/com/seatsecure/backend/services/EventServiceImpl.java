@@ -15,11 +15,11 @@ import com.seatsecure.backend.repositories.EventRepository;
 public class EventServiceImpl implements EventService {
 
     private EventRepository eventRepo;
-    private VenueService vs;
+    private VenueService venueService;
 
-    public EventServiceImpl(VenueService vs, EventRepository eventRepo) {
-        this.eventRepo = eventRepo;
-        this.vs = vs;
+    public EventServiceImpl(VenueService vs, EventRepository er) {
+        eventRepo = er;
+        venueService = vs;
     }
     
     @Override
@@ -54,7 +54,7 @@ public class EventServiceImpl implements EventService {
 
     public List<Event> getEventsOfVenue(Long venueId) {
         // Check if venue exists
-        Venue v = vs.getVenueById(venueId);
+        Venue v = venueService.getVenueById(venueId);
         if (v == null)
             return null;
 
@@ -92,13 +92,12 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event setVenueForEvent(Long eventId, Long venueId) {
         Event e = getEventById(eventId);
-        Venue v = vs.getVenueById(venueId);
+        Venue v = venueService.getVenueById(venueId);
         if (e == null || v == null)
             return null;
 
         // Update database
         e.setVenue(v);
-        
         return eventRepo.save(e);
     }
 

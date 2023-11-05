@@ -1,11 +1,11 @@
-package com.seatsecure.backend.entities.DTOs.mappers;
+package com.seatsecure.backend.entities.DTO_mappers.cat;
 
 import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
 import com.seatsecure.backend.entities.Category;
-import com.seatsecure.backend.entities.DTOs.CatDTO;
+import com.seatsecure.backend.entities.DTOs.cat.CatDTO;
 
 @Component
 public class CatDTOmapper implements Function<Category, CatDTO>{

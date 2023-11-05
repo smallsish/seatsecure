@@ -72,7 +72,7 @@ public class User implements UserDetails {
 
     private Integer phoneNumber; // Check validity
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "user")
     private List<Ticket> ticketsPurchased;
 
 

@@ -1,4 +1,4 @@
-package com.seatsecure.backend.entities.DTOs.mappers;
+package com.seatsecure.backend.entities.DTO_mappers.run;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -7,7 +7,7 @@ import java.util.function.Function;
 import org.springframework.stereotype.Component;
 
 import com.seatsecure.backend.entities.Run;
-import com.seatsecure.backend.entities.DTOs.RunDTO;
+import com.seatsecure.backend.entities.DTOs.run.RunDTO;
 
 @Component
 public class RunDTOmapper implements Function<Run, RunDTO>{

@@ -46,6 +46,6 @@ public class Run {
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @OneToMany(mappedBy = "run", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "run")
     private List<Ticket> tickets;
 }

@@ -13,7 +13,7 @@ public interface CatService {
 
     List<Category> getCatsOfEvent(Long eventId);
 
-    Event addNewCatToEvent(Long eventId, Category cat);
+    Category addNewCatToEvent(Long eventId, Category cat);
 
     Category updateCat(Long id, Category newCatInfo);
 

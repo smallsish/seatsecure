@@ -15,28 +15,38 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.User;
-import com.seatsecure.backend.entities.DTOs.UserDTO;
-import com.seatsecure.backend.entities.DTOs.UserDetailsDTO;
-import com.seatsecure.backend.entities.DTOs.mappers.UserDTOmapper;
-import com.seatsecure.backend.entities.DTOs.mappers.UserDetailsDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.user.UserDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.user.UserDetailsDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.user.UserTicketsDTOmapper;
+import com.seatsecure.backend.entities.DTOs.user.UserDTO;
+import com.seatsecure.backend.entities.DTOs.user.UserDetailsDTO;
+import com.seatsecure.backend.entities.DTOs.user.UserTicketsDTO;
 import com.seatsecure.backend.exceptions.UnauthorizedUserException;
 import com.seatsecure.backend.exceptions.UserNotFoundException;
 import com.seatsecure.backend.security.auth.AuthenticationService;
+import com.seatsecure.backend.services.TicketService;
 import com.seatsecure.backend.services.UserService;
 
 @RequestMapping("/api/v1")
 @RestController
+@PreAuthorize("hasRole('USER')")
 public class UserController {
     private UserService userService;
+    private TicketService ticketService;
     private AuthenticationService authService;
     private UserDTOmapper userDTOmapper;
     private UserDetailsDTOmapper userDetailsDTOmapper;
+    private UserTicketsDTOmapper userTicketsDTOmapper;
 
-    public UserController(UserService us, AuthenticationService as, UserDTOmapper userDTOmapper, UserDetailsDTOmapper userDetailsDTOmapper){
-        this.userService = us;
-        this.authService = as;
-        this.userDTOmapper = userDTOmapper;
-        this.userDetailsDTOmapper = userDetailsDTOmapper;
+    public UserController(UserService us, TicketService ts, AuthenticationService as, 
+    UserDTOmapper uDTOmapper, UserDetailsDTOmapper udDTOmapper,
+    UserTicketsDTOmapper utDTOmapper){
+        userService = us;
+        ticketService = ts;
+        authService = as;
+        userDTOmapper = uDTOmapper;
+        userDetailsDTOmapper = udDTOmapper;
+        userTicketsDTOmapper= utDTOmapper;
     }
 
     /**
@@ -59,7 +69,6 @@ public class UserController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users/{id}")
-    @PreAuthorize("hasRole('USER')")
     public UserDetailsDTO getUserDetails(@PathVariable Long id){
         User user = userService.getUserById(id);
         if(user == null) throw new UserNotFoundException(id);
@@ -81,7 +90,6 @@ public class UserController {
      */
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/users/{id}")
-    @PreAuthorize("hasRole('USER')")
     public UserDetailsDTO updateUser(@PathVariable Long id, @Valid @RequestBody User newUserInfo){
         User user = userService.getUserById(id);
         if(user == null) throw new UserNotFoundException(id);
@@ -103,7 +111,6 @@ public class UserController {
      */
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/users/{id}")
-    @PreAuthorize("hasRole('USER')")
     public UserDTO deleteUser(@PathVariable Long id){
         User user = userService.getUserById(id);
         if(user == null) throw new UserNotFoundException(id);
@@ -111,6 +118,47 @@ public class UserController {
         if (authService.isCurrentUser(user.getUsername())) {
             user = userService.deleteUserById(id);
             return userDTOmapper.apply(user);
+        } else {
+            throw new UnauthorizedUserException();
+        }
+    }
+
+        /**
+     * Remove a user with the DELETE request to "/users/{id}"
+     * If there is no user with the given "id", throw a UserNotFoundException
+     * @param id
+     * @return the deleted user (mapped to simple DTO)
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/users/{id}/tickets")
+    public UserTicketsDTO getTicketsOfUser(@PathVariable Long id){
+        User user = userService.getUserById(id);
+        if(user == null) throw new UserNotFoundException(id);
+
+        if (authService.isCurrentUser(user.getUsername())) {
+            return userTicketsDTOmapper.apply(user);
+        } else {
+            throw new UnauthorizedUserException();
+        }
+    }
+
+            /**
+     * Remove a user with the DELETE request to "/users/{id}"
+     * If there is no user with the given "id", throw a UserNotFoundException
+     * @param id
+     * @return the deleted user (mapped to simple DTO)
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/users/{userId}/tickets/{ticketId}")
+    public UserTicketsDTO assignTicketToUser(@PathVariable("userId") Long userId, @PathVariable("ticketId") Long ticketId){
+        User user = userService.getUserById(userId);
+        if(user == null) throw new UserNotFoundException(userId);
+
+        if (authService.isCurrentUser(user.getUsername())) {
+            user = ticketService.assignTicketToUser(user.getId(), ticketId);
+            // The line above may behave strangely because null is returned in various circumstances,
+            // not only when user is non-existent
+            return userTicketsDTOmapper.apply(user);
         } else {
             throw new UnauthorizedUserException();
         }
