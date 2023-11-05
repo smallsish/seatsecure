@@ -64,7 +64,8 @@
     border: 0.5px solid #ffffff;
     background-image: url('../../images/User.jpg');
     background-size: cover;
-    background-position: 400px 0; /* Adjust the left position (400px) */
+    background-position: 400px 0;
+    border-radius: 50%; 
 }
 
 
@@ -131,7 +132,7 @@
 
     
 }
-.event-button input{
+.ticket-button input{
     background-color:#f4bd19;
     border:none;
     color: #301934;
@@ -143,6 +144,25 @@
     font-weight: 600;
     line-height: normal;
     cursor: pointer;
+}
+.ticket-button{
+    display:grid;
+    width:400px;
+    grid-template-columns:1fr;
+    grid-template-rows:1fr;
+    background-color: #f4bd19;
+    border-radius: 10px;
+    margin-top:100px;
+    opacity: 90%;
+    margin-left:200px;
+    padding: 5px 50px;
+    place-content: center;
+    border: none;
+    outline: none;
+    position: relative;
+    top: -60px; 
+
+    
 }
 
 .event-text-details {

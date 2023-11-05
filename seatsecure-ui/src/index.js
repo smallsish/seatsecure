@@ -13,6 +13,7 @@ import EventsPage from './pages/Events/EventsPage';
 import RegistrationPage from './pages/Registration/RegistrationPage';
 import EventDetailsPage from './pages/EventDetails/EventDetailsPage';
 import UserProfilePage  from './pages/UserProfile/UserProfilePage';
+import TicketDetails from './pages/TicketDetails/TicketDetails';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   },{
     path:"UserProfile",
     element:<UserProfilePage/>,
+  } , {
+    path:"TicketDetails",
+    element:<TicketDetails/>
+
   }
 
 ]);

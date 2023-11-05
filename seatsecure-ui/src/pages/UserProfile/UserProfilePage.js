@@ -48,6 +48,10 @@ const UserProfilePage = ()  =>{
                 <div className="user-div">
                         <div>
 
+            <div className ="event-div-text">User Profile</div>
+            <div className="event-divider-line"></div> 
+                   
+
             <div className = "user-picture"></div>
 
 
@@ -75,6 +79,16 @@ const UserProfilePage = ()  =>{
             <div className ="User-div-text">
             Role:<span className="custom-font"> {data? data.role: 'Loading'} </span>
             </div>
+            
+            {data? (
+            <Link to="/TicketDetails">
+            <div className="ticket-button">  
+                        <input className="ticket-button-input" type="button" value="View Tickets" />
+                        </div>
+                       </Link> )   
+            :null }
+
+                
 
         </div>
         </div>
