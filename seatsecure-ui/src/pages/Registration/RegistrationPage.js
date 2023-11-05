@@ -38,13 +38,13 @@ function RegistrationPage() {
                     withCredentials: true
                 }
             );
-                // .then()
-                // .catch(err => {setErrMsg(err.toString())})
-        // console.log(JSON.stringify(response?.data));
-        // const token = response?.data?.token;
-        // const isLoggedIn = true;
-        // Commented out authentication because user level auth is not capable of retrieving user info
-        // setAuth({ token, isLoggedIn });
+            // .then()
+            // .catch(err => {setErrMsg(err.toString())})
+            // console.log(JSON.stringify(response?.data));
+            // const token = response?.data?.token;
+            // const isLoggedIn = true;
+            // Commented out authentication because user level auth is not capable of retrieving user info
+            // setAuth({ token, isLoggedIn });
             // console.log(errMsg);
             navigate('/login');
             alert("Successfully registered, please log in.");
@@ -62,8 +62,7 @@ function RegistrationPage() {
         setEmail("testEmail@gmail.com");
         setUsername("john_doe");
         setPassword("password");
-      };
-      
+    };
 
     return (
         <div className="registration-container">
@@ -85,11 +84,11 @@ function RegistrationPage() {
                             <div className="gender-structure">
                                 <div>Gender:</div>
                                 <div className="radio-structure">
-                                    <input type="radio" className='register-radio' name="gender" value="MALE" onChange={(e) => setGender(e.target.value)}/>
+                                    <input type="radio" className='register-radio' name="gender" value="MALE" onChange={(e) => setGender(e.target.value)} />
                                     <label>Male</label>
                                 </div>
                                 <div className="radio-structure">
-                                    <input type="radio" className='register-radio' name="gender" value="FEMALE" onChange={(e) => setGender(e.target.value)}/>
+                                    <input type="radio" className='register-radio' name="gender" value="FEMALE" onChange={(e) => setGender(e.target.value)} />
                                     <label>Female</label>
                                 </div>
                             </div>
@@ -109,7 +108,7 @@ function RegistrationPage() {
                         </div>
                         <div className="registration-input-icon submit" id='register-submit'><input type="submit" value="Sign Up" /></div>
                         {/* <div className="error">{errMsg}</div> */}
-                        { errMsg && <div className="error"> { errMsg } </div> }
+                        {errMsg && <div className="error"> {errMsg} </div>}
                     </form>
                     <div className="form-text"><Link to="/login">Have an existing account? <span style={{ color: '#F4C430' }}>Sign In</span></Link></div>
                 </div>
@@ -117,9 +116,7 @@ function RegistrationPage() {
             <div className="registration-footer">
             </div>
         </div>
-
     );
-
 }
 
 export default RegistrationPage;
