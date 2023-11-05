@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Run;
+import com.seatsecure.backend.entities.TicketUserQueue;
 import com.seatsecure.backend.entities.Venue;
 import com.seatsecure.backend.repositories.RunRepository;
 
@@ -95,6 +96,13 @@ public class RunServiceImpl implements RunService {
         runRepo.deleteById(runId);
 
         return run;
+    }
+
+    @Override
+    public List<TicketUserQueue> getQueueofRun(Long runId){
+        Run particularRun = getRunById(runId);
+        List<TicketUserQueue> queue = particularRun.getQueue();
+        return queue;
     }
 
 }

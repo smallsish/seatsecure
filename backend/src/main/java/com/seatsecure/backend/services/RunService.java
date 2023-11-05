@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Run;
+import com.seatsecure.backend.entities.TicketUserQueue;
 
 public interface RunService {
 
@@ -18,5 +19,7 @@ public interface RunService {
     Run updateRun(Long id, Run newRunInfo);
 
     Run deleteRunById(Long runId);
+
+    List<TicketUserQueue> getQueueofRun(Long runId);
 
 }
