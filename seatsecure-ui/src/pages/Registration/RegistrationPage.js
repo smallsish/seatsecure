@@ -85,11 +85,11 @@ function RegistrationPage() {
                             <div className="gender-structure">
                                 <div>Gender:</div>
                                 <div className="radio-structure">
-                                    <input type="radio" name="gender" value="MALE" onChange={(e) => setGender(e.target.value)}/>
+                                    <input type="radio" className='register-radio' name="gender" value="MALE" onChange={(e) => setGender(e.target.value)}/>
                                     <label>Male</label>
                                 </div>
                                 <div className="radio-structure">
-                                    <input type="radio" name="gender" value="FEMALE" onChange={(e) => setGender(e.target.value)}/>
+                                    <input type="radio" className='register-radio' name="gender" value="FEMALE" onChange={(e) => setGender(e.target.value)}/>
                                     <label>Female</label>
                                 </div>
                             </div>

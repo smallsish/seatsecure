@@ -70,7 +70,7 @@ function LoginPage() {
     }
 
     return (
-        <div id='login-container' className="landing-container">
+        <div id='login-container' className="login-container">
             <Navbar />
             <div className="landing-content">
                 <div className="form-div">

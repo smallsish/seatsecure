@@ -1,7 +1,14 @@
-#login-container{
-    /* background-image: url(../../../public/images/login-bg2.png); */
-
+.login-container {
+    min-height: 100vh;
+    width: 100%;
+    background-image: url(../../../public/images/concert-bg.jpg);
+    background-color: black;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
 }
+
 /* ---------------------- Form ------------------------ */
 .form-div {
     height: 100%;
@@ -79,12 +86,12 @@
     line-height: normal;
 }
 
-.form-text a{
+.form-text a {
     text-decoration: none;
     color: rgb(141, 141, 141);
 }
 
-.form-text span{
+.form-text span {
     display: inline;
 }
 
