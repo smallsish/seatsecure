@@ -48,4 +48,7 @@ public class Run {
 
     @OneToMany(mappedBy = "run")
     private List<Ticket> tickets;
+
+    @OneToMany(mappedBy = "run", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<TicketUserQueue> queue;
 }

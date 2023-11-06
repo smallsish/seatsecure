@@ -75,6 +75,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Ticket> ticketsPurchased;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<QueueEntry> queuesEntries;
+
 
     @Override
     public boolean isAccountNonExpired() {

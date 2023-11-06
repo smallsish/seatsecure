@@ -32,4 +32,6 @@ public interface TicketService {
     User getUserOfTicket(Long id);
 
     List<Seat> getSeatsWithoutTickets();
+
+    List<Ticket> getTicketsofRunandCat(Long runId, Long catId)
 }
