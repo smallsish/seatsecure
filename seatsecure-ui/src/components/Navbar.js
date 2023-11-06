@@ -22,7 +22,7 @@ function Navbar() {
 
 
 
-  
+
 
   const displayMenu = () => {
     var nav = document.querySelector('.nav');
@@ -76,11 +76,11 @@ function Navbar() {
           {isLoginPage ? null : isLoggedIn ? (
             <li id="login-btn" className="nav-item">
               {data && data.length > 0 ? (
-                <Link to ="/UserProfile">
-                <span className='nav-username'>{data[IDValue-1].username}</span>
+                <Link to="/UserProfile">
+                  <span className='nav-username'>{data[IDValue - 1].username}</span>
                 </Link>
               ) : (
-                
+
                 <span className='nav-username'> </span>
 
               )}

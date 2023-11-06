@@ -28,7 +28,7 @@ import com.seatsecure.backend.services.UserService;
 
 @RequestMapping("/api/v1")
 @RestController
-@PreAuthorize("hasRole('ADMIN')")
+// @PreAuthorize("hasRole('ADMIN')")
 public class UserController {
     private UserService userService;
     private AuthenticationService authService;
