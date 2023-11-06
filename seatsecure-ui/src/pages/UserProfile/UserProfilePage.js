@@ -5,35 +5,34 @@ import Navbar from '../../components/Navbar';
 import { Link, useNavigate , useLocation} from 'react-router-dom';
 import axios from '../../api/axios';
 import useUser from '../../hooks/useUser';
+import useAuth from '../../hooks/useAuth';
 // import { Button, Card, CardBody, CardFooter, Col, Container, Input, Row, Table } from 'reactstrap';
 
 
-
 const UserProfilePage = ()  =>{
-
     const user = useUser();
     var IDValue = parseInt(user.userID.ID);
-
+    const auth = useAuth();
+    const token = auth.auth.token;
     const [data, setData] = useState(null);
 
     useEffect(() => {
         makeUserRequest()
+        console.log("hihihi" + data)
     }, [])
     const makeUserRequest = async () => {
 
         try {
-            console.log(IDValue);
-            const response = await axios.get(`http://localhost:8080/api/v1/users/${IDValue}`,
-                JSON.stringify({}),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }
-            );
+            const response = await axios.get(`/api/v1/users/${IDValue}`, {
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                },
+              });
 
             const responseData = response.data;
             setData(responseData);
             console.log(responseData);
+            console.log(responseData)
 
         }
         catch (error) {
@@ -56,10 +55,10 @@ const UserProfilePage = ()  =>{
 
 
             <div className ="User-div-text">
-            Username:<span className="custom-font">{data? data.username:'Loading'} </span>
+            Username:<span className="custom-font">{data? data.user.username:'Loading'} </span>
             </div>
             <div className ="User-div-text">
-            ID:<span className="custom-font"> {data? data.id:'Loading'}  </span>
+            ID:<span className="custom-font"> {data? data.user.id:'Loading'}  </span>
             </div>
             <div className ="User-div-text">
             FirstName:<span className="custom-font"> {data? data.firstName:'Loading'}  </span>
@@ -75,9 +74,6 @@ const UserProfilePage = ()  =>{
             </div>
             <div className ="User-div-text">
             Phone Number:<span className="custom-font"> {data? data.phoneNumber: 'Loading'} </span>
-            </div>
-            <div className ="User-div-text">
-            Role:<span className="custom-font"> {data? data.role: 'Loading'} </span>
             </div>
             
             {data? (
