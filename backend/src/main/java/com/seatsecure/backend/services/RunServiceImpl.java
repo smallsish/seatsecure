@@ -86,21 +86,20 @@ public class RunServiceImpl implements RunService {
      * Add a new Run to an Event
      * 
      * @param runId
-     * @return The Event to which the new Run was added
+     * @return The Run that was newly added to the Event
      * @throws EventNotFoundException If the Event with the specified id does not
      *                                exist
      */
     @Override
-    public Event addNewRunToEvent(Long eventId, Run runInfo) {
+    public Run addNewRunToEvent(Long eventId, Run runInfo) {
         // Check if event exists
         Event e = eventService.getEventById(eventId);
 
         // Add new run to database
         Run r = Run.builder().name(runInfo.getName()).description(runInfo.getDescription())
                 .startDate(runInfo.getStartDate()).endDate(runInfo.getEndDate()).event(e).build();
-        runRepo.save(r);
+        return runRepo.save(r);
 
-        return e;
     }
 
     /**
@@ -152,7 +151,7 @@ public class RunServiceImpl implements RunService {
      * @throws RunNotFoundException If the Run with the specified id does not exist
      */
     @Override
-    public List<TicketUserQueue> getQueueofRun(Long runId) {
+    public List<TicketUserQueue> getTuQueueofRun(Long runId) {
         Run particularRun = getRunById(runId);
         
         return ticketQueueRepo.findByRun(particularRun);

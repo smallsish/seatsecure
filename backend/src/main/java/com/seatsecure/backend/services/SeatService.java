@@ -3,7 +3,6 @@ package com.seatsecure.backend.services;
 import java.util.List;
 
 import com.seatsecure.backend.entities.Category;
-import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Venue;
 
@@ -14,8 +13,8 @@ public interface SeatService {
     List<Seat> getSeatsOfCat(Long catId);
     Venue getVenueOfSeat(Long seatId);
 
-    Venue addNewSeatsToVenue(Long id, int numSeats);
-    List<Seat> assignCatToSeats(Long catId, Long startRangeIndex, Long endRangeIndex);
+    List<Seat> addNewSeatsToVenue(Long id, int numSeats);
+    List<Seat> assignCatToSeats(Long catId, Long startSeatNum, Long endSeatNum);
 
     Seat deleteSeatById(Long seatId);
 

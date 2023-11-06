@@ -17,16 +17,16 @@ public interface TicketService {
     List<Ticket> getTicketsOfUser(Long userId);
     List<Seat> getSeatsWithoutTickets();
 
-    List<Ticket> addNewTicketsToSeats(long fromSeatNum, long toSeatNum);
+    List<Ticket> addNewTicketsToSeats(Long fromSeatNum, Long toSeatNum);
     List<Ticket> addNewTicketsToSeats(List<Long> seatIds);
-    Ticket unassignTicketFromSeat(long ticketId);
+    Ticket unassignTicketFromSeat(Long ticketId);
     Ticket deleteTicketById(Long ticketId);
 
-    Run assignTicketsToRun(Long runId, long fromTicketId, long toTicketId);
-    Run assignTicketsToRun(Long runId, List<Long> ticketIds);
+    List<Ticket> assignTicketsToRun(Long runId, Long fromTicketId, Long toTicketId);
+    List<Ticket> assignTicketsToRun(Long runId, List<Long> ticketIds);
     Ticket unassignTicketFromRun(long ticketId);
 
-    User assignTicketToUser(Long userId, Long ticketId);
+    Ticket assignTicketToUser(Long userId, Long ticketId);
     Ticket unassignTicketFromuser(Long ticketId);
 
 }

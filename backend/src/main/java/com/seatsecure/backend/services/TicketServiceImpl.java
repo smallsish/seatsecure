@@ -152,7 +152,7 @@ public class TicketServiceImpl implements TicketService {
      *                                with it
      */
     @Override
-    public List<Ticket> addNewTicketsToSeats(long fromSeatNum, long toSeatNum) {
+    public List<Ticket> addNewTicketsToSeats(Long fromSeatNum, Long toSeatNum) {
         List<Ticket> ticketList = new ArrayList<>();
 
         for (long id = fromSeatNum; id <= toSeatNum; id++) {
@@ -216,7 +216,7 @@ public class TicketServiceImpl implements TicketService {
      *                                 exist
      */
     @Override
-    public Ticket unassignTicketFromSeat(long ticketId) {
+    public Ticket unassignTicketFromSeat(Long ticketId) {
         // Check if ticket exists
         Ticket t = ticketService.getTicketById(ticketId);
 
@@ -260,16 +260,17 @@ public class TicketServiceImpl implements TicketService {
      * @param runId
      * @param fromTicketId
      * @param toTicketId
-     * @return The Run to which Tickets have been assigned
+     * @return The Tickets that have been assigned to the Run
      * @throws RunNotFoundException    If a Run with the specified id does not exist
      * @throws TicketNotFoundException If a Ticket with the specified id does not
      *                                 exist
      */
     @Override
-    public Run assignTicketsToRun(Long runId, long fromTicketId, long toTicketId) {
+    public List<Ticket> assignTicketsToRun(Long runId, Long fromTicketId, Long toTicketId) {
         // Check if run exists
         Run run = runService.getRunById(runId);
 
+        List<Ticket> ticketList = new ArrayList<>();
         // Assign tickets to run
         for (long id = fromTicketId; id <= toTicketId; id++) {
             // Check if ticket exists
@@ -282,11 +283,10 @@ public class TicketServiceImpl implements TicketService {
 
             // Update the run property of the ticket
             t.setRun(run);
-            ticketRepo.save(t);
+            ticketList.add(ticketRepo.save(t));
         }
 
-        return run;
-
+        return ticketList;
     }
 
     /**
@@ -296,16 +296,17 @@ public class TicketServiceImpl implements TicketService {
      * @param runId
      * @param ticketIds - A list of ids of Tickets that should be assigned to the
      *                  specified Run
-     * @return The Run to which Tickets have been assigned
+     * @return The Tickets that have been assigned to the Run
      * @throws RunNotFoundException    If a Run with the specified id does not exist
      * @throws TicketNotFoundException If a Ticket with the specified id does not
      *                                 exist
      */
     @Override
-    public Run assignTicketsToRun(Long runId, List<Long> ticketIds) {
+    public List<Ticket> assignTicketsToRun(Long runId, List<Long> ticketIds) {
         // Check if run exists
         Run run = runService.getRunById(runId);
 
+        List<Ticket> ticketList = new ArrayList<>();
         for (Long id : ticketIds) {
             // Check if ticket exists
             Ticket t = ticketService.getTicketById(id);
@@ -317,10 +318,10 @@ public class TicketServiceImpl implements TicketService {
 
             // Update the run property of the ticket
             t.setRun(run);
-            ticketRepo.save(t);
+            ticketList.add(ticketRepo.save(t));
         }
 
-        return run;
+        return ticketList;
 
     }
 
@@ -353,14 +354,14 @@ public class TicketServiceImpl implements TicketService {
      * 
      * @param userId
      * @param ticketId
-     * @return The User to which the TIcket has been assigned
+     * @return The Ticket which has been assigned to the User
      * @throws UserNotFoundException If a User with the specified id does not
      *                                 exist
      * @throws TicketNotFoundException If a Ticket with the specified id does not
      *                                 exist
      */
     @Override
-    public User assignTicketToUser(Long userId, Long ticketId) {
+    public Ticket assignTicketToUser(Long userId, Long ticketId) {
         // Check if user exists
         User user = userService.getUserById(userId);
 
@@ -374,9 +375,8 @@ public class TicketServiceImpl implements TicketService {
 
         //  Update the user property of the ticket
         ticket.setUser(user);
-        ticketRepo.save(ticket);
+        return ticketRepo.save(ticket);
 
-        return user;
     }
 
     /**

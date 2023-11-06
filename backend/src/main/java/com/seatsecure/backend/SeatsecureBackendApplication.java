@@ -103,42 +103,47 @@ public class SeatsecureBackendApplication {
 			venue1 = vs.addVenue(venue1);
 			venue2 = vs.addVenue(venue2);
 
-			// Save events
-			event1 = es.addEvent(event1);
-			event2 = es.addEvent(event2);
-
 			// Add new seats to venue
 			ss.addNewSeatsToVenue(venue1.getId(), 10);
 			ss.addNewSeatsToVenue(venue2.getId(), 10);
 
-			// Add new tickets to seats
-			ts.addNewTicketsToSeats(1, 10);
+			// Save events
+			event1 = es.addEvent(event1);
+			event2 = es.addEvent(event2);
 
 			// Update events with venue
 			es.setVenueForEvent(event1.getId(), venue1.getId());
 			es.setVenueForEvent(event2.getId(), venue2.getId());
 
-			// Update events with new cats
+			// Add new cats to events
 			event1_cat1 = cs.addNewCatToEvent(event1.getId(), event1_cat1);
-			event1_cat2 =  cs.addNewCatToEvent(event1.getId(), event1_cat2);
-			event2_cat1 =  cs.addNewCatToEvent(event2.getId(), event2_cat1);
-			event2_cat2 =  cs.addNewCatToEvent(event2.getId(), event2_cat2);
-			
-			// Update events with runs
-			rs.addNewRunToEvent(event1.getId(), event1_run1);
-			rs.addNewRunToEvent(event2.getId(), event2_run1);
+			event1_cat2 = cs.addNewCatToEvent(event1.getId(), event1_cat2);
+			event2_cat1 = cs.addNewCatToEvent(event2.getId(), event2_cat1);
+			event2_cat2 = cs.addNewCatToEvent(event2.getId(), event2_cat2);
 
-			// Assign cats to seats in event 1
+			// Assign cats to seats in event 1's venue
 			ss.assignCatToSeats(event1_cat1.getId(), (long) 1, (long) 5);
 			ss.assignCatToSeats(event1_cat2.getId(), (long) 6, (long) 10);
 
-			// Assign cats to seats in event 2
+			// Assign cats to seats in event 2's venue
 			ss.assignCatToSeats(event2_cat1.getId(), (long) 11, (long) 15);
 			ss.assignCatToSeats(event2_cat2.getId(), (long) 16, (long) 20);
 
+			// Add new runs to events
+			event1_run1 = rs.addNewRunToEvent(event1.getId(), event1_run1);
+			event2_run1 = rs.addNewRunToEvent(event2.getId(), event2_run1);
+
+			// Add new tickets to seats
+			ts.addNewTicketsToSeats((long) 1, (long) 10);
+
+			// Assign tickets to run
+			ts.assignTicketsToRun(event1_run1.getId(), (long) 1, (long) 5);
+			ts.assignTicketsToRun(event2_run1.getId(), (long) 6, (long) 10);
+
 			// Assign ticket to user
-			ts.assignTicketToUser(c.getId(), (long) 5);
-			ts.assignTicketToUser(c.getId(), (long) 6);
+			ts.assignTicketToUser(c.getId(), (long) 2);
+			ts.assignTicketToUser(c.getId(), (long) 3);	
+			
 		};
 
 	}

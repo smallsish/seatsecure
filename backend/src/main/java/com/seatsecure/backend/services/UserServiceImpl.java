@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 import com.seatsecure.backend.entities.QueueEntry;
 import com.seatsecure.backend.entities.Ticket;
 import com.seatsecure.backend.entities.User;
-import com.seatsecure.backend.exceptions.ticket.TicketNotFoundException;
-import com.seatsecure.backend.exceptions.user.NullUserException;
 import com.seatsecure.backend.exceptions.user.UserNotFoundException;
 import com.seatsecure.backend.repositories.UserRepository;
 

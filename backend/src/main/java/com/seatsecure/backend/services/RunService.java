@@ -14,12 +14,12 @@ public interface RunService {
 
     List<Run> getRunsOfEvent(Long eventId);
 
-    Event addNewRunToEvent(Long eventId, Run run);
+    Run addNewRunToEvent(Long eventId, Run run);
     
     Run updateRun(Long id, Run newRunInfo);
 
     Run deleteRunById(Long runId);
 
-    List<TicketUserQueue> getQueueofRun(Long runId);
+    List<TicketUserQueue> getTuQueueofRun(Long runId);
 
 }

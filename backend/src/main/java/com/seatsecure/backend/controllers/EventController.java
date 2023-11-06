@@ -172,12 +172,12 @@ public class EventController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/events/{id}/runs")
     @PreAuthorize("hasAuthority('admin:create')")
-    public EventRunsDTO addRunToEvent(@PathVariable Long id, @Valid @RequestBody Run runInfo) {
-        Event e = runService.addNewRunToEvent(id, runInfo);
-        if (e == null)
+    public RunDTO addRunToEvent(@PathVariable Long id, @Valid @RequestBody Run runInfo) {
+        Run r = runService.addNewRunToEvent(id, runInfo);
+        if (r == null)
             throw new EventNotFoundException(id);
 
-        return eventRunsDTOmapper.apply(e);
+        return runDTOmapper.apply(r);
     }
 
     /**
