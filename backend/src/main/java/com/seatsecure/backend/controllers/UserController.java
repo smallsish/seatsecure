@@ -15,21 +15,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.User;
-import com.seatsecure.backend.entities.DTO_mappers.user.UserDTOmapper;
-import com.seatsecure.backend.entities.DTO_mappers.user.UserDetailsDTOmapper;
-import com.seatsecure.backend.entities.DTO_mappers.user.UserTicketsDTOmapper;
-import com.seatsecure.backend.entities.DTOs.user.UserDTO;
-import com.seatsecure.backend.entities.DTOs.user.UserDetailsDTO;
-import com.seatsecure.backend.entities.DTOs.user.UserTicketsDTO;
-import com.seatsecure.backend.exceptions.UnauthorizedUserException;
-import com.seatsecure.backend.exceptions.UserNotFoundException;
+import com.seatsecure.backend.entities.DTO_mappers.complex.UserDetailsDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.complex.UserTicketsDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.simple.UserDTOmapper;
+import com.seatsecure.backend.entities.DTOs.complex.UserDetailsDTO;
+import com.seatsecure.backend.entities.DTOs.complex.UserTicketsDTO;
+import com.seatsecure.backend.entities.DTOs.simple.UserDTO;
+import com.seatsecure.backend.exceptions.user.UnauthorizedUserException;
+import com.seatsecure.backend.exceptions.user.UserNotFoundException;
 import com.seatsecure.backend.security.auth.AuthenticationService;
 import com.seatsecure.backend.services.TicketService;
 import com.seatsecure.backend.services.UserService;
 
 @RequestMapping("/api/v1")
 @RestController
-@PreAuthorize("hasRole('USER')")
+//@PreAuthorize("hasRole('USER')")
 public class UserController {
     private UserService userService;
     private TicketService ticketService;
@@ -142,7 +142,7 @@ public class UserController {
         }
     }
 
-            /**
+    /**
      * Remove a user with the DELETE request to "/users/{id}"
      * If there is no user with the given "id", throw a UserNotFoundException
      * @param id

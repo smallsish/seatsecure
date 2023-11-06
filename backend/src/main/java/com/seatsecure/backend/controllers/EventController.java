@@ -3,6 +3,7 @@ package com.seatsecure.backend.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,17 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Run;
-import com.seatsecure.backend.entities.DTO_mappers.event.EventDTOmapper;
-import com.seatsecure.backend.entities.DTO_mappers.event.EventRunsDTOmapper;
-import com.seatsecure.backend.entities.DTO_mappers.event.EventVenueDTOmapper;
-import com.seatsecure.backend.entities.DTO_mappers.run.RunDTOmapper;
-import com.seatsecure.backend.entities.DTOs.event.EventDTO;
-import com.seatsecure.backend.entities.DTOs.event.EventRunsDTO;
-import com.seatsecure.backend.entities.DTOs.event.EventVenueDTO;
-import com.seatsecure.backend.entities.DTOs.run.RunDTO;
-import com.seatsecure.backend.exceptions.EventCreationError;
-import com.seatsecure.backend.exceptions.EventNotFoundException;
-import com.seatsecure.backend.exceptions.RunNotFoundException;
+import com.seatsecure.backend.entities.DTO_mappers.complex.EventRunsDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.complex.EventVenueDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.complex.RunTicketsDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.simple.EventDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.simple.RunDTOmapper;
+import com.seatsecure.backend.entities.DTOs.complex.EventRunsDTO;
+import com.seatsecure.backend.entities.DTOs.complex.EventVenueDTO;
+import com.seatsecure.backend.entities.DTOs.complex.RunTicketsDTO;
+import com.seatsecure.backend.entities.DTOs.simple.EventDTO;
+import com.seatsecure.backend.entities.DTOs.simple.RunDTO;
+import com.seatsecure.backend.exceptions.event.EventCreationException;
+import com.seatsecure.backend.exceptions.event.EventNotFoundException;
+import com.seatsecure.backend.exceptions.run.RunNotFoundException;
 import com.seatsecure.backend.services.EventService;
 import com.seatsecure.backend.services.RunService;
 
@@ -39,15 +42,18 @@ public class EventController {
     private RunService runService;
     private EventVenueDTOmapper eventVenueDTOmapper;
     private RunDTOmapper runDTOmapper;
+    private RunTicketsDTOmapper runTicketsDTOmapper;
     private EventDTOmapper eventDTOmapper;
     private EventRunsDTOmapper eventRunsDTOmapper;
 
     public EventController(EventService es, EventVenueDTOmapper evDTOmapper,
-    RunService rs, RunDTOmapper rDTOmapper, EventDTOmapper eDTOmapper, EventRunsDTOmapper erDTOmapper) {
+    RunService rs, RunDTOmapper rDTOmapper, RunTicketsDTOmapper rtDTOmapper, EventDTOmapper eDTOmapper,
+    EventRunsDTOmapper erDTOmapper) {
         eventService = es;
         runService = rs;
         eventVenueDTOmapper = evDTOmapper;
         runDTOmapper = rDTOmapper;
+        runTicketsDTOmapper = rtDTOmapper;
         eventDTOmapper = eDTOmapper;
         eventRunsDTOmapper = erDTOmapper;
     }
@@ -95,7 +101,7 @@ public class EventController {
     public EventDTO addEvent(@Valid @RequestBody Event event) {
         Event e = eventService.addEvent(event);
         if (e == null)
-            throw new EventCreationError();
+            throw new EventCreationException();
 
         return eventDTOmapper.apply(e);
     }
@@ -223,6 +229,23 @@ public class EventController {
             throw new RunNotFoundException(id);
 
         return runDTOmapper.apply(r);
+    }
+
+    /**
+     * Delete an existing run v
+     * @param runId
+     * @return the deleted run (mapped to DTO)
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/runs/{id}/tickets")
+    public RunTicketsDTO getTicketsOfRun(@PathVariable Long id) {
+        // Check if run exists
+        Run r = runService.deleteRunById(id);
+        if (r == null) {
+            throw new RunNotFoundException(id);
+        }
+            
+        return runTicketsDTOmapper.apply(r);
     }
 
 }

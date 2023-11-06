@@ -111,30 +111,30 @@ public class SeatsecureBackendApplication {
 			ss.addNewSeatsToVenue(venue1.getId(), 10);
 			ss.addNewSeatsToVenue(venue2.getId(), 10);
 
-			// Add tickets to seats
+			// Add new tickets to seats
 			ts.addNewTicketsToSeats(1, 10);
 
 			// Update events with venue
 			es.setVenueForEvent(event1.getId(), venue1.getId());
 			es.setVenueForEvent(event2.getId(), venue2.getId());
 
-			// Update events with cats
-			cs.addNewCatToEvent(event1.getId(), event1_cat1);
-			cs.addNewCatToEvent(event1.getId(), event1_cat2);
-			cs.addNewCatToEvent(event2.getId(), event2_cat1);
-			cs.addNewCatToEvent(event2.getId(), event2_cat2);
+			// Update events with new cats
+			event1_cat1 = cs.addNewCatToEvent(event1.getId(), event1_cat1);
+			event1_cat2 =  cs.addNewCatToEvent(event1.getId(), event1_cat2);
+			event2_cat1 =  cs.addNewCatToEvent(event2.getId(), event2_cat1);
+			event2_cat2 =  cs.addNewCatToEvent(event2.getId(), event2_cat2);
 			
 			// Update events with runs
 			rs.addNewRunToEvent(event1.getId(), event1_run1);
 			rs.addNewRunToEvent(event2.getId(), event2_run1);
 
 			// Assign cats to seats in event 1
-			ss.assignCatToSeats(event1.getId(), 1, 5, event1_cat1);
-			ss.assignCatToSeats(event1.getId(), 6, 10, event1_cat2);
+			ss.assignCatToSeats(event1_cat1.getId(), (long) 1, (long) 5);
+			ss.assignCatToSeats(event1_cat2.getId(), (long) 6, (long) 10);
 
 			// Assign cats to seats in event 2
-			ss.assignCatToSeats(event2.getId(), 1, 5, event2_cat1);
-			ss.assignCatToSeats(event2.getId(), 6, 10, event2_cat2);
+			ss.assignCatToSeats(event2_cat1.getId(), (long) 11, (long) 15);
+			ss.assignCatToSeats(event2_cat2.getId(), (long) 16, (long) 20);
 
 			// Assign ticket to user
 			ts.assignTicketToUser(c.getId(), (long) 5);
