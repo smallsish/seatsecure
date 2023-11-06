@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.entities.DTO_mappers.venue.VenueDTOmapper;
-import com.seatsecure.backend.entities.DTO_mappers.venue.VenueEventsDTOmapper;
-import com.seatsecure.backend.entities.DTOs.venue.VenueDTO;
-import com.seatsecure.backend.entities.DTOs.venue.VenueEventsDTO;
-import com.seatsecure.backend.exceptions.VenueCreationError;
-import com.seatsecure.backend.exceptions.VenueNotFoundException;
+import com.seatsecure.backend.entities.DTO_mappers.complex.VenueEventsDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.simple.VenueDTOmapper;
+import com.seatsecure.backend.entities.DTOs.complex.VenueEventsDTO;
+import com.seatsecure.backend.entities.DTOs.simple.VenueDTO;
+import com.seatsecure.backend.exceptions.venue.VenueCreationException;
+import com.seatsecure.backend.exceptions.venue.VenueNotFoundException;
 import com.seatsecure.backend.services.VenueService;
 
 @RequestMapping("/api/v1")
@@ -73,7 +73,7 @@ public class VenueController {
     @PreAuthorize("hasAuthority('admin:create')")
     public VenueDTO addVenue(@Valid @RequestBody Venue venue) {
         Venue v = venueService.addVenue(venue);
-        if (v == null) throw new VenueCreationError();
+        if (v == null) throw new VenueCreationException();
         
         return venueDTOmapper.apply(v);
     }

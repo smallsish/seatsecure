@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.User;
 import com.seatsecure.backend.entities.enums.Role;
-import com.seatsecure.backend.exceptions.CurrentUserException;
-import com.seatsecure.backend.exceptions.UsernameAlreadyExistsException;
+import com.seatsecure.backend.exceptions.user.CurrentUserException;
+import com.seatsecure.backend.exceptions.user.UsernameAlreadyExistsException;
 import com.seatsecure.backend.repositories.UserRepository;
 import com.seatsecure.backend.security.jwt.JwtService;
 

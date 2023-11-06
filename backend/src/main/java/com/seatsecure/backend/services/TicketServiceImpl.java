@@ -12,6 +12,9 @@ import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Ticket;
 import com.seatsecure.backend.entities.User;
+import com.seatsecure.backend.exceptions.category.CatNotFoundException;
+import com.seatsecure.backend.exceptions.seat.SeatNotFoundException;
+import com.seatsecure.backend.exceptions.ticket.TicketNotFoundException;
 import com.seatsecure.backend.repositories.SeatRepository;
 import com.seatsecure.backend.repositories.TicketRepository;
 
@@ -21,7 +24,8 @@ import lombok.NoArgsConstructor;
 @Service
 public class TicketServiceImpl implements TicketService {
 
-    // Due to the large number of dependencies, lazy setter injection is used (setter injectors are below)
+    // Due to the large number of dependencies, lazy setter injection is used
+    // (setter injectors are below)
     private RunService runService;
     private SeatService seatService;
     private UserService userService;
@@ -29,39 +33,60 @@ public class TicketServiceImpl implements TicketService {
     private TicketRepository ticketRepo;
     private SeatRepository seatRepo;
 
-
+    /**
+     * Get the Ticket of the specified id
+     * 
+     * @param ticketId
+     * @return The Ticket of the specified id
+     * @throws TicketNotFoundException If a Ticket with the specified id does not
+     *                                 exist
+     */
     @Override
-    public Ticket getTicketById(Long id) {
-        Optional<Ticket> ticket = ticketRepo.findById(id);
-        if (ticket.isEmpty())
-            return null;
+    public Ticket getTicketById(Long ticketId) {
+        Optional<Ticket> ticket = ticketRepo.findById(ticketId);
+        if (ticket.isEmpty()) {
+            throw new TicketNotFoundException(ticketId);
+        }
 
         return ticket.get();
     }
 
+    /**
+     * Get the Tickets in a Run with the specified id
+     * 
+     * @param runId
+     * @return A list of Tickets in the Run with the specified id
+     * @throws RunNotFoundException If a Run with the specified id does not
+     *                                 exist
+     */
     @Override
     public List<Ticket> getTicketsOfRun(Long runId) {
 
         // Check if run exists
         Run run = runService.getRunById(runId);
-        if (run == null)
-            return null;
 
         // Get tickets of run
         return ticketRepo.findByRun(run);
     }
 
+    /**
+     * Get the Tickets belonging to a User
+     * 
+     * @param userId
+     * @return A list of Tickets of the User with the specified id
+     * @throws UserNotFoundException If a User with the specified id does not
+     *                                 exist
+     */
     @Override
     public List<Ticket> getTicketsOfUser(Long userId) {
         // Check if user exists
         User user = userService.getUserById(userId);
-        if (user == null)
-            return null;
 
         // Get tickets owned by user
         return ticketRepo.findByUser(user);
     }
 
+    
     @Override
     public Ticket deleteTicketFromuser(Long id) {
         // Check if ticket exists
@@ -265,6 +290,5 @@ public class TicketServiceImpl implements TicketService {
     public void injectSeatRepo(SeatRepository sr) {
         seatRepo = sr;
     }
-
 
 }

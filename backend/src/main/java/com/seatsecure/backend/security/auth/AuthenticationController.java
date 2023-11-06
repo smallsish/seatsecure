@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.seatsecure.backend.exceptions.RegistrationValidationError;
+import com.seatsecure.backend.exceptions.user.RegistrationValidationException;
 
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
@@ -26,7 +26,7 @@ public class AuthenticationController {
         @Valid @RequestBody RegisterRequest request, BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
-            throw new RegistrationValidationError(bindingResult, "Validation error!");
+            throw new RegistrationValidationException(bindingResult, "Validation error!");
         }
         return ResponseEntity.ok(service.register(request, false));
     }
