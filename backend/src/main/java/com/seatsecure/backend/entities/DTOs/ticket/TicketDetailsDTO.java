@@ -1,9 +1,11 @@
-package com.seatsecure.backend.entities.DTOs;
+package com.seatsecure.backend.entities.DTOs.ticket;
+
+import com.seatsecure.backend.entities.DTOs.run.RunDTO;
+import com.seatsecure.backend.entities.DTOs.venue.VenueDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @AllArgsConstructor

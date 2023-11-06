@@ -29,6 +29,7 @@ import com.seatsecure.backend.entities.User;
 import com.seatsecure.backend.exceptions.EventCreationError;
 import com.seatsecure.backend.exceptions.EventNotFoundException;
 import com.seatsecure.backend.exceptions.QueueEntryNotFoundException;
+import com.seatsecure.backend.services.Algo;
 import com.seatsecure.backend.services.EventService;
 import com.seatsecure.backend.services.QueueEntryServiceImpl;
 import com.seatsecure.backend.services.RunService;
@@ -45,14 +46,16 @@ public class TicketUserQueueController {
     private RunService rs;
     private EventService es;
     private SeatService ss;
+    private Algo algo;
 
     @Autowired
-    public TicketUserQueueController(TicketQueueService ts, UserService us, RunService rs, EventService es, SeatService ss){
-        ts = ts;
-        us = us;
-        rs = rs;
-        es = es;
-        ss = ss;
+    public TicketUserQueueController(TicketQueueService ts, UserService us, RunService rs, EventService es, SeatService ss, Algo algo){
+        this.ts = ts;
+        this.us = us;
+        this.rs = rs;
+        this.es = es;
+        this.ss = ss;
+        this.algo = algo;
     }
 
     /**
@@ -126,5 +129,13 @@ public class TicketUserQueueController {
         TicketUserQueue queue = getTicketUserQueue(queue_id);
         if 
         
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/run/{run_id}/biddingstart")
+    @PreAuthorize("hasAuthority('admin:create')")
+    public void biddingstart(@PathVariable Long run_id){
+        Run run = rs.getRunById(run_id);
+        algo.algoForBidding(run);
     }
 }

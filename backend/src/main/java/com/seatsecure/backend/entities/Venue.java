@@ -34,7 +34,7 @@ public class Venue {
     //@Pattern(regexp = "^[0-9A-Za-z-#, ]+$", message = "Invalid characters used for address!")
     private String address;
 
-    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "venue")
     private List<Event> events;
 
     @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, orphanRemoval = true)

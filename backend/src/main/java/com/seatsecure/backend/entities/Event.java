@@ -39,7 +39,7 @@ public class Event {
     @NonNull
     private Date endDate;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "venue_id")
     private Venue venue;
 

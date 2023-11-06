@@ -1,13 +1,9 @@
 package com.seatsecure.backend.entities;
 
-import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
-import javax.print.attribute.standard.DateTimeAtCompleted;
-
 import io.micrometer.common.lang.NonNull;
-import jakarta.annotation.Generated;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -50,7 +46,7 @@ public class Run {
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @OneToMany(mappedBy = "run", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "run")
     private List<Ticket> tickets;
 
     @OneToMany(mappedBy = "run", cascade = CascadeType.ALL, orphanRemoval = false)

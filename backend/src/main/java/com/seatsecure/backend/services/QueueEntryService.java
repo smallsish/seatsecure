@@ -15,6 +15,4 @@ public interface QueueEntryService {
     Long addEntryToQueue(User user, int numOfSeats, TicketUserQueue queue);
     QueueEntry deleteQueueEntry(Long queueEntryID);
     QueueEntry getQueueEntry(Long queueEntryID);
-    
-
 }

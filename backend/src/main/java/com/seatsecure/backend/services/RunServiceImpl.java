@@ -13,11 +13,11 @@ import com.seatsecure.backend.repositories.RunRepository;
 @Service
 public class RunServiceImpl implements RunService {
     private RunRepository runRepo;
-    private EventService es;
+    private EventService eventService;
 
-    public RunServiceImpl(RunRepository runRepo, EventService es) {
-        this.runRepo = runRepo;
-        this.es = es;
+    public RunServiceImpl(RunRepository rr, EventService es) {
+        runRepo = rr;
+        eventService = es;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class RunServiceImpl implements RunService {
     @Override
     public List<Run> getRunsOfEvent(Long eventId) {
         // Check if event exists
-        Event e = es.getEventById(eventId);
+        Event e = eventService.getEventById(eventId);
         if (e == null)
             return null;
 
@@ -58,7 +58,7 @@ public class RunServiceImpl implements RunService {
     @Override
     public Event addNewRunToEvent(Long eventId, Run run) {
         // Check if event exists
-        Event e = es.getEventById(eventId);
+        Event e = eventService.getEventById(eventId);
         if (e == null || run == null)
             return null;
 

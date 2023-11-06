@@ -1,17 +1,15 @@
-package com.seatsecure.backend.entities.DTOs;
+package com.seatsecure.backend.entities.DTOs.cat;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RunDTO {
+public class CatDTO {
     private Long id;
     private String name;
     private String description;
-    private String startDate;
-    private String endDate;
+    private double price;
 }

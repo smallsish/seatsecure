@@ -1,4 +1,4 @@
-package com.seatsecure.backend.entities.DTOs.mappers;
+package com.seatsecure.backend.entities.DTO_mappers.event;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -7,7 +7,7 @@ import java.util.function.Function;
 import org.springframework.stereotype.Component;
 
 import com.seatsecure.backend.entities.Event;
-import com.seatsecure.backend.entities.DTOs.EventDTO;
+import com.seatsecure.backend.entities.DTOs.event.EventDTO;
 
 @Component
 public class EventDTOmapper implements Function<Event,EventDTO>{

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.User;
 import com.seatsecure.backend.entities.enums.Role;
+import com.seatsecure.backend.exceptions.CurrentUserException;
 import com.seatsecure.backend.exceptions.UsernameAlreadyExistsException;
 import com.seatsecure.backend.repositories.UserRepository;
 import com.seatsecure.backend.security.jwt.JwtService;
@@ -69,14 +70,20 @@ public class AuthenticationService {
 
     // Check if the username in the parameter is that of the user in the current security context
     public Boolean isCurrentUser(String username) {
-        SecurityContext sc = SecurityContextHolder.getContext();
-        if (sc == null) return null; // throw error
+        try {
+            SecurityContext sc = SecurityContextHolder.getContext();
+            if (sc == null) return null; // throw error
 
-        Object p = sc.getAuthentication().getPrincipal();
-        if (p != null && p instanceof UserDetails) {
-            UserDetails ud = (UserDetails) p;
-            return ud.getUsername().toLowerCase().equals(username.toLowerCase());
+            Object p = sc.getAuthentication().getPrincipal();
+            if (p != null && p instanceof UserDetails) {
+                UserDetails ud = (UserDetails) p;
+                return ud.getUsername().toLowerCase().equals(username.toLowerCase());
+            }
         }
+        catch (RuntimeException e) {
+            throw new CurrentUserException();
+        }
+        
 
         return null; // throw error
     }

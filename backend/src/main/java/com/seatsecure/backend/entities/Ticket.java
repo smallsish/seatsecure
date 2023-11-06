@@ -1,7 +1,6 @@
 package com.seatsecure.backend.entities;
 
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,15 +23,16 @@ public class Ticket {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToOne
     @JoinColumn(name = "seat_id")
+    @NonNull
     private Seat seat;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "run_id")
     private Run run;
     

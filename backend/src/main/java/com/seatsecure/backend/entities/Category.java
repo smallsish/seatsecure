@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,15 +31,17 @@ public class Category {
     private String name;
 
     @Size(max = 1000, message = "Description is too long!")
+    @NonNull
     private String description;
 
+    @NonNull
     private double price;
 
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @OneToMany(mappedBy = "cat", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "cat")
     private List<Seat> seats;
     
     @OneToMany(mappedBy = "cat", cascade = CascadeType.ALL, orphanRemoval = false)

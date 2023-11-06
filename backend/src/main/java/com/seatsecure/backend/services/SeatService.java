@@ -15,7 +15,7 @@ public interface SeatService {
     Venue getVenueOfSeat(Long seatId);
 
     Venue addNewSeatsToVenue(Long id, int numSeats);
-    Event assignCatsToSeats(Long eventId, int startRangeIndex, int endRangeIndex, Category cat);
+    Event assignCatToSeats(Long eventId, int startRangeIndex, int endRangeIndex, Category cat);
 
     Venue deleteSeatById(Long seatId);
 

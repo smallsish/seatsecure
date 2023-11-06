@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.entities.DTOs.VenueDTO;
-import com.seatsecure.backend.entities.DTOs.VenueEventsDTO;
-import com.seatsecure.backend.entities.DTOs.mappers.VenueDTOmapper;
-import com.seatsecure.backend.entities.DTOs.mappers.VenueEventsDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.venue.VenueDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.venue.VenueEventsDTOmapper;
+import com.seatsecure.backend.entities.DTOs.venue.VenueDTO;
+import com.seatsecure.backend.entities.DTOs.venue.VenueEventsDTO;
 import com.seatsecure.backend.exceptions.VenueCreationError;
 import com.seatsecure.backend.exceptions.VenueNotFoundException;
 import com.seatsecure.backend.services.VenueService;
@@ -104,11 +104,11 @@ public class VenueController {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/venues/{id}")
     @PreAuthorize("hasAuthority('admin:delete')")
-    public Venue deleteVenue(@PathVariable Long id){
+    public VenueDTO deleteVenue(@PathVariable Long id){
         Venue venue = venueService.deleteVenueById(id);
         if(venue == null) throw new VenueNotFoundException(id);
 
-        return venue;
+        return venueDTOmapper.apply(venue);
     }
 
     /**

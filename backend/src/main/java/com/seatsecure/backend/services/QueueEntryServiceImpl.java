@@ -77,12 +77,4 @@ public class QueueEntryServiceImpl implements QueueEntryService {
         return queueEntry;
     }
 
-    @Override
-    public List<Ticket> bidSelection(int numOfSeats, Category cat, Long queueNumber, ){
-        List<Ticket> finalTickets = new ArrayList<>();
-        
-
-
-        return finalTickets;
-    }
 }
