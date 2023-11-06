@@ -35,11 +35,11 @@ const EventDetailsPage = (props) => {
       <Navbar />
       <div className="landing-content">
         <div className="event-div">
-          <div className="event-div-title">{state.eventName}
+          <div className="event-div-title">{state.event.eventName}
           </div>
           <div className="event-picture">
-            <div className="event-date">Date:{state.startDate} to {state.endDate}</div>
-            <div className="event-location">Location:{state.venueName}</div>
+            <div className="event-date">Date:{state.event.startDate} to {state.event.endDate}</div>
+            <div className="event-location">Location:{state.venue.venueName}</div>
           </div>
           <div className="event-button">
           <Link to="/catselection">

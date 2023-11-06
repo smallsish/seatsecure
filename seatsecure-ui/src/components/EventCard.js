@@ -14,10 +14,10 @@ function EventCard({Event}) {
   return (
     <div className='event-card-container'>
         <div className='event-card-header'>
-            <h1 className='event-card-title'>{Event.eventName}</h1>
-            <h2 className='event-card-date'>{Event.startDate} - {Event.endDate}</h2>
+            <h1 className='event-card-title'>{Event.event.eventName}</h1>
+            <h2 className='event-card-date'>{Event.event.startDate} - {Event.event.endDate}</h2>
         </div>  
-        <div className='find-out-more-div'>
+        <div className='find-out-more-div'> 
 
             <button className='event-card-button'>
             <Link to= '/EventDetails' state = {Event} className='event-card-button'>

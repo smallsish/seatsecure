@@ -4,41 +4,48 @@ import './EventsPage.css';
 import Navbar from '../../components/Navbar';
 import EventCard from '../../components/EventCard';
 import axios from '../../api/axios';
+import useAuth from '../../hooks/useAuth';
 
 
 
 function EventsPage() {
     const [users, setUsers] = useState([]);
     const [data, setData] = useState(null);
+    const auth = useAuth();
+    const token = auth.auth.token;
+
 
     useEffect(() => {
         makeEventRequest()
     }, [])
     const makeEventRequest = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/api/v1/events",
-                JSON.stringify({}),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: false
-                }
-            );
+            const response = await axios.get(`/api/v1/events`, {
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                },
+              });
 
             const responseData = response.data;
             setData(responseData);
-            console.log(responseData);
-
         }
         catch (error) {
             console.error('No Events page ', error);
         }
-
     };
 
+
+    useEffect(() => {
+        console.log(data); // This is executed after data has been updated
+    }, [data]);
     
+
+
     const showData = () => {
-        console.log(data[0].eventName);
+        console.log(data[0]);
     }
+
+
     const renderEventCards = () => {
         if(data) {
         return data.map((event, index) => (
