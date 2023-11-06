@@ -9,29 +9,24 @@ import com.seatsecure.backend.entities.User;
 
 public interface TicketService {
 
-    Ticket getTicketById(Long id);
+    Ticket getTicketById(Long ticketId);
+    Run getRunOfTicket(Long ticketId);
+    User getOwnerOfTicket(Long ticketId);
 
     List<Ticket> getTicketsOfRun(Long runId);
-
     List<Ticket> getTicketsOfUser(Long userId);
-
-    Ticket deleteTicketFromuser(Long id);
-
-    List<Ticket> addNewTicketsToSeats(int fromSeatNum, int toSeatNum);
-
-    List<Ticket> addNewTicketsToSeats(List<Seat> seats);
-
-    Run assignTicketsToRun(Long runId, int fromTicketId, int toTicketId);
-
-    Run assignTicketsToRun(Long runId, List<Ticket> tickets);
-
-    User assignTicketToUser(Long userId, Long ticketId);
-
-    Run getRunOfTicket(Long id);
-
-    User getUserOfTicket(Long id);
-
     List<Seat> getSeatsWithoutTickets();
 
-    //List<Ticket> getTicketsofRunandCat(Long runId, Long catId);
+    List<Ticket> addNewTicketsToSeats(long fromSeatNum, long toSeatNum);
+    List<Ticket> addNewTicketsToSeats(List<Long> seatIds);
+    Ticket unassignTicketFromSeat(long ticketId);
+    Ticket deleteTicketById(Long ticketId);
+
+    Run assignTicketsToRun(Long runId, long fromTicketId, long toTicketId);
+    Run assignTicketsToRun(Long runId, List<Long> ticketIds);
+    Ticket unassignTicketFromRun(long ticketId);
+
+    User assignTicketToUser(Long userId, Long ticketId);
+    Ticket unassignTicketFromuser(Long ticketId);
+
 }

@@ -142,25 +142,22 @@ public class UserController {
         }
     }
 
-    /**
-     * Remove a user with the DELETE request to "/users/{id}"
-     * If there is no user with the given "id", throw a UserNotFoundException
-     * @param id
-     * @return the deleted user (mapped to simple DTO)
-     */
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/users/{userId}/tickets/{ticketId}")
-    public UserTicketsDTO assignTicketToUser(@PathVariable("userId") Long userId, @PathVariable("ticketId") Long ticketId){
-        User user = userService.getUserById(userId);
-        if(user == null) throw new UserNotFoundException(userId);
+    // USER TO BUY TICKETS - PICK A CAT AND ADD TO RAFFLE
 
-        if (authService.isCurrentUser(user.getUsername())) {
-            user = ticketService.assignTicketToUser(user.getId(), ticketId);
-            // The line above may behave strangely because null is returned in various circumstances,
-            // not only when user is non-existent
-            return userTicketsDTOmapper.apply(user);
-        } else {
-            throw new UnauthorizedUserException();
-        }
-    }
+
+    // @ResponseStatus(HttpStatus.OK)
+    // @PutMapping("/users/{userId}/tickets/{ticketId}")
+    // public UserTicketsDTO assignTicketToUser(@PathVariable("userId") Long userId, @PathVariable("ticketId") Long ticketId){
+    //     User user = userService.getUserById(userId);
+    //     if(user == null) throw new UserNotFoundException(userId);
+
+    //     if (authService.isCurrentUser(user.getUsername())) {
+    //         user = ticketService.assignTicketToUser(user.getId(), ticketId);
+    //         // The line above may behave strangely because null is returned in various circumstances,
+    //         // not only when user is non-existent
+    //         return userTicketsDTOmapper.apply(user);
+    //     } else {
+    //         throw new UnauthorizedUserException();
+    //     }
+    // }
 }
