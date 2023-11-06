@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './context/AuthProvider';
+import { UserProvider } from './context/UserIDProvider';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -10,6 +11,10 @@ import {
 import LoginPage from './pages/Login/LoginPage';
 import EventsPage from './pages/Events/EventsPage';
 import RegistrationPage from './pages/Registration/RegistrationPage';
+import EventDetailsPage from './pages/EventDetails/EventDetailsPage';
+import CatSelectionPage from './pages/CatSelection/CatSelectionPage';
+import UserProfilePage from './pages/UserProfile/UserProfilePage';
+import TicketDetails from './pages/TicketDetails/TicketDetails';
 
 const router = createBrowserRouter([
   {
@@ -25,16 +30,31 @@ const router = createBrowserRouter([
   }, {
     path: "Registration",
     element: <RegistrationPage />,
+  }, {
+    path: "EventDetails",
+    element: <EventDetailsPage />,
+
+  }, {
+    path: "CatSelection",
+    element: <CatSelectionPage />
+  }, {
+    path: "UserProfile",
+    element: <UserProfilePage />,
+  }, {
+    path: "TicketDetails",
+    element: <TicketDetails />
   }
+
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
     </AuthProvider>
-
   </React.StrictMode>
 );
 

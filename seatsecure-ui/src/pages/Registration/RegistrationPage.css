@@ -1,5 +1,4 @@
 .registration-container {
-    /* height: 100vh; */
     width: 100%;
     background-image: url(../../../public/images/concert-bg.jpg);
     background-color: black;
@@ -7,7 +6,7 @@
     background-repeat: no-repeat;
     display: grid;
     grid-template-rows: auto 1fr auto;
-  }
+}
 
 .form-div .registration-input-icon {
     place-content: center;
@@ -24,7 +23,7 @@
     color: white
 }
 
-#register-submit{
+#register-submit {
     background-color: #F4C430;
     margin-bottom: 8px;
     opacity: 90%;
@@ -43,9 +42,21 @@
     cursor: pointer;
 }
 
-.registration-footer{
+.registration-footer {
     width: 100%;
     height: 56px;
+}
+
+.error {
+    width: 100%;
+    align-content: center;
+    height: 30px;
+    padding: 35px;
+    align-self: center;
+    color: red;
+    background-color: lightyellow;
+    border: 1px solid grey;
+    margin-bottom: 5px;
 }
 
 .text-color {
@@ -54,6 +65,10 @@
 }
 
 .gender-structure {
+    color: #7d7d7d;
+    font-size: 13.333px;
+    font-weight: 500;
+    font-family: Inter;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;

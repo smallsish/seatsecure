@@ -1,0 +1,120 @@
+.cat-selection-container {
+    width: 100%;
+    background-image: url(../../../public/images/concert-bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.cat-selection-div {
+    height: auto;
+    width: 1000px;
+    background-color: rgba(0, 0, 0, 0.6);
+    margin-top: 30px;
+    padding: 50px;
+}
+
+.cat-selection-wrapper {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto 0.75fr 0.75fr;
+}
+
+.cat-selection-header {
+    color: #FFF;
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    padding-bottom: 30px;
+}
+
+.cat-selection-date-venue {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+
+    color: #DDD;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.cat-selection-select-date {}
+
+.cat-selection-select-date-text {
+    color: #FFF;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    padding-bottom: 7px;
+}
+
+.cat-selection-venue-layout {
+    display: grid;
+    place-items: center;
+    padding-top: 20px;
+}
+
+.area-outline {
+    outline: 2px solid red;
+    /* Add red outline */
+}
+
+
+.cat-selection-options {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 30px;
+
+    color: #DDD;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.cat-selection-options-cat {
+    text-align: right;
+}
+
+.cat-selection-options-quantity {
+    text-align: left;
+}
+
+.cat-selection-options-quantity-input {
+    margin: 0;
+    padding: 0;
+    width: 25px;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1;
+}
+
+.cat-selection-options-quantity-select {
+    display: flex;
+    align-items: center;
+}
+
+.checkout-button {
+    margin-top: 20px;
+    font-family: Inter;
+    font-weight: 400;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #3F1745;
+    padding: 10px 80px;
+}
+
+.cat-selection-checkout {
+    display: grid;
+    place-items: center;
+}

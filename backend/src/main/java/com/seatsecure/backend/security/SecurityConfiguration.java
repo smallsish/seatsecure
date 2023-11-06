@@ -39,10 +39,11 @@ public class SecurityConfiguration {
                 .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests(r -> r
                     .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/api/v1/users")).hasRole(Role.ADMIN.name())
+                    .requestMatchers(new AntPathRequestMatcher("/api/v1/users")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/api/v1/auth/register-user")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/api/v1/auth/authenticate")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/api/v1/auth/register-admin")).hasRole(Role.ADMIN.name())
+        
 
                     //.requestMatchers(new AntPathRequestMatcher("/api/v1/users")).hasRole(Role.ADMIN.name())// this is only use for uniform access, if method based have to look into the controller
                     //.anyRequest().authenticated()
