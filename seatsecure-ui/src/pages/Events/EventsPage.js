@@ -6,8 +6,6 @@ import EventCard from '../../components/EventCard';
 import axios from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
 
-
-
 function EventsPage() {
     const [users, setUsers] = useState([]);
     const [data, setData] = useState(null);
@@ -66,22 +64,13 @@ function EventsPage() {
             </div>
             <main>
                 <section>
-
                     <div className='event-section-header' onClick={showData}>
-                        1 July 2023 - 31 July 2023
+                        Current Events Available
                     </div>  
                     <div className='event-content'>
                         
                     {renderEventCards()}
 
-                    </div>
-                </section>
-                <section>
-                    <div className='event-section-header'>
-                        1 July 2023 - 31 July 2023
-                    </div>
-                    <div className='event-content'>
-                      
                     </div>
                 </section>
             </main>

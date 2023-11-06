@@ -3,10 +3,7 @@ import './EventCard.css';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import EventDetailsPage from './../pages/EventDetails/EventDetailsPage';
 
-
-
 function EventCard({Event}) {
-
   const location =useLocation();
   const data = location.state;
   console.log(data);
