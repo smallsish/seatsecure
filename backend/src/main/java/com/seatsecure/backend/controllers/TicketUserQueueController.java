@@ -2,59 +2,34 @@ package com.seatsecure.backend.controllers;
 
 import java.util.List;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Category;
-import com.seatsecure.backend.entities.Event;
-import com.seatsecure.backend.entities.EventVenueDTO;
 import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.TicketUserQueue;
 import com.seatsecure.backend.entities.User;
-import com.seatsecure.backend.exceptions.EventCreationError;
-import com.seatsecure.backend.exceptions.EventNotFoundException;
-import com.seatsecure.backend.exceptions.QueueEntryNotFoundException;
 import com.seatsecure.backend.services.Algo;
-import com.seatsecure.backend.services.EventService;
-import com.seatsecure.backend.services.QueueEntryServiceImpl;
 import com.seatsecure.backend.services.RunService;
-import com.seatsecure.backend.services.SeatService;
 import com.seatsecure.backend.services.TicketQueueService;
-import com.seatsecure.backend.services.UserService;
 
 @RequestMapping("/api/v1")
 @RestController
 public class TicketUserQueueController {
     private TicketQueueService ts;
-    private QueueEntryServiceImpl qs;
-    private UserService us;
     private RunService rs;
-    private EventService es;
-    private SeatService ss;
     private Algo algo;
 
-    @Autowired
-    public TicketUserQueueController(TicketQueueService ts, UserService us, RunService rs, EventService es, SeatService ss, Algo algo){
+    public TicketUserQueueController(TicketQueueService ts, RunService rs, Algo algo){
         this.ts = ts;
-        this.us = us;
         this.rs = rs;
-        this.es = es;
-        this.ss = ss;
         this.algo = algo;
     }
 
@@ -77,10 +52,12 @@ public class TicketUserQueueController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/queue/{id}")
     public TicketUserQueue getTicketUserQueue(@PathVariable Long id){
-        TicketUserQueue queue = ts.getQueueEntry(id);
-        if(queue == null) throw new QueueEntryNotFoundException(id);
+        // TicketUserQueue queue = ts.getQueueEntry(id); // TO BE IMPLEMENTED
+        // if(queue == null) throw new QueueEntryNotFoundException(id);
         
-        return queue;
+        // return queue;
+
+        return null;
     }
 
     /**
@@ -92,30 +69,32 @@ public class TicketUserQueueController {
     @PostMapping("/queue/{id}")
     @PreAuthorize("hasAuthorities('admin:create')")
     public Long addQueueEntry(@PathVariable Long queueId, User user, Category cat, int numOfSeats, Run run) {
-        Long id = ts.addUserToQueue(user, cat, run, numOfSeats);
+        //Long id = ts.addUserToQueue(user, cat, run, numOfSeats); // TO BE IMPLEMENTED
         
-        if (id == null) throw new EventCreationError();
+        // if (id == null) throw new EventCreationError();
         
-        return id;
+        // return id;
+
+        return null;
     }
 
 
-    /**
-     * Update an event with new info
-     * If there is no event with the given "id", throw an EventNotFoundException
-     * @param id
-     * @param newEventInfo
-     * @return the updated event
-     */
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/events/{id}")
-    @PreAuthorize("hasAuthorities('admin:update')")
-    public Event updateEvent(@PathVariable Long id, @Valid @RequestBody Event newEventInfo){
-        Event event = eventService.updateEvent(id, newEventInfo);
-        if(event == null) throw new EventNotFoundException(id);
+    // /**
+    //  * Update an event with new info
+    //  * If there is no event with the given "id", throw an EventNotFoundException
+    //  * @param id
+    //  * @param newEventInfo
+    //  * @return the updated event
+    //  */
+    // @ResponseStatus(HttpStatus.OK)
+    // @PutMapping("/events/{id}")
+    // @PreAuthorize("hasAuthorities('admin:update')")
+    // public Event updateEvent(@PathVariable Long id, @Valid @RequestBody Event newEventInfo){
+    //     Event event = es.updateEvent(id, newEventInfo);
+    //     if(event == null) throw new EventNotFoundException(id);
         
-        return event;
-    }
+    //     return event;
+    // }
 
     /**
      * Remove a event with the DELETE request to "/event/{id}"
@@ -127,7 +106,8 @@ public class TicketUserQueueController {
     @PreAuthorize("hasAuthority('admin:delete')")
     public Long deleteQueueEntry(@PathVariable Long queue_id, @PathVariable Long entry_id){
         TicketUserQueue queue = getTicketUserQueue(queue_id);
-        if 
+        // if
+        return null; 
         
     }
 

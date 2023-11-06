@@ -50,5 +50,5 @@ public class Run {
     private List<Ticket> tickets;
 
     @OneToMany(mappedBy = "run", cascade = CascadeType.ALL, orphanRemoval = false)
-    private List<TicketUserQueue> queue;
+    private List<TicketUserQueue> tuQueue;
 }

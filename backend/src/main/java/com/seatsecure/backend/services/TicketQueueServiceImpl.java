@@ -6,31 +6,19 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Category;
-import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.QueueEntry;
 import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.Ticket;
 import com.seatsecure.backend.entities.TicketUserQueue;
-import com.seatsecure.backend.entities.User;
-import com.seatsecure.backend.exceptions.UserNotFoundException;
 import com.seatsecure.backend.repositories.TicketQueueRepository;
-import com.seatsecure.backend.repositories.UserRepository;
-
-import jakarta.validation.OverridesAttribute;
 
 @Service
 public class TicketQueueServiceImpl implements TicketQueueService {
     private TicketQueueRepository queueRepo;
-    private UserServiceImpl userSer;
-    private TicketServiceImpl ticketSer;
-    private RunServiceImpl runSer;
     // private CategoryServiveImpl catSer;
 
-    public TicketQueueServiceImpl(TicketQueueRepository queueRepo, UserServiceImpl userSer, TicketServiceImpl ticketSer, RunServiceImpl runSer){
+    public TicketQueueServiceImpl(TicketQueueRepository queueRepo){
         this.queueRepo = queueRepo;
-        this.userSer = userSer;
-        this.ticketSer = ticketSer;
-        this.runSer = runSer;
     }
 
     @Override
@@ -50,7 +38,7 @@ public class TicketQueueServiceImpl implements TicketQueueService {
         //     throw new CategoryNotFoundException(cat);
         // }
         
-        TicketUserQueue newQueueInsert = TicketUserQueue.builder().category(category).run(run).build();
+        TicketUserQueue newQueueInsert = TicketUserQueue.builder().cat(category).run(run).build();
         return newQueueInsert.getQueueNumber();
     }
 

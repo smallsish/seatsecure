@@ -47,5 +47,8 @@ public class Category {
     @OneToMany(mappedBy = "cat", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Seat> queue;
 
+    @OneToMany(mappedBy = "cat", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<TicketUserQueue> tuQueue;
+
     private int priority;
 }

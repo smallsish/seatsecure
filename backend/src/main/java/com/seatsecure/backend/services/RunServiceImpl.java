@@ -101,7 +101,7 @@ public class RunServiceImpl implements RunService {
     @Override
     public List<TicketUserQueue> getQueueofRun(Long runId){
         Run particularRun = getRunById(runId);
-        List<TicketUserQueue> queue = particularRun.getQueue();
+        List<TicketUserQueue> queue = particularRun.getTuQueue();
         return queue;
     }
 

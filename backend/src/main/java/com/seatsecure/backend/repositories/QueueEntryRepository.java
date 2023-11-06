@@ -7,10 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.seatsecure.backend.entities.QueueEntry;
-import com.seatsecure.backend.entities.TicketUserQueue;
 
 @Repository
 public interface QueueEntryRepository extends JpaRepository<QueueEntry,Long> {
     Optional<QueueEntry> findById(Long id);
-    List<QueueEntry> findByQueue(Long QueueID);
+    List<QueueEntry> findByQueueEntryNumber(long queueEntryNumber);
 }

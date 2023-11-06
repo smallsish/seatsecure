@@ -7,32 +7,32 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Stack;
 
-import com.seatsecure.backend.entities.Category;
-import com.seatsecure.backend.entities.Event;
+import org.springframework.stereotype.Component;
+
 import com.seatsecure.backend.entities.QueueEntry;
 import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.Ticket;
 import com.seatsecure.backend.entities.TicketUserQueue;
 
+@Component
 public class Algo {
-    private TicketQueueServiceImpl queueSer;
-    private QueueEntryServiceImpl entrySer;
-    private TicketServiceImpl ticketSer;
-    private RunServiceImpl runSer;
-    public Algo(TicketQueueServiceImpl queueSer, QueueEntryServiceImpl entrySer, TicketServiceImpl ticketSer, RunServiceImpl runSer){
+    private TicketQueueService queueSer;
+    private QueueEntryService entrySer;
+    private TicketService ticketSer;
+
+    public Algo(TicketQueueService queueSer, QueueEntryService entrySer, TicketService ticketSer){
         this.queueSer = queueSer;
         this.entrySer = entrySer;
         this.ticketSer = ticketSer;
-        this.runSer = runSer;
     }
     public void algoForBidding(Run run){
         List<TicketUserQueue> queuesPerRun = queueSer.listAllQueuesPerRun(run);
         Comparator<TicketUserQueue> comparator = new Comparator<TicketUserQueue>() {
             @Override
             public int compare(TicketUserQueue obj1, TicketUserQueue obj2) {
-                // Implement your custom comparison logic here
+                // ement your custom comparison logic here
                 // Return a negative value, zero, or a positive value based on your comparison
-                int result = Integer.compare(obj1.getCategory().getPriority(),obj2.getCategory().getPriority());
+                int result = Integer.compare(obj1.getCat().getPriority(),obj2.getCat().getPriority());
                 return result;
             }
         };
@@ -41,10 +41,10 @@ public class Algo {
         Stack<TicketUserQueue> categoryPerRound = new Stack<>();
         for (int numberOfRounds = 1; numberOfRounds <= numOfCats; numberOfRounds++){
             categoryPerRound.push(queuesPerRun.get(numberOfRounds));
-            int capacity = queuesPerRun.get(numberOfRounds).getCategory().getSeats().size();
+            int capacity = queuesPerRun.get(numberOfRounds).getCat().getSeats().size();
             while (capacity != 0 && !categoryPerRound.isEmpty()){
                 TicketUserQueue currentQueue = categoryPerRound.pop();
-                Long catID = currentQueue.getCategory().getId();
+                Long catID = currentQueue.getCat().getId();
                 Long runID = currentQueue.getRun().getId();
                 List<Ticket> forAssignment = eachCattickets(runID, catID);
 

@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.*;
 
 
@@ -29,6 +28,6 @@ public class QueueEntry {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ticketuserqueue_id")
-    private TicketUserQueue queue;
+    private TicketUserQueue tuQueue;
 
 }

@@ -30,3 +30,13 @@ html::-webkit-scrollbar-thumb {
     border-radius: 8px;
     background-color: rgb(86, 20, 0);
 }
+
+.error {
+  width: 100%;
+  align-content: center;
+  height:30px;
+  padding: 10px;
+  align-self: center;
+  color: red;
+  margin-bottom: 5px;
+}

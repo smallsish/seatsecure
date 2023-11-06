@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.*;
 
 
@@ -25,14 +24,14 @@ public class TicketUserQueue {
     private long queueNumber;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @JoinColumn(name = "cat_id")
+    private Category cat;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "run_id")
     private Run run;
 
-    @OneToMany(mappedBy = "ticketuserqueue", cascade = CascadeType.ALL, orphanRemoval = TRUE)
+    @OneToMany(mappedBy = "tuQueue", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QueueEntry> entries;
 
 }
