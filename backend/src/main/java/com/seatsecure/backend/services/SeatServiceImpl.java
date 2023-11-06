@@ -106,22 +106,23 @@ public class SeatServiceImpl implements SeatService {
      * 
      * @param venueId
      * @param numSeats
-     * @return The Venue with new Seats added to it
+     * @return The list of new Seats added to the Venue
      * @throws VenueNotFoundException If a Venue with the specified id does not
      *                                exist
      */
     @Override
-    public Venue addNewSeatsToVenue(Long id, int numSeats) {
+    public List<Seat> addNewSeatsToVenue(Long id, int numSeats) {
         // Check if venue exists
         Venue v = venueService.getVenueById(id);
 
+        List<Seat> seatList = new ArrayList<>();
         // Add new seats
         for (int i = 0; i < numSeats; i++) {
             Seat newSeat = Seat.builder().venue(v).build();
-            seatRepo.save(newSeat);
+            seatList.add(seatRepo.save(newSeat));
         }
 
-        return v;
+        return seatList;
     }
 
     /**

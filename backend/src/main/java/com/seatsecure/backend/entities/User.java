@@ -43,11 +43,6 @@ public class User implements UserDetails {
     private Role role; // uncomment this to use the ROLE entity
     //private String role;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getAuthorities();
-    }
-
     @Size(max = 20, message = "Username should not be longer than 20 characters!")
     @NotNull(message = "Username should not be empty!")
     @Pattern(regexp = "^[0-9A-Za-z_]+$", message = "Only alphabets, numbers and underscores are allowed!")
@@ -76,8 +71,12 @@ public class User implements UserDetails {
     private List<Ticket> ticketsPurchased;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = false)
-    private List<QueueEntry> queuesEntries;
+    private List<QueueEntry> queueEntries;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return role.getAuthorities();
+    }
 
     @Override
     public boolean isAccountNonExpired() {
