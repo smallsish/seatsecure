@@ -4,15 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.boot.archive.scan.spi.ClassDescriptor.Categorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Ticket;
 import com.seatsecure.backend.entities.User;
-import com.seatsecure.backend.exceptions.category.CatNotFoundException;
+import com.seatsecure.backend.exceptions.category.NullCatException;
 import com.seatsecure.backend.exceptions.run.NullRunException;
 import com.seatsecure.backend.exceptions.seat.NullSeatException;
 import com.seatsecure.backend.exceptions.seat.SeatHasTicketException;
@@ -35,6 +37,7 @@ public class TicketServiceImpl implements TicketService {
     private RunService runService;
     private SeatService seatService;
     private UserService userService;
+    private CatService catService;
     private TicketService ticketService;
     private TicketRepository ticketRepo;
     private SeatRepository seatRepo;
@@ -58,6 +61,24 @@ public class TicketServiceImpl implements TicketService {
     }
 
     /**
+     * Get the Run of a Ticket
+     * 
+     * @param ticketId
+     * @return The Run which the Ticket of the specified id is associated with, or null if it isn't associated with one
+     * @throws TicketNotFoundException If a Ticket with the specified id does not
+     *                                 exist
+     */
+    @Override
+    public Run getRunOfTicket(Long ticketId) {
+        // Check if ticket exists
+        Ticket ticket = getTicketById(ticketId);
+
+        // Get run of ticket
+        Run run = ticket.getRun();
+        return run; // Returns null if there is no run it is associated with
+    }
+
+    /**
      * Get the owner User of a Ticket
      * 
      * @param ticketId
@@ -75,23 +96,48 @@ public class TicketServiceImpl implements TicketService {
         return owner; // Returns null if there is no owner
     }
 
-    /**
-     * Get the Run of a Ticket
+
+        /**
+     * Get the price of a Ticket
      * 
      * @param ticketId
-     * @return The Run which the Ticket of the specified id is associated with, or null if it isn't associated with one
+     * @return The price of the Ticket as a double
      * @throws TicketNotFoundException If a Ticket with the specified id does not
      *                                 exist
+     * @throws NullCatException If the Ticket does not have a Category
      */
     @Override
-    public Run getRunOfTicket(Long ticketId) {
-        // Check if ticket exists
-        Ticket ticket = getTicketById(ticketId);
+    public Double getPriceOfTicket(Long ticketId) {
+        // Try to get ticket's cat
+        Category cat = getCatOfTicket(ticketId);
 
-        // Get run of ticket
-        Run run = ticket.getRun();
-        return run; // Returns null if there is no run it is associated with
+        return catService.getPriceOfCat(cat.getId());
     }
+
+        /**
+     * Get the Category of a Ticket
+     * 
+     * @param ticketId
+     * @return The Category of the Ticket
+     * @throws TicketNotFoundException If a Ticket with the specified id does not
+     *                                 exist
+     * @throws NullCatException If the Ticket does not have a Category
+     */
+    @Override
+    public Category getCatOfTicket(Long ticketId) {
+        // Try to get ticket
+        Ticket t = getTicketById(ticketId);
+
+        // Try to get cat
+        Category cat = t.getCat();
+        if (cat == null)  {
+            throw new NullCatException();
+        }
+
+        return cat;
+
+    }
+
 
     /**
      * Get the Tickets in a Run with the specified id
@@ -429,6 +475,12 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     public void injectTicketService(TicketService ts) {
         ticketService = ts;
+    }
+
+    @Lazy
+    @Autowired
+    public void injectCatRepo(CatService cs) {
+        catService = cs;
     }
 
     @Lazy

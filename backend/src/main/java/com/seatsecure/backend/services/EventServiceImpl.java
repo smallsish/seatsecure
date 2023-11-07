@@ -68,17 +68,17 @@ public class EventServiceImpl implements EventService {
     }
 
     /**
-     * Get the Events hosted at a Venue
+     * Get the Event hosted at a Venue
      * @param eventId
-     * @return A list of the Events of a Venue with the specified id
+     * @return The Event at the Venue with the specified id, or null if there is no Event
      * @throws VenueNotFoundException If the Venue cannot be found
      */
-    public List<Event> getEventsOfVenue(Long venueId) {
+    public Event getEventAtVenue(Long venueId) {
         // Check if venue exists
         Venue v = venueService.getVenueById(venueId);
 
-        // Get events of that venue
-        return eventRepo.findByVenue(v);
+        // Get event of that venue
+        return v.getEvent(); // Returns null if there's no event
     }
 
     /**

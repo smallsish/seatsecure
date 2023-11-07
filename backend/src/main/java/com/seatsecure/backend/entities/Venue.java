@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.*;
 
 @Data
@@ -34,8 +35,11 @@ public class Venue {
     //@Pattern(regexp = "^[0-9A-Za-z-#, ]+$", message = "Invalid characters used for address!")
     private String address;
 
-    @OneToMany(mappedBy = "venue")
-    private List<Event> events;
+    // @OneToMany(mappedBy = "venue")
+    // private List<Event> events;
+
+    @OneToOne(mappedBy = "venue")
+    private Event event;
 
     @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Seat> seats;

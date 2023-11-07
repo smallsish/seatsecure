@@ -13,7 +13,7 @@ public interface EventService {
 
     Venue getVenueOfEvent(Long eventId);
 
-    List<Event> getEventsOfVenue(Long venueId);
+    Event getEventAtVenue(Long venueId);
 
     Event addEvent(Event e);
 

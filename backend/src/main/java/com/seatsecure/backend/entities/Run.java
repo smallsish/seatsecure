@@ -46,9 +46,9 @@ public class Run {
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @OneToMany(mappedBy = "run")
+    @OneToMany(mappedBy = "run", cascade = CascadeType.ALL)
     private List<Ticket> tickets;
 
-    @OneToMany(mappedBy = "run", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "run", cascade = CascadeType.ALL)
     private List<TicketUserQueue> tuQueue;
 }

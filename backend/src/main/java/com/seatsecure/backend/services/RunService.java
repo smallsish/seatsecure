@@ -1,10 +1,12 @@
 package com.seatsecure.backend.services;
 
+import java.util.Date;
 import java.util.List;
 
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.TicketUserQueue;
+import com.seatsecure.backend.entities.Venue;
 
 public interface RunService {
 
@@ -21,5 +23,10 @@ public interface RunService {
     Run deleteRunById(Long runId);
 
     List<TicketUserQueue> getTuQueueofRun(Long runId);
+
+    // Validation methods
+    Boolean dateValidAtVenue(Long venueId, Date startDate, Date endDate);
+
+    Boolean runDatesAreValid(Run run);
 
 }
