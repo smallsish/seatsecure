@@ -9,6 +9,6 @@ RUN ./mvnw clean package
 # COPY target/backend-0.0.1-SNAPSHOT.jar /app/backend.jar
 FROM openjdk:17-jdk-slim
 WORKDIR .
-COPY --from=build /target/backend.jar .
+COPY --from=build /target/backend-0.0.1-SNAPSHOT.jar .
 EXPOSE 8080
-CMD ["java", "-jar", "backend.jar"]
+CMD ["java", "-jar", "backend-0.0.1-SNAPSHOT.jar"]
