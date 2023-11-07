@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.User;
 import com.seatsecure.backend.entities.enums.Role;
-import com.seatsecure.backend.exceptions.user.CurrentUserException;
-import com.seatsecure.backend.exceptions.user.UsernameAlreadyExistsException;
+import com.seatsecure.backend.exceptions.others.CurrentUserException;
+import com.seatsecure.backend.exceptions.others.UsernameAlreadyExistsException;
 import com.seatsecure.backend.repositories.UserRepository;
 import com.seatsecure.backend.security.jwt.JwtService;
 
@@ -48,7 +48,7 @@ public class AuthenticationService {
                 .build();
             
         } else {
-            throw new UsernameAlreadyExistsException("The username '"+ uName + "' already exists.");
+            throw new UsernameAlreadyExistsException(uName);
         }
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {

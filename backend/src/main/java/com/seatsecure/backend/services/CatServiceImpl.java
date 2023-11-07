@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Event;
-import com.seatsecure.backend.exceptions.category.CatNotFoundException;
-import com.seatsecure.backend.exceptions.event.EventNotFoundException;
-import com.seatsecure.backend.exceptions.event.NullEventException;
+import com.seatsecure.backend.exceptions.not_found.CatNotFoundException;
+import com.seatsecure.backend.exceptions.not_found.EventNotFoundException;
+import com.seatsecure.backend.exceptions.null_property.NullEventException;
 import com.seatsecure.backend.repositories.CatRepository;
 
 @Service

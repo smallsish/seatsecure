@@ -20,8 +20,8 @@ import com.seatsecure.backend.entities.DTO_mappers.complex.VenueEventDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.simple.VenueDTOmapper;
 import com.seatsecure.backend.entities.DTOs.complex.VenueEventDTO;
 import com.seatsecure.backend.entities.DTOs.simple.VenueDTO;
-import com.seatsecure.backend.exceptions.venue.VenueCreationException;
-import com.seatsecure.backend.exceptions.venue.VenueNotFoundException;
+import com.seatsecure.backend.exceptions.creation.VenueCreationException;
+import com.seatsecure.backend.exceptions.not_found.VenueNotFoundException;
 import com.seatsecure.backend.services.VenueService;
 
 @RequestMapping("/api/v1")

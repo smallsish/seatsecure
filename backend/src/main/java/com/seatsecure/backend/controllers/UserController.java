@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,12 +22,11 @@ import com.seatsecure.backend.entities.DTO_mappers.complex.UserDetailsDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.complex.UserTicketsDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.simple.UserDTOmapper;
 import com.seatsecure.backend.entities.DTOs.complex.UserDetailsDTO;
-import com.seatsecure.backend.entities.DTOs.complex.UserTicketsDTO;
 import com.seatsecure.backend.entities.DTOs.simple.UserDTO;
-import com.seatsecure.backend.exceptions.user.UnauthorizedUserException;
-import com.seatsecure.backend.exceptions.user.UserNotFoundException;
+import com.seatsecure.backend.exceptions.not_found.UserNotFoundException;
+import com.seatsecure.backend.exceptions.others.UnauthorizedUserException;
 import com.seatsecure.backend.security.auth.AuthenticationService;
-import com.seatsecure.backend.services.TicketService;
+import com.seatsecure.backend.services.TicketMutatorService;
 import com.seatsecure.backend.services.UserService;
 
 @RequestMapping("/api/v1")
@@ -36,12 +34,11 @@ import com.seatsecure.backend.services.UserService;
 //@PreAuthorize("hasRole('USER')")
 public class UserController {
     private UserService userService;
-    private TicketService ticketService;
     private AuthenticationService authService;
     private UserDTOmapper userDTOmapper;
     private UserDetailsDTOmapper userDetailsDTOmapper;
-    private UserTicketsDTOmapper userTicketsDTOmapper;
-    // Will be injected via lazy setter injection
+    // Above dependencies will be injected via lazy setter injection
+
 
     /**
      * List all users in the system
@@ -130,8 +127,7 @@ public class UserController {
 
     @Lazy
     @Autowired
-    public void injectTicketService(TicketService ts) {
-        ticketService = ts;
+    public void injectTicketService(TicketMutatorService ts) {
     }
 
     @Lazy
@@ -155,7 +151,6 @@ public class UserController {
     @Lazy
     @Autowired
     public void injectUtDTOmapper(UserTicketsDTOmapper utDTOmapper) {
-        userTicketsDTOmapper = utDTOmapper;
     }
 
 }

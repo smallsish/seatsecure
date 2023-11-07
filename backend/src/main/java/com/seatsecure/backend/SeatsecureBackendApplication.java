@@ -24,7 +24,7 @@ import com.seatsecure.backend.services.CatService;
 import com.seatsecure.backend.services.EventService;
 import com.seatsecure.backend.services.RunService;
 import com.seatsecure.backend.services.SeatService;
-import com.seatsecure.backend.services.TicketService;
+import com.seatsecure.backend.services.TicketMutatorService;
 import com.seatsecure.backend.services.UserService;
 import com.seatsecure.backend.services.VenueService;
 
@@ -39,7 +39,7 @@ public class SeatsecureBackendApplication {
 	@Autowired
 	public CommandLineRunner addMocks(AuthenticationService as, EventService es,
 	VenueService vs, CatService cs, RunService rs, SeatService ss,
-	TicketService ts, UserService us) {
+	TicketMutatorService ts, UserService us) {
 		return args -> {
 			// Create mock user / admin
 			RegisterRequest admin = RegisterRequest.builder().firstName("admin").lastName("Hi").email("admin@email.com")

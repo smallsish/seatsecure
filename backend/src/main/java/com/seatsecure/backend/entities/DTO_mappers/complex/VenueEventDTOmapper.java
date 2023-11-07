@@ -1,6 +1,5 @@
 package com.seatsecure.backend.entities.DTO_mappers.complex;
 
-import java.util.List;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;

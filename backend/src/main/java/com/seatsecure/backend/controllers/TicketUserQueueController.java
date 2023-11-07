@@ -106,7 +106,7 @@ public class TicketUserQueueController {
     @PreAuthorize("hasAuthority('admin:delete')")
     public Long deleteQueueEntry(@PathVariable Long queue_id, @PathVariable Long entry_id){
         TicketUserQueue queue = getTicketUserQueue(queue_id);
-        // if
+        // TODO - if
         return null; 
         
     }

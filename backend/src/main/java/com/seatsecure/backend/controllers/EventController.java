@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,9 +30,9 @@ import com.seatsecure.backend.entities.DTOs.complex.EventVenueDTO;
 import com.seatsecure.backend.entities.DTOs.complex.RunTicketsDTO;
 import com.seatsecure.backend.entities.DTOs.simple.EventDTO;
 import com.seatsecure.backend.entities.DTOs.simple.RunDTO;
-import com.seatsecure.backend.exceptions.event.EventCreationException;
-import com.seatsecure.backend.exceptions.event.EventNotFoundException;
-import com.seatsecure.backend.exceptions.run.RunNotFoundException;
+import com.seatsecure.backend.exceptions.creation.EventCreationException;
+import com.seatsecure.backend.exceptions.not_found.EventNotFoundException;
+import com.seatsecure.backend.exceptions.not_found.RunNotFoundException;
 import com.seatsecure.backend.services.EventService;
 import com.seatsecure.backend.services.RunService;
 
@@ -42,19 +45,7 @@ public class EventController {
     private RunDTOmapper runDTOmapper;
     private RunTicketsDTOmapper runTicketsDTOmapper;
     private EventDTOmapper eventDTOmapper;
-    private EventRunsDTOmapper eventRunsDTOmapper;
-
-    public EventController(EventService es, EventVenueDTOmapper evDTOmapper,
-    RunService rs, RunDTOmapper rDTOmapper, RunTicketsDTOmapper rtDTOmapper, EventDTOmapper eDTOmapper,
-    EventRunsDTOmapper erDTOmapper) {
-        eventService = es;
-        runService = rs;
-        eventVenueDTOmapper = evDTOmapper;
-        runDTOmapper = rDTOmapper;
-        runTicketsDTOmapper = rtDTOmapper;
-        eventDTOmapper = eDTOmapper;
-        eventRunsDTOmapper = erDTOmapper;
-    }
+    // Above dependencies will be injected via lazy setter injection
 
     /**
      * List all existing events and their venues
@@ -245,5 +236,45 @@ public class EventController {
             
         return runTicketsDTOmapper.apply(r);
     }
+
+    /* SETTER INJECTORS */
+
+
+    @Lazy
+    @Autowired
+    public void injectEventService(EventService es) {
+        eventService = es;
+    }
+
+    @Lazy
+    @Autowired
+    public void injectRunService(RunService rs) {
+        runService = rs;
+    }
+
+    @Lazy
+    @Autowired
+    public void injectEventVenueDTOmapper(EventVenueDTOmapper evDTOmapper) {
+        eventVenueDTOmapper = evDTOmapper;
+    }
+
+    @Lazy
+    @Autowired
+    public void injectRunDTOmapper(RunDTOmapper rDTOmapper) {
+        runDTOmapper = rDTOmapper;
+    }
+
+    @Lazy
+    @Autowired
+    public void injectRunTicketsDTOmapper(RunTicketsDTOmapper rtDTOmapper) {
+        runTicketsDTOmapper = rtDTOmapper;
+    }
+
+    @Lazy
+    @Autowired
+    public void injectEventDTOmapper(EventDTOmapper eDtOmapper) {
+        eventDTOmapper = eDtOmapper;
+    }
+
 
 }

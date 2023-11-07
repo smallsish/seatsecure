@@ -12,12 +12,11 @@ import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.Ticket;
 import com.seatsecure.backend.entities.TicketUserQueue;
-import com.seatsecure.backend.exceptions.event.EventNotFoundException;
-import com.seatsecure.backend.exceptions.event.NullEventException;
-import com.seatsecure.backend.exceptions.run.RunNotFoundException;
-import com.seatsecure.backend.exceptions.venue.VenueNotFoundException;
+import com.seatsecure.backend.exceptions.not_found.EventNotFoundException;
+import com.seatsecure.backend.exceptions.not_found.VenueNotFoundException;
+import com.seatsecure.backend.exceptions.null_property.NullEventException;
+import com.seatsecure.backend.exceptions.not_found.RunNotFoundException;
 import com.seatsecure.backend.repositories.RunRepository;
-import com.seatsecure.backend.repositories.SeatRepository;
 import com.seatsecure.backend.repositories.TicketQueueRepository;
 import com.seatsecure.backend.repositories.TicketRepository;
 

@@ -18,12 +18,15 @@ import com.seatsecure.backend.entities.TicketUserQueue;
 public class Algo {
     private TicketQueueService queueSer;
     private QueueEntryService entrySer;
-    private TicketService ticketSer;
+    private TicketAccessorService ticketAccessSer;
+    private TicketMutatorService ticketMutateSer;
 
-    public Algo(TicketQueueService queueSer, QueueEntryService entrySer, TicketService ticketSer){
+    public Algo(TicketQueueService queueSer, QueueEntryService entrySer,
+    TicketAccessorService ticketAccessSer, TicketMutatorService ticketMutateSer){
         this.queueSer = queueSer;
         this.entrySer = entrySer;
-        this.ticketSer = ticketSer;
+        this.ticketAccessSer = ticketAccessSer;
+        this.ticketMutateSer = ticketMutateSer;
     }
     public void algoForBidding(Run run){
         List<TicketUserQueue> queuesPerRun = queueSer.listAllQueuesPerRun(run);
@@ -80,7 +83,7 @@ public class Algo {
         }
     }
     public List<Ticket> eachCattickets(Long runID, Long catID){
-        List<Ticket> ticketsPerRun = ticketSer.getTicketsOfRun(runID);
+        List<Ticket> ticketsPerRun = ticketAccessSer.getTicketsOfRun(runID);
         return ticketsPerCat(ticketsPerRun, catID);
     }
 
@@ -98,7 +101,7 @@ public class Algo {
         for(int n = 0; n < numOfSeatsAllocated; n++){
             Long userID = entry.getUser().getId();
             Long tixID = tickets.get(index+n).getId();
-            ticketSer.assignTicketToUser(userID, tixID);
+            ticketMutateSer.assignTicketToUser(userID, tixID);
             
         }
     }

@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.exceptions.seat.SeatNotFoundException;
-import com.seatsecure.backend.exceptions.venue.NullVenueException;
+import com.seatsecure.backend.exceptions.not_found.SeatNotFoundException;
+import com.seatsecure.backend.exceptions.null_property.NullVenueException;
 import com.seatsecure.backend.repositories.SeatRepository;
 
 @Service

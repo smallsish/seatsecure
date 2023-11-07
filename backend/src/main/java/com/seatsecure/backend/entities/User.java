@@ -9,10 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.seatsecure.backend.entities.enums.Gender;
 import com.seatsecure.backend.entities.enums.Role;
 
-import jakarta.validation.constraints.Email;
+import lombok.Builder;
+import lombok.Data;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,8 +24,6 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 
-// @Setter
-// @Getter
 @Data
 @Builder
 @NoArgsConstructor
@@ -40,7 +37,6 @@ public class User implements UserDetails {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @NonNull
     private Role role;
 
     @NotNull

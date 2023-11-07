@@ -16,7 +16,7 @@ import com.seatsecure.backend.entities.DTOs.simple.RunDTO;
 import com.seatsecure.backend.entities.DTOs.simple.VenueDTO;
 import com.seatsecure.backend.services.EventService;
 import com.seatsecure.backend.services.RunService;
-import com.seatsecure.backend.services.TicketService;
+import com.seatsecure.backend.services.TicketAccessorService;
 
 @Component
 public class TicketDetailsDTOmapper implements Function<Ticket, TicketDetailsDTO>{
@@ -28,7 +28,7 @@ public class TicketDetailsDTOmapper implements Function<Ticket, TicketDetailsDTO
     private VenueDTOmapper venueDTOmapper;
 
     @Autowired
-    private TicketService ts;
+    private TicketAccessorService ts;
 
     @Autowired
     private RunService rs;

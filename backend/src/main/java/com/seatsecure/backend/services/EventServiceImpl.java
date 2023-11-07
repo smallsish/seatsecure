@@ -9,9 +9,9 @@ import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.exceptions.event.EventNotFoundException;
-import com.seatsecure.backend.exceptions.venue.NullVenueException;
-import com.seatsecure.backend.exceptions.venue.VenueNotFoundException;
+import com.seatsecure.backend.exceptions.not_found.EventNotFoundException;
+import com.seatsecure.backend.exceptions.not_found.VenueNotFoundException;
+import com.seatsecure.backend.exceptions.null_property.NullVenueException;
 import com.seatsecure.backend.repositories.EventRepository;
 
 @Service

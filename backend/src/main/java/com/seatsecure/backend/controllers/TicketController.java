@@ -15,7 +15,7 @@ import com.seatsecure.backend.entities.User;
 import com.seatsecure.backend.entities.DTO_mappers.complex.UserTicketsDTOmapper;
 import com.seatsecure.backend.entities.DTOs.complex.UserTicketsDTO;
 import com.seatsecure.backend.security.auth.AuthenticationService;
-import com.seatsecure.backend.services.TicketService;
+import com.seatsecure.backend.services.TicketMutatorService;
 import com.seatsecure.backend.services.UserService;
 
 @RequestMapping("/api/v1")
@@ -23,7 +23,7 @@ import com.seatsecure.backend.services.UserService;
 //@PreAuthorize("hasRole('USER')")
 public class TicketController {
     private UserService userService;
-    private TicketService ticketService;
+    private TicketMutatorService ticketService;
     private AuthenticationService authService;
     private UserTicketsDTOmapper userTicketsDTOmapper;
     // Above dependencies will be injected via lazy setter injection
@@ -69,7 +69,7 @@ public class TicketController {
 
     @Lazy
     @Autowired
-    public void injectTicketService(TicketService ts) {
+    public void injectTicketService(TicketMutatorService ts) {
         ticketService = ts;
     }
 

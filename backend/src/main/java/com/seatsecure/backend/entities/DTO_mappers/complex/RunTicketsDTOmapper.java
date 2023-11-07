@@ -12,7 +12,7 @@ import com.seatsecure.backend.entities.DTO_mappers.simple.RunDTOmapper;
 import com.seatsecure.backend.entities.DTOs.complex.RunTicketsDTO;
 import com.seatsecure.backend.entities.DTOs.complex.TicketDetailsDTO;
 import com.seatsecure.backend.entities.DTOs.simple.RunDTO;
-import com.seatsecure.backend.services.TicketService;
+import com.seatsecure.backend.services.TicketAccessorService;
 
 @Component
 public class RunTicketsDTOmapper implements Function<Run, RunTicketsDTO>{
@@ -24,7 +24,7 @@ public class RunTicketsDTOmapper implements Function<Run, RunTicketsDTO>{
     private TicketDetailsDTOmapper ticketDetailsDTOmapper;
 
     @Autowired
-    private TicketService ticketService;
+    private TicketAccessorService ticketService;
 
     @Override
     public RunTicketsDTO apply(Run r) {

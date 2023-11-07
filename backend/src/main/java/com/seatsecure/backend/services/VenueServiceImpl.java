@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.exceptions.venue.VenueNotFoundException;
+import com.seatsecure.backend.exceptions.not_found.VenueNotFoundException;
 import com.seatsecure.backend.repositories.VenueRepository;
 
 @Service

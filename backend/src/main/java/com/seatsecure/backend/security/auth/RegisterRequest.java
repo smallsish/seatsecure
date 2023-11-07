@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.NonFinal;
 
 @Data
 @Builder
@@ -48,7 +47,7 @@ public class RegisterRequest {
     @NonNull
     private Gender gender;
 
-    @Pattern(regexp = "^[89]{1}[0-9]{8}$", message = "Isnvalid phone number!")
+    @Pattern(regexp = "^[89]{1}[0-9]{7}$", message = "Isnvalid phone number!")
     @NonNull
     private String phoneNumber;
 
