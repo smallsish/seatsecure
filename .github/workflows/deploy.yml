@@ -20,7 +20,8 @@ jobs:
       - name: Pull Docker Images
         if: ${{ github.event.workflow_run.conclusion == 'success' &&
                  contains(github.event.workflow_run.workflow, 'Build and Push React App Docker Image') &&
-                 contains(github.event.workflow_run.workflow, 'Build and Push Spring Boot Docker Image') }}
+                 contains(github.event.workflow_run.workflow, 'Build and Push Spring Boot Docker Image') &&
+                 github.event.workflow_run.head_workflow == 'Build and Push Spring Boot Docker Image' }}
         run: |
           docker pull smallsish/seatsecure-ui-repo
           docker pull smallsish/backend-repo
