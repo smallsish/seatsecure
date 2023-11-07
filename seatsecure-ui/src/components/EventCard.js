@@ -6,7 +6,6 @@ import EventDetailsPage from './../pages/EventDetails/EventDetailsPage';
 function EventCard({Event}) {
   const location =useLocation();
   const data = location.state;
-  console.log(data);
 
   return (
     <div className='event-card-container'>
