@@ -3,6 +3,7 @@ FROM openjdk:17-jdk as build
 #WORKDIR /app
 WORKDIR .
 COPY . .
+RUN chmod +x mvnw
 RUN ./mvnw package -DskipTests
 # COPY target/backend-0.0.1-SNAPSHOT.jar /app/backend.jar
 FROM openjdk:17-jdk-slim
