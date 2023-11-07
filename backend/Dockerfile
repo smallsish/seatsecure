@@ -5,7 +5,7 @@ WORKDIR .
 COPY . .
 RUN ./mvnw package -DskipTests
 # COPY target/backend-0.0.1-SNAPSHOT.jar /app/backend.jar
-FROM openjdk:17-jre-slim
+FROM openjdk:17-jdk-slim
 WORKDIR .
 COPY --from=build /target/backend.jar .
 EXPOSE 8080
