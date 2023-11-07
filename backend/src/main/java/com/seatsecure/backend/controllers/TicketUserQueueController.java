@@ -74,7 +74,6 @@ public class TicketUserQueueController {
     */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/queue/{queueId}")
-    @PreAuthorize("hasAuthorities('admin:create')")
     public Long newQueueEntry(@PathVariable Long queueId, User user, int numOfSeats) {
         TicketUserQueue queue = ts.getQueue(queueId); // TO BE IMPLEMENTED
         if(queue == null) throw new QueueEntryNotFoundException(queueId);
