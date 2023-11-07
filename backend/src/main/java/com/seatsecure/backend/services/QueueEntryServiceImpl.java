@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.seatsecure.backend.entities.QueueEntry;
 import com.seatsecure.backend.entities.TicketUserQueue;
 import com.seatsecure.backend.entities.User;
+import com.seatsecure.backend.entities.enums.Status;
 import com.seatsecure.backend.repositories.QueueEntryRepository;
 
 @Service
@@ -39,6 +40,7 @@ public class QueueEntryServiceImpl implements QueueEntryService {
         newQueueEntryInsert.setNumOfSeats(numOfSeats);
         newQueueEntryInsert.setTuQueue(queue);
         newQueueEntryInsert.setUser(user);
+        newQueueEntryInsert.setStatus(Status.BIDPLACED);
         return queueEntriesRepo.save(newQueueEntryInsert).getQueueEntryNumber();
     }
 

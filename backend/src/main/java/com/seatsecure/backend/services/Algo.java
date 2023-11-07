@@ -13,6 +13,7 @@ import com.seatsecure.backend.entities.QueueEntry;
 import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.Ticket;
 import com.seatsecure.backend.entities.TicketUserQueue;
+import com.seatsecure.backend.entities.enums.Status;
 
 @Component
 public class Algo {
@@ -59,11 +60,13 @@ public class Algo {
                     if(numSeatsChosen > capacity){
                         numSeatsChosen = capacity;
                         entryChosen.setNumOfSeats(numSeatsChosen - capacity);
+                        entryChosen.setStatus(Status.PARTIALLYSUCESSFUL);
                     }   else{
                         QueueEntry toBeReplaced = entries.get(size-1);
                         entries.set(positionChosen, toBeReplaced);
                         entries.set(size-1, entryChosen);
                         size--;
+                        entryChosen.setStatus(Status.SUCCESSFUL);
                     }
                     ticketAssignment(entryChosen, numSeatsChosen, forAssignment, size-capacity);
                     capacity -= numSeatsChosen;

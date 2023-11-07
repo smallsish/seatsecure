@@ -14,9 +14,9 @@ public interface TicketQueueService {
     List<TicketUserQueue> listAllQueues();
     List<TicketUserQueue> listAllQueuesPerRun(Run run);
     Long addQueuePerRunPerCat(Category category, Run run);
+    Long getQueuePerRunPerCat(Category category, Run run);
     TicketUserQueue deleteQueue(Long queueId);
     TicketUserQueue getQueue(Long queueId);
     TicketUserQueue updateQueuewithUpdatedEntries(List<QueueEntry> updatedEntrieslist, TicketUserQueue queue);
-    List<Ticket> bidSelection(int numOfSeats,Category cat, Long queueId);
 
 }

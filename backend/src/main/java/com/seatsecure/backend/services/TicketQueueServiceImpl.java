@@ -15,10 +15,12 @@ import com.seatsecure.backend.repositories.TicketQueueRepository;
 @Service
 public class TicketQueueServiceImpl implements TicketQueueService {
     private TicketQueueRepository queueRepo;
+    private RunService runSer;
     // private CategoryServiveImpl catSer;
 
-    public TicketQueueServiceImpl(TicketQueueRepository queueRepo){
+    public TicketQueueServiceImpl(TicketQueueRepository queueRepo, RunService runSer){
         this.queueRepo = queueRepo;
+        this.runSer = runSer;
     }
 
     @Override
@@ -40,6 +42,18 @@ public class TicketQueueServiceImpl implements TicketQueueService {
         
         TicketUserQueue newQueueInsert = TicketUserQueue.builder().cat(category).run(run).build();
         return newQueueInsert.getQueueNumber();
+    }
+
+    @Override
+    public Long getQueuePerRunPerCat(Category category, Run run){
+        Long runID = run.getId();
+        List<TicketUserQueue> queues = runSer.getQueueofRun(runID);
+        for(TicketUserQueue queue:queues){
+            if(queue.getCat() == category){
+                return queue.getQueueNumber();
+            }
+        }
+        return null;
     }
 
     @Override
@@ -80,12 +94,4 @@ public class TicketQueueServiceImpl implements TicketQueueService {
 
     }
 
-    @Override
-    public List<Ticket> bidSelection(int numOfSeats, Category cat, Long queueId){
-        List<Ticket> finalTickets = new ArrayList<>();
-        
-
-
-        return finalTickets;
-    }
 }
