@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Category;
+import com.seatsecure.backend.entities.QueueEntry;
 import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.TicketUserQueue;
 import com.seatsecure.backend.entities.User;
+import com.seatsecure.backend.exceptions.EventCreationError;
+import com.seatsecure.backend.exceptions.QueueEntryNotFoundException;
+import com.seatsecure.backend.exceptions.QueueNotFoundException;
 import com.seatsecure.backend.services.Algo;
+import com.seatsecure.backend.services.QueueEntryService;
 import com.seatsecure.backend.services.RunService;
 import com.seatsecure.backend.services.TicketQueueService;
 
@@ -24,11 +29,13 @@ import com.seatsecure.backend.services.TicketQueueService;
 @RestController
 public class TicketUserQueueController {
     private TicketQueueService ts;
+    private QueueEntryService qs;
     private RunService rs;
     private Algo algo;
 
-    public TicketUserQueueController(TicketQueueService ts, RunService rs, Algo algo){
+    public TicketUserQueueController(TicketQueueService ts, QueueEntryService qs, RunService rs, Algo algo){
         this.ts = ts;
+        this.qs = qs;
         this.rs = rs;
         this.algo = algo;
     }
@@ -52,12 +59,12 @@ public class TicketUserQueueController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/queue/{id}")
     public TicketUserQueue getTicketUserQueue(@PathVariable Long id){
-        // TicketUserQueue queue = ts.getQueueEntry(id); // TO BE IMPLEMENTED
-        // if(queue == null) throw new QueueEntryNotFoundException(id);
+        TicketUserQueue queue = ts.getQueue(id);
+        if(queue == null) throw new QueueEntryNotFoundException(id);
         
-        // return queue;
+        return queue;
 
-        return null;
+        
     }
 
     /**
@@ -66,16 +73,17 @@ public class TicketUserQueueController {
      * @return The new event that was added
     */
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/queue/{id}")
+    @PostMapping("/queue/{queueId}")
     @PreAuthorize("hasAuthorities('admin:create')")
-    public Long addQueueEntry(@PathVariable Long queueId, User user, Category cat, int numOfSeats, Run run) {
-        //Long id = ts.addUserToQueue(user, cat, run, numOfSeats); // TO BE IMPLEMENTED
+    public Long newQueueEntry(@PathVariable Long queueId, User user, int numOfSeats) {
+        TicketUserQueue queue = ts.getQueue(queueId); // TO BE IMPLEMENTED
+        if(queue == null) throw new QueueEntryNotFoundException(queueId);
+        Long id = qs.addEntryToQueue(user, numOfSeats, queue); // TO BE IMPLEMENTED
         
-        // if (id == null) throw new EventCreationError();
+        if (id == null) throw new EventCreationError();
         
-        // return id;
+        return id;
 
-        return null;
     }
 
 
@@ -102,12 +110,32 @@ public class TicketUserQueueController {
      * @param id
      */
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/queue/{queue_id}/entry{entry_id}")
+    @DeleteMapping("/queue/{queueID}/entry{entryID}")
     @PreAuthorize("hasAuthority('admin:delete')")
-    public Long deleteQueueEntry(@PathVariable Long queue_id, @PathVariable Long entry_id){
-        TicketUserQueue queue = getTicketUserQueue(queue_id);
-        // if
-        return null; 
+    public QueueEntry deleteQueueEntry(@PathVariable Long queueID, @PathVariable Long entryID){
+        TicketUserQueue queue = ts.getQueue(queueID); // TO BE IMPLEMENTED
+        if(queue == null) throw new QueueNotFoundException(queueID);
+        QueueEntry entry = qs.getQueueEntry(entryID);
+        if(entry == null) throw new QueueEntryNotFoundException(entryID);
+        qs.deleteQueueEntry(entryID);
+        return entry; 
+        
+    }
+
+    /**
+     * Remove a event with the DELETE request to "/event/{id}"
+     * If there is no event with the given "id", throw an EventNotFoundException
+     * @param id
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/queue/{queueID}")
+    @PreAuthorize("hasAuthority('admin:delete')")
+    public TicketUserQueue deleteQueue(@PathVariable Long queueID){
+        TicketUserQueue queue = ts.getQueue(queueID); // TO BE IMPLEMENTED
+        if(queue == null) throw new QueueNotFoundException(queueID);
+        ts.deleteQueue(queueID);
+        
+        return queue; 
         
     }
 

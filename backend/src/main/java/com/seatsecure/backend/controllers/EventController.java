@@ -44,12 +44,12 @@ public class EventController {
 
     public EventController(EventService es, EventVenueDTOmapper evDTOmapper,
     RunService rs, RunDTOmapper rDTOmapper, EventDTOmapper eDTOmapper, EventRunsDTOmapper erDTOmapper) {
-        eventService = es;
-        runService = rs;
-        eventVenueDTOmapper = evDTOmapper;
-        runDTOmapper = rDTOmapper;
-        eventDTOmapper = eDTOmapper;
-        eventRunsDTOmapper = erDTOmapper;
+        this.eventService = es;
+        this.runService = rs;
+        this.eventVenueDTOmapper = evDTOmapper;
+        this.runDTOmapper = rDTOmapper;
+        this.eventDTOmapper = eDTOmapper;
+        this.eventRunsDTOmapper = erDTOmapper;
     }
 
     /**

@@ -4,10 +4,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class QueueEntryNotFoundException extends RuntimeException {
+public class QueueNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public QueueEntryNotFoundException(Long id) {
-        super("Could not find entry " + id);
+    public QueueNotFoundException(Long id) {
+        super("Could not find queue " + id);
     }
 }
