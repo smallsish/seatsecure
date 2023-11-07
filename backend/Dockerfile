@@ -1,6 +1,7 @@
 #FROM openjdk:17-jdk
 FROM openjdk:17-jdk as build
 #WORKDIR /app
+# comment
 WORKDIR .
 COPY . .
 RUN chmod +x mvnw
