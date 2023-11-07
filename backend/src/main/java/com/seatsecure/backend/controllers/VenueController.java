@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.entities.DTO_mappers.complex.VenueEventsDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.complex.VenueEventDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.simple.VenueDTOmapper;
-import com.seatsecure.backend.entities.DTOs.complex.VenueEventsDTO;
+import com.seatsecure.backend.entities.DTOs.complex.VenueEventDTO;
 import com.seatsecure.backend.entities.DTOs.simple.VenueDTO;
 import com.seatsecure.backend.exceptions.venue.VenueCreationException;
 import com.seatsecure.backend.exceptions.venue.VenueNotFoundException;
@@ -29,12 +29,12 @@ import com.seatsecure.backend.services.VenueService;
 public class VenueController {
     private VenueService venueService;
     private VenueDTOmapper venueDTOmapper;
-    private VenueEventsDTOmapper venueEventsDTOmapper;
+    private VenueEventDTOmapper venueEventDTOmapper;
 
-    public VenueController(VenueService vs, VenueDTOmapper vDTOmapper, VenueEventsDTOmapper veDTOmapper){
+    public VenueController(VenueService vs, VenueDTOmapper vDTOmapper, VenueEventDTOmapper veDTOmapper){
         venueService = vs;
         venueDTOmapper = vDTOmapper;
-        venueEventsDTOmapper = veDTOmapper;
+        venueEventDTOmapper = veDTOmapper;
     }
 
     /**
@@ -118,10 +118,10 @@ public class VenueController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/venues/{id}/events")
-    public VenueEventsDTO getEventsAtVenue(@PathVariable Long id){
+    public VenueEventDTO getEventsAtVenue(@PathVariable Long id){
         Venue venue = venueService.getVenueById(id);
         if (venue == null) throw new VenueNotFoundException(id);
 
-        return venueEventsDTOmapper.apply(venue);
+        return venueEventDTOmapper.apply(venue);
     }
 }

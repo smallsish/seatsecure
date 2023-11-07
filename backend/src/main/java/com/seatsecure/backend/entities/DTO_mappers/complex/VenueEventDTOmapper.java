@@ -10,13 +10,13 @@ import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Venue;
 import com.seatsecure.backend.entities.DTO_mappers.simple.EventDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.simple.VenueDTOmapper;
-import com.seatsecure.backend.entities.DTOs.complex.VenueEventsDTO;
+import com.seatsecure.backend.entities.DTOs.complex.VenueEventDTO;
 import com.seatsecure.backend.entities.DTOs.simple.EventDTO;
 import com.seatsecure.backend.entities.DTOs.simple.VenueDTO;
 import com.seatsecure.backend.services.EventService;
 
 @Component
-public class VenueEventsDTOmapper implements Function<Venue,VenueEventsDTO>{
+public class VenueEventDTOmapper implements Function<Venue,VenueEventDTO>{
 
     @Autowired
     private EventService es;
@@ -28,12 +28,12 @@ public class VenueEventsDTOmapper implements Function<Venue,VenueEventsDTO>{
     private EventDTOmapper eventDTOmapper;
 
     @Override
-    public VenueEventsDTO apply(Venue venue) {
+    public VenueEventDTO apply(Venue venue) {
         VenueDTO venueDTO = venueDTOmapper.apply(venue);
-        List<Event> events = es.getEventsOfVenue(venue.getId());
-        List<EventDTO> eventDTOs = events == null ? null : events.stream().map(eventDTOmapper).toList();
+        Event event = es.getEventAtVenue(venue.getId());
+        EventDTO eventDTO = event == null ? null : eventDTOmapper.apply(event);
 
-        return new VenueEventsDTO(venueDTO, eventDTOs);
+        return new VenueEventDTO(venueDTO, eventDTO);
     }
     
 }

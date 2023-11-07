@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.exceptions.category.CatNotFoundException;
+import com.seatsecure.backend.exceptions.event.EventNotFoundException;
 import com.seatsecure.backend.exceptions.event.NullEventException;
 import com.seatsecure.backend.repositories.CatRepository;
 
@@ -35,6 +36,20 @@ public class CatServiceImpl implements CatService {
         }
 
         return cat.get();
+    }
+
+    /**
+     * Get the price of a Category
+     * @param catId
+     * @return Price of the Category with given id
+     * @throws CatNotFoundException If there is no Category with the specified id
+     */
+    @Override
+    public Double getPriceOfCat(Long catId) {
+        // Try to get cat
+        Category cat = getCatById(catId);
+
+        return cat.getPrice();
     }
 
     /**

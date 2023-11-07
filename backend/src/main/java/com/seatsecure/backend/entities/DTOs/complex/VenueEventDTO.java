@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class VenueEventsDTO {
+public class VenueEventDTO {
     // Given a venue, give a list of its events
 
     VenueDTO venue;
-    List<EventDTO> events;
+    EventDTO event;
 }

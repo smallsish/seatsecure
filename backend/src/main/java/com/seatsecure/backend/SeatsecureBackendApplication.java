@@ -44,18 +44,18 @@ public class SeatsecureBackendApplication {
 			// Create mock user / admin
 			RegisterRequest admin = RegisterRequest.builder().firstName("admin").lastName("Hi").email("admin@email.com")
 					.gender(Gender.MALE)
-					.username("admin").phoneNumber(12345678).password("abcdef").role(Role.ADMIN).build();
+					.username("admin").phoneNumber("93842381").password("abcdef").role(Role.ADMIN).build();
 
 			RegisterRequest cust = RegisterRequest.builder().firstName("user").lastName("Hi").email("user@email.com")
 					.gender(Gender.FEMALE)
-					.username("cust").phoneNumber(12345678).password("abcdefgh").role(Role.USER).build();
+					.username("cust").phoneNumber("89172382").password("abcdefgh").role(Role.USER).build();
 
 			// Create new venues
 			Venue venue1 = Venue.builder().name("National stadium").address("Address of national stadium")
-					.events(new ArrayList<Event>()).seats(new ArrayList<Seat>()).build();
+					.event(null).seats(new ArrayList<Seat>()).build();
 
 			Venue venue2 = Venue.builder().name("Indoor stadium").address("Address of indoor stadium")
-					.events(new ArrayList<Event>()).seats(new ArrayList<Seat>()).build();
+					.event(null).seats(new ArrayList<Seat>()).build();
 
 			// Create new events
 			Event event1 = Event.builder().name("First event").startDate(new Date(System.currentTimeMillis()))
@@ -99,7 +99,7 @@ public class SeatsecureBackendApplication {
 			User a = us.getUserByUsername(admin.getUsername());
 			User c = us.getUserByUsername(cust.getUsername());
 
-			// Save venue
+			// Save venues
 			venue1 = vs.addVenue(venue1);
 			venue2 = vs.addVenue(venue2);
 
@@ -143,6 +143,7 @@ public class SeatsecureBackendApplication {
 			// Assign ticket to user
 			ts.assignTicketToUser(c.getId(), (long) 2);
 			ts.assignTicketToUser(c.getId(), (long) 3);	
+
 			
 		};
 

@@ -27,6 +27,11 @@ public class Ticket {
     @NonNull
     private Seat seat;
 
+    @OneToOne
+    @JoinColumn(name = "cat_id")
+    @NonNull
+    private Category cat;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -34,5 +39,7 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "run_id")
     private Run run;
+
+
     
 }

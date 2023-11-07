@@ -3,8 +3,12 @@ package com.seatsecure.backend.controllers;
 import java.util.List;
 
 import jakarta.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,17 +41,7 @@ public class UserController {
     private UserDTOmapper userDTOmapper;
     private UserDetailsDTOmapper userDetailsDTOmapper;
     private UserTicketsDTOmapper userTicketsDTOmapper;
-
-    public UserController(UserService us, TicketService ts, AuthenticationService as, 
-    UserDTOmapper uDTOmapper, UserDetailsDTOmapper udDTOmapper,
-    UserTicketsDTOmapper utDTOmapper){
-        userService = us;
-        ticketService = ts;
-        authService = as;
-        userDTOmapper = uDTOmapper;
-        userDetailsDTOmapper = udDTOmapper;
-        userTicketsDTOmapper= utDTOmapper;
-    }
+    // Will be injected via lazy setter injection
 
     /**
      * List all users in the system
@@ -123,41 +117,45 @@ public class UserController {
         }
     }
 
-        /**
-     * Remove a user with the DELETE request to "/users/{id}"
-     * If there is no user with the given "id", throw a UserNotFoundException
-     * @param id
-     * @return the deleted user (mapped to simple DTO)
+    /*
+     * SETTER INJECTORS
      */
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/users/{id}/tickets")
-    public UserTicketsDTO getTicketsOfUser(@PathVariable Long id){
-        User user = userService.getUserById(id);
-        if(user == null) throw new UserNotFoundException(id);
 
-        if (authService.isCurrentUser(user.getUsername())) {
-            return userTicketsDTOmapper.apply(user);
-        } else {
-            throw new UnauthorizedUserException();
-        }
+
+    @Lazy
+    @Autowired
+    public void injectUserService(UserService us) {
+        userService = us;
     }
 
-    // USER TO BUY TICKETS - PICK A CAT AND ADD TO RAFFLE
+    @Lazy
+    @Autowired
+    public void injectTicketService(TicketService ts) {
+        ticketService = ts;
+    }
 
+    @Lazy
+    @Autowired
+    public void injectAuthService(AuthenticationService as) {
+        authService = as;
+    }
 
-    // @ResponseStatus(HttpStatus.OK)
-    // @PutMapping("/users/{userId}/tickets/{ticketId}")
-    // public UserTicketsDTO assignTicketToUser(@PathVariable("userId") Long userId, @PathVariable("ticketId") Long ticketId){
-    //     User user = userService.getUserById(userId);
-    //     if(user == null) throw new UserNotFoundException(userId);
+    @Lazy
+    @Autowired
+    public void injectUDTOmapper(UserDTOmapper uDTOmapper) {
+        userDTOmapper = uDTOmapper;
+    }
 
-    //     if (authService.isCurrentUser(user.getUsername())) {
-    //         user = ticketService.assignTicketToUser(user.getId(), ticketId);
-    //         // The line above may behave strangely because null is returned in various circumstances,
-    //         // not only when user is non-existent
-    //         return userTicketsDTOmapper.apply(user);
-    //     } else {
-    //         throw new UnauthorizedUserException();
-    //     }
-    // }
+    @Lazy
+    @Autowired
+    public void injectUdDTOmapper(UserDetailsDTOmapper udDTOmapper) {
+        userDetailsDTOmapper = udDTOmapper;
+    }
+    
+    @Lazy
+    @Autowired
+    public void injectUtDTOmapper(UserTicketsDTOmapper utDTOmapper) {
+        userTicketsDTOmapper = utDTOmapper;
+    }
+
 }

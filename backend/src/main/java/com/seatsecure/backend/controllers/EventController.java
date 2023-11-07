@@ -3,7 +3,6 @@ package com.seatsecure.backend.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +23,6 @@ import com.seatsecure.backend.entities.DTO_mappers.complex.EventVenueDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.complex.RunTicketsDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.simple.EventDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.simple.RunDTOmapper;
-import com.seatsecure.backend.entities.DTOs.complex.EventRunsDTO;
 import com.seatsecure.backend.entities.DTOs.complex.EventVenueDTO;
 import com.seatsecure.backend.entities.DTOs.complex.RunTicketsDTO;
 import com.seatsecure.backend.entities.DTOs.simple.EventDTO;

@@ -1,7 +1,5 @@
 package com.seatsecure.backend.security.auth;
 
-import java.security.Principal;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -36,7 +34,7 @@ public class AuthenticationService {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .gender(request.getGender())
-                .phoneNumber(request.getPhoneNumber())
+                .phoneNumber(Integer.parseInt(request.getPhoneNumber()))
                 .username(uName)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(isAdminAccount ? Role.ADMIN : Role.USER)
@@ -71,23 +69,28 @@ public class AuthenticationService {
             .build();
     }
 
-    // Check if the username in the parameter is that of the user in the current security context
-    public Boolean isCurrentUser(String username) {
+
+
+    // Retrieve the UserDetails in the current security context
+    public UserDetails getCurrentUserDetails() {
         try {
             SecurityContext sc = SecurityContextHolder.getContext();
-            if (sc == null) return null; // throw error
-
             Object p = sc.getAuthentication().getPrincipal();
             if (p != null && p instanceof UserDetails) {
-                UserDetails ud = (UserDetails) p;
-                return ud.getUsername().toLowerCase().equals(username.toLowerCase());
+                return (UserDetails) p;
             }
-        }
-        catch (RuntimeException e) {
+
+        } catch(RuntimeException e) {
             throw new CurrentUserException();
         }
-        
 
-        return null; // throw error
+        throw new CurrentUserException();
+            
+    }
+
+    // Check if the username in the parameter is that of the user in the current security context
+    public Boolean isCurrentUser(String username) {
+        UserDetails ud = getCurrentUserDetails();
+        return ud.getUsername().toLowerCase().equals(username.toLowerCase());
     }
 }

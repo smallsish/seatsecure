@@ -2,8 +2,8 @@
 ### GLOBAL VARIABLES ###
 ########################
 @baseurl = http://localhost:8080/api/v1
-@adminBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTE4MDY4MiwiZXhwIjoxNjk5MTgyMTIyfQ.xeyp_0nn_5XO_gehqsusSzuEkkskQWh0GkcyZk_RAn
-@userBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5MTgwNjgyLCJleHAiOjE2OTkxODIxMjJ9.UGRgvj4dr-GSggOHMmFndjjw-dkZfLxEuYLgBzqvdwM
+@adminBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTM0ODAyNiwiZXhwIjoxNjk5MzQ5NDY2fQ.xC4pMgGZwYsOxMk78JiXSPBrCNhsdNezb50yAIjrg_w
+@userBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5MzQ4MDI2LCJleHAiOjE2OTkzNDk0NjZ9.-UR6r9qwn1kSrl8gFMBzOsKtwObUE6-z-YO3C2ZklQ0
 
 ####################
 ### USER METHODS ###
@@ -190,12 +190,18 @@ Authorization: Bearer {{adminBearerToken}}
 ### TICKET METHODS ###
 ######################
 
-// Get user's tickets
-GET {{baseurl}}/users/2/tickets
+// Get current user's tickets
+GET {{baseurl}}tickets
 Authorization: Bearer {{userBearerToken}}
 
 ###
 
-// Assign new ticket to user
-PUT {{baseurl}}/users/2/tickets/3
+// Assign new ticket to current user
+PUT {{baseurl}}/tickets/3
+Authorization: Bearer {{userBearerToken}}
+
+###
+
+// Get the price of a user's ticket
+GET {{baseurl}}/tickets/1
 Authorization: Bearer {{userBearerToken}}

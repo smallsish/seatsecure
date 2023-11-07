@@ -1,30 +1,34 @@
 package com.seatsecure.backend.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Run;
+import com.seatsecure.backend.entities.Ticket;
 import com.seatsecure.backend.entities.TicketUserQueue;
 import com.seatsecure.backend.exceptions.event.EventNotFoundException;
 import com.seatsecure.backend.exceptions.event.NullEventException;
 import com.seatsecure.backend.exceptions.run.RunNotFoundException;
 import com.seatsecure.backend.exceptions.venue.VenueNotFoundException;
 import com.seatsecure.backend.repositories.RunRepository;
+import com.seatsecure.backend.repositories.SeatRepository;
 import com.seatsecure.backend.repositories.TicketQueueRepository;
+import com.seatsecure.backend.repositories.TicketRepository;
 
 @Service
 public class RunServiceImpl implements RunService {
     private RunRepository runRepo;
     private EventService eventService;
-    private TicketQueueRepository ticketQueueRepo;
+    private TicketRepository ticketRepo;
+    private TicketQueueRepository tqRepo;
 
-    public RunServiceImpl(RunRepository rr, EventService es, TicketQueueRepository tqRepo) {
-        runRepo = rr;
-        eventService = es;
-        ticketQueueRepo = tqRepo;
-    }
+    // The above dependencies are injection by lazy setter injection
 
     /**
      * Get a Run by id
@@ -137,6 +141,14 @@ public class RunServiceImpl implements RunService {
         // Check if run exists
         Run run = getRunById(runId);
 
+        // Get all tickets with 'run' set to run
+        // We need to set them to null first
+        List<Ticket> runTickets = ticketRepo.findByRun(run);
+        for (Ticket t : runTickets) {
+            t.setRun(null);
+            ticketRepo.save(t);
+        }
+
         // Delete run from database
         runRepo.deleteById(runId);
 
@@ -154,7 +166,88 @@ public class RunServiceImpl implements RunService {
     public List<TicketUserQueue> getTuQueueofRun(Long runId) {
         Run particularRun = getRunById(runId);
         
-        return ticketQueueRepo.findByRun(particularRun);
+        return tqRepo.findByRun(particularRun);
+    }
+
+
+    // Validation methods
+    /**
+     * Check whether a Venue is free over a period of time
+     * 
+     * @param venueId
+     * @param date
+     * @return True if the Venue is available during that time, false otherwise
+     * @throws VenueNotFoundException If a Venue with the specified id does not exist
+    */
+    @Override
+    public Boolean dateValidAtVenue(Long venueId, Date startDate, Date endDate) {
+        // Get event at venue
+        Event e = eventService.getEventAtVenue(venueId);
+
+        // If no event at the venue currently, date is valid
+        if (e == null) return true;
+        else {
+            // Get all runs of the event at the venue
+            List<Run> runs = getRunsOfEvent(e.getId());
+            if (runs.size() == 0) return true; // If no runs at the event, return true
+
+            List<Date> startDates = runs.stream().map(Run::getStartDate).toList();
+            List<Date> endDates = runs.stream().map(Run::getEndDate).toList();
+
+            // Check if any run intercepts with specified date
+            for (int i = 0; i < runs.size(); i++) {
+                Date sd = startDates.get(i);
+                Date ed = endDates.get(i);
+
+                if (endDate.compareTo(sd) == 1 || startDate.compareTo(ed) == -1) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+
+    /**
+     * Check whether the startDate of a run is before the endDate of a run
+     * 
+     * @param run
+     * @return True if startDate < endDate. False otherwise
+     */
+
+    @Override
+    public Boolean runDatesAreValid(Run run) {
+        return run.getStartDate().compareTo(run.getEndDate()) == -1;
+    }
+
+    /*
+     * SETTER INJECTORS
+     */
+
+    @Lazy
+    @Autowired
+    public void injectRunRepo(RunRepository rr) {
+        runRepo = rr;
+    }
+
+    @Lazy
+    @Autowired
+    public void injectEventService(EventService es) {
+        eventService = es;
+    }
+
+    @Lazy
+    @Autowired
+    public void injectTqRepository(TicketQueueRepository tqr) {
+        tqRepo = tqr;
+    }
+
+    @Lazy
+    @Autowired
+    public void injectTicketRepository(TicketRepository tr) {
+        ticketRepo = tr;
     }
 
 }
+

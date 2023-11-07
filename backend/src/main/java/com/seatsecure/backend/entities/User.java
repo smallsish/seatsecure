@@ -40,32 +40,30 @@ public class User implements UserDetails {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private Role role; // uncomment this to use the ROLE entity
-    //private String role;
+    @NonNull
+    private Role role;
 
-    @Size(max = 20, message = "Username should not be longer than 20 characters!")
-    @NotNull(message = "Username should not be empty!")
-    @Pattern(regexp = "^[0-9A-Za-z_]+$", message = "Only alphabets, numbers and underscores are allowed!")
+    @NotNull
     private String username;
 
-    @NotNull(message = "Username should not be empty!")
+    @NotNull
     private String password;
 
-    @Size(max = 20, message = "First name should not be longer than 20 characters!")
-    @Pattern(regexp = "^[A-Za-z]+$", message = "Only alphabets are allowed!")
+    @NonNull
     private String firstName;
 
-    @Size(max = 20, message = "Last name should not be longer than 20 characters!")
-    @Pattern(regexp = "^[A-Za-z]+$", message = "Only alphabets are allowed!")
+    @NonNull
     private String lastName;
 
-    @Email(message = "Invalid email address!")
+    @NonNull
     private String email;
 
+    @NonNull
     @Enumerated
     private Gender gender;
 
-    private Integer phoneNumber; // Check validity
+    @NonNull
+    private Integer phoneNumber;
 
     @OneToMany(mappedBy = "user")
     private List<Ticket> ticketsPurchased;

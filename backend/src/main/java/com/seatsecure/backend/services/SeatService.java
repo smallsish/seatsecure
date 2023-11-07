@@ -2,7 +2,6 @@ package com.seatsecure.backend.services;
 
 import java.util.List;
 
-import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Venue;
 
