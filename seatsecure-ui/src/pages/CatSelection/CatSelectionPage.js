@@ -8,14 +8,7 @@ import axios from '../../api/axios';
 import Select from 'react-select';
 import venueImage from './venue.png';
 
-// To be replaced with DB data
-
-
-const options = [
-    { value: 'SUNDAY, 24TH SEPTEMBER 2023', label: 'SUNDAY, 24TH SEPTEMBER 2023' },
-    { value: 'SATURDAY, 23RD SEPTEMBER 2023', label: 'SATURDAY, 23RD SEPTEMBER 2023' }
-];
-
+const options = [];
 const options_quantity = [
     { value: '1', label: '1' },
     { value: '2', label: '2' },
@@ -32,19 +25,62 @@ const areas = [
     { title: "VIP-1", coords: "171,153,159,177,216,179,339,178,335,153", shape: "poly" }
 ]
 
+function formatDate(inputDate) {
+    // Parse the input date string
+    const date = new Date(inputDate);
 
+    // Define day and month names
+    const dayNames = [
+        'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+    ];
 
+    // Define month names
+    const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    // Extract the day, month, and year
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    const dayOfWeek = dayNames[date.getDay()];
+
+    // Format the date string
+    const formattedDate = `${dayOfWeek}, ${day} ${monthNames[month]} ${year}`;
+
+    return formattedDate.toUpperCase();
+}
 
 function CatSelectionPage() {
-
     const location = useLocation();
     const state = location.state;
-    console.log("hi");
-    console.log(state.event.eventName);
+    const [data, setData] = useState([]);
+    // console.log(state.event.eventName);
 
     useEffect(() => {
-        console.log(state);
+        makeRunRequest();
+        populateRunDates();
     }, [])
+
+    const makeRunRequest = async () => {
+        try {
+            const response = await axios.get(`/api/v1/events/${state.event.id}/runs `, {
+            });
+            const responseData = response.data;
+            setData(responseData);
+        }
+        catch (error) {
+            console.error('No Events page ', error);
+        }
+    };
+
+    const populateRunDates = () => {
+        for (let i = 0; i < data.length; i++) {
+            const option = { value: `${data[i].id}`, label: formatDate(data[i].startDate) };
+            options.push(option);
+        }
+    };
 
     const [selectedArea, setSelectedArea] = useState('');
     const [selectedQuantity, setSelectedQuantity] = useState(1);
@@ -56,6 +92,7 @@ function CatSelectionPage() {
     }
 
     const handleCheckout = () => {
+        // Retrieve run id
         console.log(`Selected Area: ${selectedArea}`);
         console.log(`Selected Quantity: ${selectedQuantity}`);
         console.log(`Selected Date: ${selectedDate.value}`);
