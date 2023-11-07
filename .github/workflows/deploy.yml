@@ -21,7 +21,6 @@ jobs:
         run: |
           docker pull smallsish/seatsecure-ui-repo
           docker pull smallsish/backend-repo
-          docker pull badatcoding/postgres
 
       - name: Deploy with Docker Compose
         run: |
