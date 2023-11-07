@@ -9,9 +9,14 @@ import useUser from '../../hooks/useUser';
 
 const EventDetailsPage = (props) => {
 
+  const navigate = useNavigate();
   const user = useUser();
+  var IDValue = parseInt(user.userID.ID);
+
   const location = useLocation();
   const state = location.state;
+  console.log(state);
+  
   const title = "SAVE-THE-DAY CONCERT BY COLDPLAY 2023"
   const description = "Following the spectacular sellos newly announced January and February 2024 dates in Asia, the band have today announced additional dates as part of their record-breaking Music Of The Spheres World Tour , Already making history for announcing an unprecedented four-show run at Singapore’s largest venue, Coldplay will now be the first act ever to play five nights at Singapore’s National Stadium. The band also broke Singapore’s record for most tickets sold by an artist in a single day, surpassing 200,000.";
 
@@ -33,14 +38,20 @@ const EventDetailsPage = (props) => {
     ]
   }
 
-
   const handlepurchase = () => {
 
-    if(user) {
-      window.location.href = '/catselection';
+    console.log(IDValue);
+
+    if( isNaN( IDValue)) {
+      alert('Please login to continue!');
     }
     else {
-      alert('Please login to continue.');
+
+      navigate(
+        '/CatSelection',
+        {state:state}
+    
+      ); //state = {Event}
     }
   };
 

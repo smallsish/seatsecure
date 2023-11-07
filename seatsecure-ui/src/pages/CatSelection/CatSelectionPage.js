@@ -2,13 +2,15 @@ import { React, useRef, useState, useEffect, useContext } from 'react';
 import '../../global.css';
 import './CatSelectionPage.css';
 import Navbar from '../../components/Navbar';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import AuthContext from '../../context/AuthProvider';
 import axios from '../../api/axios';
 import Select from 'react-select';
 import venueImage from './venue.png';
 
 // To be replaced with DB data
+
+
 const options = [
     { value: 'SUNDAY, 24TH SEPTEMBER 2023', label: 'SUNDAY, 24TH SEPTEMBER 2023' },
     { value: 'SATURDAY, 23RD SEPTEMBER 2023', label: 'SATURDAY, 23RD SEPTEMBER 2023' }
@@ -21,19 +23,31 @@ const options_quantity = [
 ]
 
 const areas = [
-    { title:"L-GOLD", coords:"98,143,142,165,135,208,143,242,162,269,197,297,178,337,123,297,95,256,88,197", shape:"poly"},
-    { title:"R-GOLD", coords:"356,161,363,198,357,235,340,264,301,295,320,337,369,305,395,268,408,229,411,169,399,141", shape:"poly"},
-    { title:"L-BRONZE", coords:"71,170,71,216,76,249,95,288,57,309,39,280,31,233,31,174,29,161,54,165", shape:"poly"},
-    { title:"R-BRONZE", coords:"427,170,428,217,419,251,408,286,443,310,463,264,473,220,469,166", shape:"poly"},
-    { title:"PLATINUM", coords:"104,304,141,336,191,364,229,374,285,373,330,357,371,330,395,306,427,329,396,360,366,383,320,405,266,414,191,405,137,390,88,353,68,329", shape:"poly"},
-    { title:"VIP-2", coords:"212,300,193,345,237,359,271,355,304,345,286,301,249,308", shape:"poly"},
-    { title:"VIP-1", coords:"171,153,159,177,216,179,339,178,335,153", shape:"poly"}
+    { title: "L-GOLD", coords: "98,143,142,165,135,208,143,242,162,269,197,297,178,337,123,297,95,256,88,197", shape: "poly" },
+    { title: "R-GOLD", coords: "356,161,363,198,357,235,340,264,301,295,320,337,369,305,395,268,408,229,411,169,399,141", shape: "poly" },
+    { title: "L-BRONZE", coords: "71,170,71,216,76,249,95,288,57,309,39,280,31,233,31,174,29,161,54,165", shape: "poly" },
+    { title: "R-BRONZE", coords: "427,170,428,217,419,251,408,286,443,310,463,264,473,220,469,166", shape: "poly" },
+    { title: "PLATINUM", coords: "104,304,141,336,191,364,229,374,285,373,330,357,371,330,395,306,427,329,396,360,366,383,320,405,266,414,191,405,137,390,88,353,68,329", shape: "poly" },
+    { title: "VIP-2", coords: "212,300,193,345,237,359,271,355,304,345,286,301,249,308", shape: "poly" },
+    { title: "VIP-1", coords: "171,153,159,177,216,179,339,178,335,153", shape: "poly" }
 ]
+
+
+
 
 function CatSelectionPage() {
 
+    const location = useLocation();
+    const state = location.state;
+    console.log("hi");
+    console.log(state.event.eventName);
+
+    useEffect(() => {
+        console.log(state);
+    }, [])
+
     const [selectedArea, setSelectedArea] = useState('');
-    const [selectedQuantity, setSelectedQuantity] = useState(1); 
+    const [selectedQuantity, setSelectedQuantity] = useState(1);
     const [selectedDate, setSelectedDate] = useState(options[0]);
 
     const handleAreaClick = (title) => {
@@ -54,10 +68,10 @@ function CatSelectionPage() {
                 <div className="cat-selection-div">
                     <div className='cat-selection-wrapper'>
                         <div className='cat-selection-header'>
-                            <span>SAVE.THE.DAY CONCERT BY COLDPLAY 2023</span>
+                            <span>{state.event.eventName}</span>
                             <div className='cat-selection-date-venue'>
-                                <div>Date: 21st Sep - 24th Sep</div>
-                                <div>Location: Singapore Indoor Stadium</div>
+                                <div>Date: {state.event.startDate} to {state.event.endDate}</div>
+                                <div>Location: {state.venue.venueName}</div>
                             </div>
                         </div>
 
@@ -74,20 +88,20 @@ function CatSelectionPage() {
                                             ...provided,
                                             borderRadius: '0',
                                             padding: '5px 0px',
-                                            backgroundColor: 'transparent', 
-                                            borderColor: state.isFocused ? 'blue' : 'gray', 
-                                            boxShadow: state.isFocused ? '0 0 5px rgba(0, 0, 255, 0.5)' : 'none', 
+                                            backgroundColor: 'transparent',
+                                            borderColor: state.isFocused ? 'blue' : 'gray',
+                                            boxShadow: state.isFocused ? '0 0 5px rgba(0, 0, 255, 0.5)' : 'none',
                                             color: 'black',
                                         }),
                                         singleValue: (provided) => ({
                                             ...provided,
-                                            color: 'white', 
+                                            color: 'white',
                                             fontFamily: 'Inter',
                                         }),
                                         menu: (provided) => ({
                                             ...provided,
                                             borderRadius: '0',
-                                            backgroundColor: 'black', 
+                                            backgroundColor: 'black',
                                             fontFamily: 'Inter',
                                         })
                                     }}
@@ -96,7 +110,7 @@ function CatSelectionPage() {
                         </div>
 
                         <div className='cat-selection-venue-layout'>
-                            <img src={venueImage} width={'500px'} useMap='#image-map'/>
+                            <img src={venueImage} width={'500px'} useMap='#image-map' />
 
                             <map name="image-map">
                                 {areas.map((area, index) => (
