@@ -2,8 +2,8 @@
 ### GLOBAL VARIABLES ###
 ########################
 @baseurl = http://localhost:8080/api/v1
-@adminBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTE4MDY4MiwiZXhwIjoxNjk5MTgyMTIyfQ.xeyp_0nn_5XO_gehqsusSzuEkkskQWh0GkcyZk_RAn
-@userBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5MTgwNjgyLCJleHAiOjE2OTkxODIxMjJ9.UGRgvj4dr-GSggOHMmFndjjw-dkZfLxEuYLgBzqvdwM
+@adminBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTM1ODY4NywiZXhwIjoxNjk5MzYwMTI3fQ.I8Ybbak3D-gfdTh0o8usuXsOgAlxntWyt7NNKIazlhQ
+@userBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5MzU4Njg3LCJleHAiOjE2OTkzNjAxMjd9.xATxZJ53hCmaqnHPAPq_r4k6siORggIVcNESyUczqwU
 
 ####################
 ### USER METHODS ###
@@ -28,11 +28,11 @@ Content-Type: application/json
 {
     "firstName" : "Evan",
     "lastName" : "Walker",
-    "username" : "evanwalkeroo00",
+    "username" : "evanwalkeroo000",
     "email" : "evan@gmail.com",
     "password" : "password",
     "gender" : "MALE",
-    "phoneNumber" : 98247183
+    "phoneNumber" : 982471831
 
 }
 
@@ -190,12 +190,18 @@ Authorization: Bearer {{adminBearerToken}}
 ### TICKET METHODS ###
 ######################
 
-// Get user's tickets
-GET {{baseurl}}/users/2/tickets
+// Get current user's tickets
+GET {{baseurl}}tickets
 Authorization: Bearer {{userBearerToken}}
 
 ###
 
-// Assign new ticket to user
-PUT {{baseurl}}/users/2/tickets/3
+// Assign new ticket to current user
+PUT {{baseurl}}/tickets/3
+Authorization: Bearer {{userBearerToken}}
+
+###
+
+// Get the price of a user's ticket
+GET {{baseurl}}/tickets/1
 Authorization: Bearer {{userBearerToken}}

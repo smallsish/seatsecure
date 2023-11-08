@@ -1,7 +1,6 @@
 package com.seatsecure.backend.entities;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import io.micrometer.common.lang.NonNull;
@@ -38,27 +37,31 @@ public class Run {
     private String description;
 
     @NonNull
-    private Date startDate;
+    private LocalDateTime startRunDate;
 
     @NonNull
-    private Date endDate;
+    private LocalDateTime endRunDate;
 
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @OneToMany(mappedBy = "run")
+    @OneToMany(mappedBy = "run", cascade = CascadeType.ALL)
     private List<Ticket> tickets;
 
-    @OneToMany(mappedBy = "run", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "run", cascade = CascadeType.ALL)
     private List<TicketUserQueue> tuQueue;
 
     @NonNull
-    private LocalDateTime startBidTime;
+    private LocalDateTime startBidDate;
 
     @NonNull
-    private LocalDateTime endBidTime;
+    private LocalDateTime endBidDate;
 
     @NonNull
-    private boolean algoRan;
+    private Boolean algoRan;
+
+    public Boolean isAlgoRan() {
+        return algoRan;
+    }
 }

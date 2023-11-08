@@ -2,16 +2,14 @@ package com.seatsecure.backend.security.auth;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.seatsecure.backend.exceptions.RegistrationValidationError;
+import com.seatsecure.backend.exceptions.others.RegistrationValidationException;
 
 import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,7 +24,7 @@ public class AuthenticationController {
         @Valid @RequestBody RegisterRequest request, BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
-            throw new RegistrationValidationError(bindingResult, "Validation error!");
+            throw new RegistrationValidationException(bindingResult);
         }
         return ResponseEntity.ok(service.register(request, false));
     }

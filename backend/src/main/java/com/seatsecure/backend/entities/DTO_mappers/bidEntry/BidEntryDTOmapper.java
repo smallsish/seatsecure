@@ -9,17 +9,13 @@ import org.springframework.stereotype.Component;
 import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.QueueEntry;
 import com.seatsecure.backend.entities.Run;
-import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.entities.DTO_mappers.cat.CatDTOmapper;
-import com.seatsecure.backend.entities.DTO_mappers.run.RunDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.simple.CatDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.simple.RunDTOmapper;
 import com.seatsecure.backend.entities.DTOs.bidEntry.BidDTO;
 import com.seatsecure.backend.entities.DTOs.bidEntry.BidEntryDetailsDTO;
-import com.seatsecure.backend.entities.DTOs.cat.CatDTO;
-import com.seatsecure.backend.entities.DTOs.run.RunDTO;
-import com.seatsecure.backend.entities.DTOs.venue.VenueDTO;
-import com.seatsecure.backend.services.CatService;
+import com.seatsecure.backend.entities.DTOs.simple.CatDTO;
+import com.seatsecure.backend.entities.DTOs.simple.RunDTO;
 import com.seatsecure.backend.services.QueueEntryService;
-import com.seatsecure.backend.services.RunService;
 
 
 @Component

@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,12 +17,11 @@ import com.seatsecure.backend.entities.QueueEntry;
 import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.TicketUserQueue;
 import com.seatsecure.backend.entities.User;
-import com.seatsecure.backend.entities.enums.Status;
-import com.seatsecure.backend.exceptions.EventCreationError;
-import com.seatsecure.backend.exceptions.QueueEntryCreationException;
-import com.seatsecure.backend.exceptions.QueueEntryNotFoundException;
+import com.seatsecure.backend.exceptions.creation.EventCreationException;
+import com.seatsecure.backend.exceptions.creation.QueueEntryCreationException;
+import com.seatsecure.backend.exceptions.not_found.QueueEntryNotFoundException;
 import com.seatsecure.backend.exceptions.QueueNotFoundException;
-import com.seatsecure.backend.exceptions.RunNotFoundException;
+import com.seatsecure.backend.exceptions.not_found.RunNotFoundException;
 import com.seatsecure.backend.services.Algo;
 import com.seatsecure.backend.services.QueueEntryService;
 import com.seatsecure.backend.services.RunService;
@@ -92,12 +90,12 @@ public class TicketUserQueueController {
         if(queue == null) throw new QueueEntryNotFoundException(queueID);
 
         LocalDateTime currentTime = LocalDateTime.now();
-        LocalDateTime startTime = run.getStartBidTime();
-        LocalDateTime endTime = run.getEndBidTime();
+        LocalDateTime startTime = run.getStartBidDate();
+        LocalDateTime endTime = run.getEndBidDate();
         if (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)){
             Long id = qs.addEntryToQueue(user, numOfSeats, queue); 
         
-            if (id == null) throw new EventCreationError();
+            if (id == null) throw new EventCreationException();
             
             return id;
         }   else{
@@ -125,12 +123,19 @@ public class TicketUserQueueController {
     //     return event;
     // }
 
-    /**
-     * Remove a event with the DELETE request to "/event/{id}"
-     * If there is no event with the given "id", throw an EventNotFoundException
-     * @param id
-     */
-    @ResponseStatus(HttpStatus.OK)
+    // /**
+    //  * Remove a event with the DELETE request to "/event/{id}"
+    //  * If there is no event with the given "id", throw an EventNotFoundException
+    //  * @param id
+    //  */
+    // @ResponseStatus(HttpStatus.OK)
+    // @DeleteMapping("/queue/{queue_id}/entry{entry_id}")
+    // @PreAuthorize("hasAuthority('admin:delete')")
+    // public Long deleteQueueEntry(@PathVariable Long queue_id, @PathVariable Long entry_id){
+    //     TicketUserQueue queue = getTicketUserQueue(queue_id);
+    //     // TODO - if
+    //     return null; 
+    // }
     @DeleteMapping("/queue/{queueID}/entry/{entryID}")
     public QueueEntry deleteQueueEntry(@PathVariable Long queueID, @PathVariable Long entryID){
         TicketUserQueue queue = ts.getQueue(queueID); 

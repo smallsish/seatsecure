@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,39 +21,31 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Run;
-import com.seatsecure.backend.entities.DTO_mappers.event.EventDTOmapper;
-import com.seatsecure.backend.entities.DTO_mappers.event.EventRunsDTOmapper;
-import com.seatsecure.backend.entities.DTO_mappers.event.EventVenueDTOmapper;
-import com.seatsecure.backend.entities.DTO_mappers.run.RunDTOmapper;
-import com.seatsecure.backend.entities.DTOs.event.EventDTO;
-import com.seatsecure.backend.entities.DTOs.event.EventRunsDTO;
-import com.seatsecure.backend.entities.DTOs.event.EventVenueDTO;
-import com.seatsecure.backend.entities.DTOs.run.RunDTO;
-import com.seatsecure.backend.exceptions.EventCreationError;
-import com.seatsecure.backend.exceptions.EventNotFoundException;
-import com.seatsecure.backend.exceptions.RunNotFoundException;
+import com.seatsecure.backend.entities.DTO_mappers.complex.EventVenueDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.complex.RunTicketsDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.simple.EventDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.simple.RunDTOmapper;
+import com.seatsecure.backend.entities.DTOs.complex.EventVenueDTO;
+import com.seatsecure.backend.entities.DTOs.complex.RunTicketsDTO;
+import com.seatsecure.backend.entities.DTOs.simple.EventDTO;
+import com.seatsecure.backend.entities.DTOs.simple.RunDTO;
+import com.seatsecure.backend.exceptions.creation.EventCreationException;
+import com.seatsecure.backend.exceptions.not_found.EventNotFoundException;
+import com.seatsecure.backend.exceptions.not_found.RunNotFoundException;
 import com.seatsecure.backend.services.EventService;
 import com.seatsecure.backend.services.RunService;
 
 @RequestMapping("/api/v1")
+@Lazy
 @RestController
 public class EventController {
+    // Dependencies are lazily injected with setters
     private EventService eventService;
     private RunService runService;
     private EventVenueDTOmapper eventVenueDTOmapper;
     private RunDTOmapper runDTOmapper;
+    private RunTicketsDTOmapper runTicketsDTOmapper;
     private EventDTOmapper eventDTOmapper;
-    private EventRunsDTOmapper eventRunsDTOmapper;
-
-    public EventController(EventService es, EventVenueDTOmapper evDTOmapper,
-    RunService rs, RunDTOmapper rDTOmapper, EventDTOmapper eDTOmapper, EventRunsDTOmapper erDTOmapper) {
-        this.eventService = es;
-        this.runService = rs;
-        this.eventVenueDTOmapper = evDTOmapper;
-        this.runDTOmapper = rDTOmapper;
-        this.eventDTOmapper = eDTOmapper;
-        this.eventRunsDTOmapper = erDTOmapper;
-    }
 
     /**
      * List all existing events and their venues
@@ -95,7 +90,7 @@ public class EventController {
     public EventDTO addEvent(@Valid @RequestBody Event event) {
         Event e = eventService.addEvent(event);
         if (e == null)
-            throw new EventCreationError();
+            throw new EventCreationException();
 
         return eventDTOmapper.apply(e);
     }
@@ -166,12 +161,10 @@ public class EventController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/events/{id}/runs")
     @PreAuthorize("hasAuthority('admin:create')")
-    public EventRunsDTO addRunToEvent(@PathVariable Long id, @Valid @RequestBody Run runInfo) {
-        Event e = runService.addNewRunToEvent(id, runInfo);
-        if (e == null)
-            throw new EventNotFoundException(id);
+    public RunDTO addRunToEvent(@PathVariable Long id, @Valid @RequestBody Run runInfo) {
+        Run r = runService.addNewRunToEvent(id, runInfo);
 
-        return eventRunsDTOmapper.apply(e);
+        return runDTOmapper.apply(r);
     }
 
     /**
@@ -193,7 +186,7 @@ public class EventController {
     }
 
     /**
-     * Update the details of an existing run
+     * Update the details of an existing run (everything)
      * 
      * @param runId
      * @return updated run (mapped to DTO)
@@ -203,8 +196,6 @@ public class EventController {
     public RunDTO updateRun(@PathVariable Long id, @Valid @RequestBody Run runInfo) {
         // Check if run exists
         Run r = runService.updateRun(id, runInfo);
-        if (r == null)
-            throw new RunNotFoundException(id);
 
         return runDTOmapper.apply(r);
     }
@@ -224,5 +215,56 @@ public class EventController {
 
         return runDTOmapper.apply(r);
     }
+
+    /**
+     * Delete an existing run v
+     * @param runId
+     * @return the deleted run (mapped to DTO)
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/runs/{id}/tickets")
+    public RunTicketsDTO getTicketsOfRun(@PathVariable Long id) {
+        // Check if run exists
+        Run r = runService.deleteRunById(id);
+        if (r == null) {
+            throw new RunNotFoundException(id);
+        }
+            
+        return runTicketsDTOmapper.apply(r);
+    }
+
+
+    /* SETTER INJECTORS */
+
+    @Autowired
+    public void injectEventService(EventService es) {
+        eventService = es;
+    }
+
+    @Autowired
+    public void injectRunService(RunService rs) {
+        runService = rs;
+    }
+
+    @Autowired
+    public void injectEventVenueDTOmapper(EventVenueDTOmapper evDTOmapper) {
+        eventVenueDTOmapper = evDTOmapper;
+    }
+
+    @Autowired
+    public void injectRunDTOmapper(RunDTOmapper rDTOmapper) {
+        runDTOmapper = rDTOmapper;
+    }
+
+    @Autowired
+    public void injectRunTicketsDTOmapper(RunTicketsDTOmapper rtDTOmapper) {
+        runTicketsDTOmapper = rtDTOmapper;
+    }
+
+    @Autowired
+    public void injectEventDTOmapper(EventDTOmapper eDtOmapper) {
+        eventDTOmapper = eDtOmapper;
+    }
+
 
 }

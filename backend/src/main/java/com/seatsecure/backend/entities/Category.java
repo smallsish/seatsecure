@@ -50,5 +50,6 @@ public class Category {
     @OneToMany(mappedBy = "cat", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<TicketUserQueue> tuQueue;
 
-    private int priority;
+    @NonNull
+    private Integer priority;
 }

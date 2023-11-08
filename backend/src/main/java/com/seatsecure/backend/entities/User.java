@@ -9,10 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.seatsecure.backend.entities.enums.Gender;
 import com.seatsecure.backend.entities.enums.Role;
 
-import jakarta.validation.constraints.Email;
+import lombok.Builder;
+import lombok.Data;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,8 +24,6 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 
-// @Setter
-// @Getter
 @Data
 @Builder
 @NoArgsConstructor
@@ -40,44 +37,40 @@ public class User implements UserDetails {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private Role role; // uncomment this to use the ROLE entity
-    //private String role;
+    private Role role;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getAuthorities();
-    }
-
-    @Size(max = 20, message = "Username should not be longer than 20 characters!")
-    @NotNull(message = "Username should not be empty!")
-    @Pattern(regexp = "^[0-9A-Za-z_]+$", message = "Only alphabets, numbers and underscores are allowed!")
+    @NotNull
     private String username;
 
-    @NotNull(message = "Username should not be empty!")
+    @NotNull
     private String password;
 
-    @Size(max = 20, message = "First name should not be longer than 20 characters!")
-    @Pattern(regexp = "^[A-Za-z]+$", message = "Only alphabets are allowed!")
+    @NonNull
     private String firstName;
 
-    @Size(max = 20, message = "Last name should not be longer than 20 characters!")
-    @Pattern(regexp = "^[A-Za-z]+$", message = "Only alphabets are allowed!")
+    @NonNull
     private String lastName;
 
-    @Email(message = "Invalid email address!")
+    @NonNull
     private String email;
 
+    @NonNull
     @Enumerated
     private Gender gender;
 
-    private Integer phoneNumber; // Check validity
+    @NonNull
+    private Integer phoneNumber;
 
     @OneToMany(mappedBy = "user")
     private List<Ticket> ticketsPurchased;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = false)
-    private List<QueueEntry> queuesEntries;
+    private List<QueueEntry> queueEntries;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return role.getAuthorities();
+    }
 
     @Override
     public boolean isAccountNonExpired() {
