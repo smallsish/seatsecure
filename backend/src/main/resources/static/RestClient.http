@@ -2,7 +2,7 @@
 ### GLOBAL VARIABLES ###
 ########################
 # @baseurl = http://localhost:8080/api/v1
-@baseurl = http://54.169.36.186:8080/api/v1
+@baseurl = http://3.0.146.89:8080/api/v1
 @adminBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTE4MDY4MiwiZXhwIjoxNjk5MTgyMTIyfQ.xeyp_0nn_5XO_gehqsusSzuEkkskQWh0GkcyZk_RAn
 @userBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5MTgwNjgyLCJleHAiOjE2OTkxODIxMjJ9.UGRgvj4dr-GSggOHMmFndjjw-dkZfLxEuYLgBzqvdwM
 
