@@ -1,7 +1,10 @@
 package com.seatsecure.backend.entities;
 
+import com.seatsecure.backend.entities.enums.Status;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,5 +32,8 @@ public class QueueEntry {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ticketuserqueue_id")
     private TicketUserQueue tuQueue;
+
+    @Enumerated
+    private Status status;
 
 }
