@@ -324,7 +324,7 @@ public class TicketMutatorServiceImpl implements TicketMutatorService {
      * @throws NullUserException       If the Ticket does not already have an owner
      */
     @Override
-    public Ticket unassignTicketFromuser(Long ticketId) {
+    public Ticket unassignTicketFromUser(Long ticketId) {
         // Check if ticket exists
         Ticket t = ticketService.getTicketById(ticketId);
 

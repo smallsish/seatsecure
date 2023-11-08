@@ -16,6 +16,6 @@ public interface TicketMutatorService {
     Ticket unassignTicketFromRun(long ticketId);
 
     Ticket assignTicketToUser(Long userId, Long ticketId);
-    Ticket unassignTicketFromuser(Long ticketId);
+    Ticket unassignTicketFromUser(Long ticketId);
 
 }

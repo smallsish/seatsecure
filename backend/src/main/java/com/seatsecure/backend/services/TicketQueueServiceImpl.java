@@ -27,7 +27,7 @@ public class TicketQueueServiceImpl implements TicketQueueService {
 
 
     @Override
-    public Long addQueuePerRunPerCat(Category category, Run run){
+    public TicketUserQueue addQueuePerRunPerCat(Category category, Run run){
         // Long UserId = user.getId();
         // if (!userSer.validateUser(UserId)){         
         //     throw new UserNotFoundException(UserId);
@@ -38,16 +38,16 @@ public class TicketQueueServiceImpl implements TicketQueueService {
         // }
         
         TicketUserQueue newQueueInsert = TicketUserQueue.builder().cat(category).run(run).build();
-        return newQueueInsert.getQueueNumber();
+        return newQueueInsert;
     }
 
     @Override
-    public Long getQueuePerRunPerCat(Category category, Run run){
+    public TicketUserQueue getQueuePerRunPerCat(Category category, Run run){
         Long runID = run.getId();
         List<TicketUserQueue> queues = runSer.getTuQueueofRun(runID);
-        for(TicketUserQueue queue:queues){
+        for(TicketUserQueue queue : queues){
             if(queue.getCat() == category){
-                return queue.getQueueNumber();
+                return queue;
             }
         }
         return null;

@@ -66,12 +66,12 @@ public class SeatsecureBackendApplication {
 
 			// Create new runs - Will assign to events later
 			Run event1_run1 = Run.builder().name("Event1_Run1").description("Run 1 of event 1")
-					.startRunDate(LocalDateTime.of(2023, 11, 12, 12, 0)).endRunDate(LocalDateTime.of(2023, 11, 12, 15, 0))
-					.startBidDate(LocalDateTime.of(2023, 11, 9, 12, 0)).endBidDate(LocalDateTime.of(2023, 11, 9, 15, 0)).build();
+					.startRunDate(LocalDateTime.of(2023, 10, 12, 12, 0)).endRunDate(LocalDateTime.of(2023, 12, 12, 15, 0))
+					.startBidDate(LocalDateTime.of(2023, 10, 9, 12, 0)).endBidDate(LocalDateTime.of(2023, 12, 9, 15, 0)).build();
 
 			Run event2_run1 = Run.builder().name("Event2_Run1").description("Run 1 of event 2")
-					.startRunDate(LocalDateTime.of(2023, 11, 12, 12, 0)).endRunDate(LocalDateTime.of(2023, 11, 12, 15, 0))
-					.startBidDate(LocalDateTime.of(2023, 11, 9, 12, 0)).endBidDate(LocalDateTime.of(2023, 11, 9, 15, 0)).build();
+					.startRunDate(LocalDateTime.of(2023, 10, 12, 12, 0)).endRunDate(LocalDateTime.of(2023, 11, 12, 15, 0))
+					.startBidDate(LocalDateTime.of(2023, 10, 9, 12, 0)).endBidDate(LocalDateTime.of(2023, 11, 9, 15, 0)).build();
 
 			// Save users (and print token)
 			System.out.println("Admin token:" + as.register(admin, true).getToken());
@@ -101,7 +101,6 @@ public class SeatsecureBackendApplication {
 			event2_cat1 = cs.addNewCatToEvent(event2.getId(), event2_cat1);
 			event2_cat2 = cs.addNewCatToEvent(event2.getId(), event2_cat2);
 
-
 			// REVISE
 			// Assign cats to seats in event 1's venue
 			ss.assignCatToSeats(event1_cat1.getId(), (long) 1, (long) 5);
@@ -110,7 +109,6 @@ public class SeatsecureBackendApplication {
 			// Assign cats to seats in event 2's venue
 			ss.assignCatToSeats(event2_cat1.getId(), (long) 11, (long) 15);
 			ss.assignCatToSeats(event2_cat2.getId(), (long) 16, (long) 20);
-
 
 			// Add new runs to events
 			event1_run1 = rs.addNewRunToEvent(event1.getId(), event1_run1);

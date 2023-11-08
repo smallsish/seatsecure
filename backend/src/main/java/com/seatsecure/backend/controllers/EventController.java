@@ -161,7 +161,7 @@ public class EventController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/events/{id}/runs")
     @PreAuthorize("hasAuthority('admin:create')")
-    public RunDTO addRunToEvent(@PathVariable Long id, @Valid @RequestBody Run runInfo) {
+    public RunDTO addNewRunToEvent(@PathVariable Long id, @Valid @RequestBody Run runInfo) {
         Run r = runService.addNewRunToEvent(id, runInfo);
 
         return runDTOmapper.apply(r);

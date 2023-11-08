@@ -18,13 +18,15 @@ public class QueueEntryServiceImpl implements QueueEntryService {
     private TicketQueueService tqs;
     private RunService rs;
     private CatService cs;
+    private UserService us;
     // private CategoryServiveImpl catSer;
 
-    public QueueEntryServiceImpl(QueueEntryRepository queueEntriesRepo, TicketQueueService tqs, RunService rs, CatService cs){
+    public QueueEntryServiceImpl(QueueEntryRepository queueEntriesRepo, TicketQueueService tqs, RunService rs, CatService cs, UserService us){
         this.queueEntriesRepo = queueEntriesRepo;
         this.tqs = tqs;
         this.rs = rs;
         this.cs = cs;
+        this.us = us;
     }
 
     @Override
@@ -77,6 +79,14 @@ public class QueueEntryServiceImpl implements QueueEntryService {
         return queueEntriesRepo.findById(queueNumber).map(u -> {
             return u;
         }).orElse(null);
+    }
+
+    @Override
+    public List<QueueEntry> getQueueEntriesOfUser(long userId) {
+        // Check if user exists
+        User u = us.getUserById(userId);
+
+        return queueEntriesRepo.findByUser(u);
     }
 
 
