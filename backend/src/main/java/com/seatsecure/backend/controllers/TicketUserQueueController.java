@@ -133,7 +133,7 @@ public class TicketUserQueueController {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/queue/{queueID}/entry/{entryID}")
     public QueueEntry deleteQueueEntry(@PathVariable Long queueID, @PathVariable Long entryID){
-        TicketUserQueue queue = ts.getQueue(queueID); // TO BE IMPLEMENTED
+        TicketUserQueue queue = ts.getQueue(queueID); 
         if(queue == null) throw new QueueNotFoundException(queueID);
         QueueEntry entry = qs.getQueueEntry(entryID);
         if(entry == null) throw new QueueEntryNotFoundException(entryID);
