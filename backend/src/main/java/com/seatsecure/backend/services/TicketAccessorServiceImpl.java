@@ -12,7 +12,9 @@ import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Ticket;
 import com.seatsecure.backend.entities.User;
+import com.seatsecure.backend.exceptions.not_found.RunNotFoundException;
 import com.seatsecure.backend.exceptions.not_found.TicketNotFoundException;
+import com.seatsecure.backend.exceptions.not_found.UserNotFoundException;
 import com.seatsecure.backend.exceptions.null_property.NullCatException;
 import com.seatsecure.backend.repositories.SeatRepository;
 import com.seatsecure.backend.repositories.TicketRepository;
@@ -20,11 +22,11 @@ import com.seatsecure.backend.repositories.TicketRepository;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@Lazy
 @Service
 public class TicketAccessorServiceImpl implements TicketAccessorService {
 
-    // Due to the large number of dependencies, lazy setter injection is used
-    // (setter injectors are below)
+    // Dependencies are lazily injected with setters
     private RunService runService;
     private UserService userService;
     private CatService catService;
@@ -178,30 +180,28 @@ public class TicketAccessorServiceImpl implements TicketAccessorService {
      * SETTER INJECTORS
      */
 
-    @Lazy
     @Autowired
     public void injectRunService(RunService rs) {
         runService = rs;
     }
 
-    @Lazy
     @Autowired
     public void injectUserService(UserService us) {
         userService = us;
     }
 
-
-    @Lazy
     @Autowired
     public void injectCatRepo(CatService cs) {
         catService = cs;
     }
 
-    @Lazy
     @Autowired
     public void injectTicketRepo(TicketRepository tr) {
         ticketRepo = tr;
     }
 
-
+    @Autowired
+    public void injectSeatRepo(SeatRepository sr) {
+        seatRepo = sr;
+    }
 }

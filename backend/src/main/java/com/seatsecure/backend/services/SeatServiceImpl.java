@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Category;
@@ -18,12 +16,15 @@ import com.seatsecure.backend.repositories.SeatRepository;
 @Service
 public class SeatServiceImpl implements SeatService {
 
-    // Due to the large number of dependencies, lazy setter injection is used
-    // (setter injectors are below)
     private SeatRepository seatRepo;
-    private EventService eventService;
     private VenueService venueService;
     private CatService catService;
+
+    public SeatServiceImpl(SeatRepository sr, VenueService vs, CatService cs) {
+        seatRepo = sr;
+        venueService = vs;
+        catService = cs;
+    }
 
     /**
      * Get a Seat by id
@@ -175,33 +176,4 @@ public class SeatServiceImpl implements SeatService {
         seatRepo.deleteById(seatId);
         return s;
     }
-
-    /*
-     * SETTER INJECTORS
-     */
-
-    @Lazy
-    @Autowired
-    public void injectSeatRepo(SeatRepository sr) {
-        seatRepo = sr;
-    }
-
-    @Lazy
-    @Autowired
-    public void injectEventService(EventService es) {
-        eventService = es;
-    }
-
-    @Lazy
-    @Autowired
-    public void injectVenueService(VenueService vs) {
-        venueService = vs;
-    }
-
-    @Lazy
-    @Autowired
-    public void injectCatService(CatService cs) {
-        catService = cs;
-    }
-
 }

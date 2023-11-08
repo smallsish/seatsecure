@@ -1,7 +1,5 @@
 package com.seatsecure.backend.entities.DTOs.complex;
 
-import java.util.List;
-
 import com.seatsecure.backend.entities.DTOs.simple.EventDTO;
 import com.seatsecure.backend.entities.DTOs.simple.VenueDTO;
 

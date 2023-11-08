@@ -20,6 +20,7 @@ import com.seatsecure.backend.repositories.RunRepository;
 import com.seatsecure.backend.repositories.TicketQueueRepository;
 import com.seatsecure.backend.repositories.TicketRepository;
 
+@Lazy
 @Service
 public class RunServiceImpl implements RunService {
     private RunRepository runRepo;
@@ -27,7 +28,12 @@ public class RunServiceImpl implements RunService {
     private TicketRepository ticketRepo;
     private TicketQueueRepository tqRepo;
 
-    // The above dependencies are injection by lazy setter injection
+    public RunServiceImpl(RunRepository rr, EventService es, TicketRepository tr, TicketQueueRepository tqr) {
+        runRepo = rr;
+        eventService = es;
+        ticketRepo = tr;
+        tqRepo = tqr;
+    }
 
     /**
      * Get a Run by id
@@ -224,25 +230,21 @@ public class RunServiceImpl implements RunService {
      * SETTER INJECTORS
      */
 
-    @Lazy
     @Autowired
     public void injectRunRepo(RunRepository rr) {
         runRepo = rr;
     }
 
-    @Lazy
     @Autowired
     public void injectEventService(EventService es) {
         eventService = es;
     }
 
-    @Lazy
     @Autowired
     public void injectTqRepository(TicketQueueRepository tqr) {
         tqRepo = tqr;
     }
 
-    @Lazy
     @Autowired
     public void injectTicketRepository(TicketRepository tr) {
         ticketRepo = tr;

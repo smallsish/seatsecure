@@ -1,4 +1,4 @@
-package com.seatsecure.backend.entities.DTO_mappers.complex;
+package com.seatsecure.backend.entities.DTO_mappers.deprecated;
 
 import java.util.List;
 import java.util.function.Function;
@@ -15,7 +15,7 @@ import com.seatsecure.backend.entities.DTO_mappers.simple.CatDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.simple.EventDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.simple.RunDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.simple.VenueDTOmapper;
-import com.seatsecure.backend.entities.DTOs.complex.EventDetailsDTO;
+import com.seatsecure.backend.entities.DTOs.deprecated.EventDetailsDTO;
 import com.seatsecure.backend.entities.DTOs.simple.CatDTO;
 import com.seatsecure.backend.entities.DTOs.simple.EventDTO;
 import com.seatsecure.backend.entities.DTOs.simple.RunDTO;
@@ -26,6 +26,7 @@ import com.seatsecure.backend.services.RunService;
 
 @Component
 public class EventDetailsDTOmapper implements Function<Event, EventDetailsDTO>{
+    // UNUSED AS EVENTDETAILS IS DEPRECATED
 
     @Lazy
     @Autowired

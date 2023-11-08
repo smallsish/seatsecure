@@ -1,5 +1,6 @@
 package com.seatsecure.backend.entities.DTOs.complex;
 
+import com.seatsecure.backend.entities.DTOs.simple.CatDTO;
 import com.seatsecure.backend.entities.DTOs.simple.RunDTO;
 import com.seatsecure.backend.entities.DTOs.simple.VenueDTO;
 
@@ -11,9 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TicketDetailsDTO {
-    // Given ticket, get run and location
 
     private Long id;
+    private CatDTO cat;
     private RunDTO run;
     private VenueDTO venue;
 }

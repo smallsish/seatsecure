@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Run;
-import com.seatsecure.backend.entities.DTO_mappers.complex.EventRunsDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.complex.EventVenueDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.complex.RunTicketsDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.simple.EventDTOmapper;
@@ -37,15 +36,16 @@ import com.seatsecure.backend.services.EventService;
 import com.seatsecure.backend.services.RunService;
 
 @RequestMapping("/api/v1")
+@Lazy
 @RestController
 public class EventController {
+    // Dependencies are lazily injected with setters
     private EventService eventService;
     private RunService runService;
     private EventVenueDTOmapper eventVenueDTOmapper;
     private RunDTOmapper runDTOmapper;
     private RunTicketsDTOmapper runTicketsDTOmapper;
     private EventDTOmapper eventDTOmapper;
-    // Above dependencies will be injected via lazy setter injection
 
     /**
      * List all existing events and their venues
@@ -237,40 +237,34 @@ public class EventController {
         return runTicketsDTOmapper.apply(r);
     }
 
+
     /* SETTER INJECTORS */
 
-
-    @Lazy
     @Autowired
     public void injectEventService(EventService es) {
         eventService = es;
     }
 
-    @Lazy
     @Autowired
     public void injectRunService(RunService rs) {
         runService = rs;
     }
 
-    @Lazy
     @Autowired
     public void injectEventVenueDTOmapper(EventVenueDTOmapper evDTOmapper) {
         eventVenueDTOmapper = evDTOmapper;
     }
 
-    @Lazy
     @Autowired
     public void injectRunDTOmapper(RunDTOmapper rDTOmapper) {
         runDTOmapper = rDTOmapper;
     }
 
-    @Lazy
     @Autowired
     public void injectRunTicketsDTOmapper(RunTicketsDTOmapper rtDTOmapper) {
         runTicketsDTOmapper = rtDTOmapper;
     }
 
-    @Lazy
     @Autowired
     public void injectEventDTOmapper(EventDTOmapper eDtOmapper) {
         eventDTOmapper = eDtOmapper;

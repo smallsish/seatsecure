@@ -3,6 +3,7 @@ package com.seatsecure.backend.controllers;
 import java.util.List;
 
 import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +32,7 @@ public class VenueController {
     private VenueDTOmapper venueDTOmapper;
     private VenueEventDTOmapper venueEventDTOmapper;
 
-    public VenueController(VenueService vs, VenueDTOmapper vDTOmapper, VenueEventDTOmapper veDTOmapper){
+    public VenueController(VenueService vs, VenueDTOmapper vDTOmapper, VenueEventDTOmapper veDTOmapper) {
         venueService = vs;
         venueDTOmapper = vDTOmapper;
         venueEventDTOmapper = veDTOmapper;

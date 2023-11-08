@@ -4,8 +4,6 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,14 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.User;
 import com.seatsecure.backend.entities.DTO_mappers.complex.UserDetailsDTOmapper;
-import com.seatsecure.backend.entities.DTO_mappers.complex.UserTicketsDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.simple.UserDTOmapper;
 import com.seatsecure.backend.entities.DTOs.complex.UserDetailsDTO;
 import com.seatsecure.backend.entities.DTOs.simple.UserDTO;
 import com.seatsecure.backend.exceptions.not_found.UserNotFoundException;
 import com.seatsecure.backend.exceptions.others.UnauthorizedUserException;
 import com.seatsecure.backend.security.auth.AuthenticationService;
-import com.seatsecure.backend.services.TicketMutatorService;
 import com.seatsecure.backend.services.UserService;
 
 @RequestMapping("/api/v1")
@@ -37,9 +33,13 @@ public class UserController {
     private AuthenticationService authService;
     private UserDTOmapper userDTOmapper;
     private UserDetailsDTOmapper userDetailsDTOmapper;
-    // Above dependencies will be injected via lazy setter injection
 
-
+    public UserController(UserService us, AuthenticationService as, UserDTOmapper uDTOmapper, UserDetailsDTOmapper udDTOmapper) {
+        userService = us;
+        authService = as;
+        userDTOmapper = uDTOmapper;
+        userDetailsDTOmapper = udDTOmapper;
+    }
     /**
      * List all users in the system
      * @return list of all users (mapped to basic DTO)
@@ -112,45 +112,6 @@ public class UserController {
         } else {
             throw new UnauthorizedUserException();
         }
-    }
-
-    /*
-     * SETTER INJECTORS
-     */
-
-
-    @Lazy
-    @Autowired
-    public void injectUserService(UserService us) {
-        userService = us;
-    }
-
-    @Lazy
-    @Autowired
-    public void injectTicketService(TicketMutatorService ts) {
-    }
-
-    @Lazy
-    @Autowired
-    public void injectAuthService(AuthenticationService as) {
-        authService = as;
-    }
-
-    @Lazy
-    @Autowired
-    public void injectUDTOmapper(UserDTOmapper uDTOmapper) {
-        userDTOmapper = uDTOmapper;
-    }
-
-    @Lazy
-    @Autowired
-    public void injectUdDTOmapper(UserDetailsDTOmapper udDTOmapper) {
-        userDetailsDTOmapper = udDTOmapper;
-    }
-    
-    @Lazy
-    @Autowired
-    public void injectUtDTOmapper(UserTicketsDTOmapper utDTOmapper) {
     }
 
 }

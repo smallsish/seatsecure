@@ -13,8 +13,10 @@ import com.seatsecure.backend.entities.User;
 import com.seatsecure.backend.exceptions.existence.SeatHasTicketException;
 import com.seatsecure.backend.exceptions.existence.TicketHasOwnerException;
 import com.seatsecure.backend.exceptions.existence.TicketHasRunException;
+import com.seatsecure.backend.exceptions.not_found.RunNotFoundException;
 import com.seatsecure.backend.exceptions.not_found.SeatNotFoundException;
 import com.seatsecure.backend.exceptions.not_found.TicketNotFoundException;
+import com.seatsecure.backend.exceptions.not_found.UserNotFoundException;
 import com.seatsecure.backend.exceptions.null_property.NullRunException;
 import com.seatsecure.backend.exceptions.null_property.NullSeatException;
 import com.seatsecure.backend.exceptions.null_property.NullUserException;
@@ -23,11 +25,11 @@ import com.seatsecure.backend.repositories.TicketRepository;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@Lazy
 @Service
 public class TicketMutatorServiceImpl implements TicketMutatorService {
 
-    // Due to the large number of dependencies, lazy setter injection is used
-    // (setter injectors are below)
+    // Dependencies are lazily injected with setters
     private RunService runService;
     private SeatService seatService;
     private UserService userService;
@@ -300,31 +302,26 @@ public class TicketMutatorServiceImpl implements TicketMutatorService {
      * SETTER INJECTORS
      */
 
-    @Lazy
     @Autowired
     public void injectRunService(RunService rs) {
         runService = rs;
     }
 
-    @Lazy
     @Autowired
     public void injectSeatService(SeatService ss) {
         seatService = ss;
     }
 
-    @Lazy
     @Autowired
     public void injectUserService(UserService us) {
         userService = us;
     }
 
-    @Lazy
     @Autowired
     public void injectTicketAccessorService(TicketAccessorService tms) {
         ticketService = tms;
     }
 
-    @Lazy
     @Autowired
     public void injectTicketRepo(TicketRepository tr) {
         ticketRepo = tr;

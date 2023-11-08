@@ -1,4 +1,4 @@
-package com.seatsecure.backend.entities.DTOs.complex;
+package com.seatsecure.backend.entities.DTOs.deprecated;
 
 import java.util.List;
 
@@ -15,6 +15,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventDetailsDTO{
+    // DEPRECATED AS IT IS TOO HEAVY
+    // AND THE MAPPER HAS WAY TOO MANY DEPENDENCIES
+    // USE EVENTCATS, EVENTRUNS AND EVENTVENUE INSTEAD
+    
     private EventDTO event;
     private VenueDTO venue;
     private List<RunDTO> runs;

@@ -1,7 +1,5 @@
 package com.seatsecure.backend.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +24,13 @@ public class TicketController {
     private TicketMutatorService ticketService;
     private AuthenticationService authService;
     private UserTicketsDTOmapper userTicketsDTOmapper;
-    // Above dependencies will be injected via lazy setter injection
+
+    public TicketController(UserService us, TicketMutatorService tms, AuthenticationService as, UserTicketsDTOmapper utDTOmapper) {
+        userService = us;
+        ticketService = tms;
+        authService = as;
+        userTicketsDTOmapper = utDTOmapper;
+    }
 
         /**
      * Remove a user with the DELETE request to "/users/{id}"
@@ -56,32 +60,4 @@ public class TicketController {
         return userTicketsDTOmapper.apply(user);
     }
 
-
-    /*
-     * SETTER INJECTORS
-     */
-
-    @Lazy
-    @Autowired
-    public void injectUserService(UserService us) {
-        userService = us;
-    }
-
-    @Lazy
-    @Autowired
-    public void injectTicketService(TicketMutatorService ts) {
-        ticketService = ts;
-    }
-
-    @Lazy
-    @Autowired
-    public void injectAuthService(AuthenticationService as) {
-        authService = as;
-    }
-    
-    @Lazy
-    @Autowired
-    public void injectUtDTOmapper(UserTicketsDTOmapper utDTOmapper) {
-        userTicketsDTOmapper = utDTOmapper;
-    }
 }
