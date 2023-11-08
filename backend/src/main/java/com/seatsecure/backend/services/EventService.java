@@ -6,9 +6,6 @@ import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Venue;
 
 public interface EventService {
-    // DTO methods
-
-    // Service methods
 
     List<Event> getAll();
 
@@ -16,7 +13,7 @@ public interface EventService {
 
     Venue getVenueOfEvent(Long eventId);
 
-    List<Event> getEventsOfVenue(Long venueId);
+    Event getEventAtVenue(Long venueId);
 
     Event addEvent(Event e);
 

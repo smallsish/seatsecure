@@ -3,6 +3,7 @@ package com.seatsecure.backend.controllers;
 import java.util.List;
 
 import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,12 +17,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seatsecure.backend.entities.Venue;
-import com.seatsecure.backend.entities.DTO_mappers.venue.VenueDTOmapper;
-import com.seatsecure.backend.entities.DTO_mappers.venue.VenueEventsDTOmapper;
-import com.seatsecure.backend.entities.DTOs.venue.VenueDTO;
-import com.seatsecure.backend.entities.DTOs.venue.VenueEventsDTO;
-import com.seatsecure.backend.exceptions.VenueCreationError;
-import com.seatsecure.backend.exceptions.VenueNotFoundException;
+import com.seatsecure.backend.entities.DTO_mappers.complex.VenueEventDTOmapper;
+import com.seatsecure.backend.entities.DTO_mappers.simple.VenueDTOmapper;
+import com.seatsecure.backend.entities.DTOs.complex.VenueEventDTO;
+import com.seatsecure.backend.entities.DTOs.simple.VenueDTO;
+import com.seatsecure.backend.exceptions.creation.VenueCreationException;
+import com.seatsecure.backend.exceptions.not_found.VenueNotFoundException;
 import com.seatsecure.backend.services.VenueService;
 
 @RequestMapping("/api/v1")
@@ -29,12 +30,12 @@ import com.seatsecure.backend.services.VenueService;
 public class VenueController {
     private VenueService venueService;
     private VenueDTOmapper venueDTOmapper;
-    private VenueEventsDTOmapper venueEventsDTOmapper;
+    private VenueEventDTOmapper venueEventDTOmapper;
 
-    public VenueController(VenueService vs, VenueDTOmapper vDTOmapper, VenueEventsDTOmapper veDTOmapper){
+    public VenueController(VenueService vs, VenueDTOmapper vDTOmapper, VenueEventDTOmapper veDTOmapper) {
         venueService = vs;
         venueDTOmapper = vDTOmapper;
-        venueEventsDTOmapper = veDTOmapper;
+        venueEventDTOmapper = veDTOmapper;
     }
 
     /**
@@ -73,7 +74,7 @@ public class VenueController {
     @PreAuthorize("hasAuthority('admin:create')")
     public VenueDTO addVenue(@Valid @RequestBody Venue venue) {
         Venue v = venueService.addVenue(venue);
-        if (v == null) throw new VenueCreationError();
+        if (v == null) throw new VenueCreationException();
         
         return venueDTOmapper.apply(v);
     }
@@ -118,10 +119,10 @@ public class VenueController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/venues/{id}/events")
-    public VenueEventsDTO getEventsAtVenue(@PathVariable Long id){
+    public VenueEventDTO getEventsAtVenue(@PathVariable Long id){
         Venue venue = venueService.getVenueById(id);
         if (venue == null) throw new VenueNotFoundException(id);
 
-        return venueEventsDTOmapper.apply(venue);
+        return venueEventDTOmapper.apply(venue);
     }
 }

@@ -1,161 +1,179 @@
 package com.seatsecure.backend.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Category;
-import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Venue;
+import com.seatsecure.backend.exceptions.not_found.SeatNotFoundException;
+import com.seatsecure.backend.exceptions.null_property.NullVenueException;
 import com.seatsecure.backend.repositories.SeatRepository;
 
 @Service
 public class SeatServiceImpl implements SeatService {
 
-    // Due to the large number of dependencies, lazy setter injection is used (setter injectors are below)
     private SeatRepository seatRepo;
-    private EventService eventService;
     private VenueService venueService;
     private CatService catService;
 
+    public SeatServiceImpl(SeatRepository sr, VenueService vs, CatService cs) {
+        seatRepo = sr;
+        venueService = vs;
+        catService = cs;
+    }
+
+    /**
+     * Get a Seat by id
+     * 
+     * @param seatId
+     * @return The Seat with the specified id
+     * @throws SeatNotFoundException If the Seat with the specified id does not
+     *                               exist
+     */
     @Override
-    public Seat getSeatById(Long id) {
+    public Seat getSeatById(Long seatId) {
         // Check if seat exists
-        Optional<Seat> seat = seatRepo.findById(id);
-        if (seat.isEmpty())
-            return null;
+        Optional<Seat> seat = seatRepo.findById(seatId);
+        if (seat.isEmpty()) {
+            throw new SeatNotFoundException(seatId);
+        }
 
         return seat.get();
 
     }
 
+    /**
+     * Get all Seats at a specified Venue
+     * 
+     * @param venueId
+     * @return A list of the Seats at the Venue with the specified id
+     * @throws VenueNotFound If the Venue with the specified id does not exist
+     */
     @Override
     public List<Seat> getSeatsOfVenue(Long venueId) {
         // Check if venue exists
         Venue v = venueService.getVenueById(venueId);
-        if (v == null) {
-            return null;
-        }
 
         // Retrieve venue's seats
         return seatRepo.getSeatsByVenue(v);
     }
 
+    /**
+     * Get all Seats of a specified Category
+     * 
+     * @param catId
+     * @return A list of the Seats with a Category of a specified id
+     * @throws CatNotFoundException If the Venue with the specified id does not
+     *                              exist
+     */
     @Override
     public List<Seat> getSeatsOfCat(Long catId) {
         // Check if cat exists
         Category cat = catService.getCatById(catId);
-        if (cat == null)
-            return null;
 
         return seatRepo.getSeatsByCat(cat);
     }
 
+    /**
+     * Get the Venue of a Seat
+     * 
+     * @param seatId
+     * @return The Venue of a Seat with the specified id
+     * @throws SeatNotFoundException If the Seat with the specified id does not
+     *                               exist
+     * @throws NullVenueException    If the Seat does not have a Venue it is
+     *                               associated with
+     */
     @Override
     public Venue getVenueOfSeat(Long seatId) {
         // Check if seat exists
         Seat s = getSeatById(seatId);
-        if (s == null)
-            return null;
 
         // Check if seat's venue exists
         Venue v = s.getVenue();
-        if (v == null)
-            return null;
+        if (v == null) {
+            throw new NullVenueException();
+        }
 
         return v;
     }
 
+    /**
+     * Add a number of new Seats to a Venue
+     * 
+     * @param venueId
+     * @param numSeats
+     * @return The list of new Seats added to the Venue
+     * @throws VenueNotFoundException If a Venue with the specified id does not
+     *                                exist
+     */
     @Override
-    public Venue addNewSeatsToVenue(Long id, int numSeats) {
+    public List<Seat> addNewSeatsToVenue(Long id, int numSeats) {
         // Check if venue exists
         Venue v = venueService.getVenueById(id);
-        if (v == null) {
-            return null;
-        }
 
+        List<Seat> seatList = new ArrayList<>();
         // Add new seats
         for (int i = 0; i < numSeats; i++) {
             Seat newSeat = Seat.builder().venue(v).build();
-            seatRepo.save(newSeat);
+            seatList.add(seatRepo.save(newSeat));
         }
 
-        return v;
+        return seatList;
     }
 
+    /**
+     * Assign a Category to Seats of id startRangeIndex to endRangeIndex
+     * Overwrites existing property if set
+     * 
+     * @param venueId
+     * @param catId
+     * @param startSeatId
+     * @param endSeatId
+     * @return A list of the updated Seats
+     * @throws CatNotFoundException  If a Category with the specified id does not
+     *                               exist
+     * @throws SeatNotFoundException If a Seat with the specified id does not exist
+     */
     @Override
-    public Event assignCatToSeats(Long eventId, int startRangeIndex, int endRangeIndex, Category cat) {
-        // Check if event exists
-        Event e = eventService.getEventById(eventId);
-        if (e == null)
-            return null;
+    public List<Seat> assignCatToSeats(Long catId, Long startSeatId, Long endSeatId) {
 
-        // Check if event venue exists
-        Venue v = eventService.getVenueOfEvent(eventId);
-        if (v == null)
-            return null;
+        // Check if cat exists
+        Category c = catService.getCatById(catId);
 
-        // Get seats of venue
-        List<Seat> venueSeats = getSeatsOfVenue(v.getId());
-
+        List<Seat> updatedSeats = new ArrayList<>();
         // Assign cats to seats in range (inclusive)
-        for (int i = 0; i < venueSeats.size(); i++) {
-            if (i >= startRangeIndex && i <= endRangeIndex) {
-                venueSeats.get(i).setCat(cat);
-            }
+        for (long i = startSeatId; i <= endSeatId; i++) {
+
+            // Update the Cat property of the Seat
+            Seat s = getSeatById(i);
+            
+            s.setCat(c);
+            s = seatRepo.save(s);
+            updatedSeats.add(s);
         }
 
-        return e;
+        return updatedSeats;
     }
 
+    /**
+     * Delete a Seat with the specified id
+     * 
+     * @param seatId
+     * @return The deleted Seat
+     * @throws SeatNotFoundException  If a Seat with the specified id does not exist
+     */
     @Override
-    public Venue deleteSeatById(Long id) {
+    public Seat deleteSeatById(Long seatId) {
         // Check if seat exists
-        Seat s = getSeatById(id);
-        if (s == null)
-            return null;
-
-        // Get venue of seat
-        Venue v = getVenueOfSeat(id);
-        if (v == null)
-            return null;
+        Seat s = getSeatById(seatId);
 
         // Delete seat
-        seatRepo.deleteById(id);
-
-        return v;
+        seatRepo.deleteById(seatId);
+        return s;
     }
-
-        /*
-     * SETTER INJECTORS
-     */
-
-    @Lazy
-    @Autowired
-    public void injectSeatRepo(SeatRepository sr) {
-        seatRepo = sr;
-    }
-
-    @Lazy
-    @Autowired
-    public void injectEventService(EventService es) {
-        eventService = es;
-    }
-
-    @Lazy
-    @Autowired
-    public void injectVenueService(VenueService vs) {
-        venueService = vs;
-    }
-
-    @Lazy
-    @Autowired
-    public void injectCatService(CatService cs) {
-        catService = cs;
-    }
-
 }

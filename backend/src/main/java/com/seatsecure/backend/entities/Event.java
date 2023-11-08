@@ -28,10 +28,11 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@Size(max = 20, message = "Event name should not be longer than 20 characters!")
     @NotNull(message = "Event name should not be empty!")
-    //@Pattern(regexp = "^[0-9A-Za-z ]+$", message = "Only alphabets, numbers and spaces are allowed!")
     private String name;
+
+    @NonNull
+    private String description;
 
     @NonNull
     private Date startDate;
