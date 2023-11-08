@@ -46,6 +46,7 @@ function CatSelectionPage() {
         console.log(`Selected Quantity: ${selectedQuantity}`);
         console.log(`Selected Date: ${selectedDate.value}`);
     }
+    
 
     return (
         <div id='cat-selection-container' className="cat-selection-container">
