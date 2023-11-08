@@ -31,5 +31,5 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: |
-          docker-compose -f compose.yaml up -d
+          docker-compose -f compose.yaml up -d --force-recreate --renew-anon-volumes
         shell: bash
