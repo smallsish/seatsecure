@@ -47,6 +47,8 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .username(request.getUsername())
                 .id(user.getId())
+                .email(user.getEmail())
+                .fullName(user.getFirstName() + " " + user.getLastName())
                 .build();
             
         } else {

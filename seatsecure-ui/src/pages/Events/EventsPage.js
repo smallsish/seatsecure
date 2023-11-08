@@ -13,7 +13,7 @@ function EventsPage() {
 
     useEffect(() => {
         makeEventRequest()
-    }, [])
+    }, [])  
     const makeEventRequest = async () => {
         try {
             const response = await axios.get("/api/v1/events",

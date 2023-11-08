@@ -7,6 +7,8 @@ import AuthContext from '../../context/AuthProvider';
 import axios from '../../api/axios';
 import Select from 'react-select';
 import venueImage from './venue.png';
+import useAuth from '../../hooks/useAuth';
+import useUser from '../../hooks/useUser';
 
 // To be replaced with DB data
 const options = [
@@ -31,20 +33,53 @@ const areas = [
 ]
 
 function CatSelectionPage() {
-
+    const auth = useAuth();
+    const token = auth.auth.token;
     const [selectedArea, setSelectedArea] = useState('');
     const [selectedQuantity, setSelectedQuantity] = useState(1); 
     const [selectedDate, setSelectedDate] = useState(options[0]);
+    const user = useUser();
+    var IDValue = parseInt(user.userID.ID);
 
     const handleAreaClick = (title) => {
         console.log(`Area ${title} clicked`);
         setSelectedArea(title);
     }
 
-    const handleCheckout = () => {
+    const handleCheckout = async () => {
+        try {
+
+            const response = await axios.get(`/api/v1/users/${IDValue}`, {
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                },
+              });
+            console.log(response);
+            const email = response?.data?.email;
+            const fullName = response?.data?.fullName;
+            console.log(email);
+            console.log(fullName);
+
+
+            const paymentResponse = await axios.post("/api/v1/initiate-payment",
+            {
+                "amount": 120,
+                "currency": "SGD",
+                "email": email,
+                "name": fullName
+            },
+            {
+                headers: { 'Content-Type': 'application/json'},
+            }
+            );
+            console.log(paymentResponse);
+        } catch (error) {
+            console.log(error);
+        }
         console.log(`Selected Area: ${selectedArea}`);
         console.log(`Selected Quantity: ${selectedQuantity}`);
         console.log(`Selected Date: ${selectedDate.value}`);
+
     }
     
 
