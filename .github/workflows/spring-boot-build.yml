@@ -3,7 +3,7 @@ name: Build and Push Spring Boot Docker Image
 on:
   push:
     branches:
-      - deployment-variables
+      - master
 
 jobs:
   build:
