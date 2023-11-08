@@ -14,7 +14,7 @@ services:
       - spring-boot-network
   backend-app:
     container_name: seatsecure-spring
-    image: seatsecure-backend
+    image: smallsish/backend-repo
     ports:
       - "8080:8080"
     networks:
@@ -23,7 +23,7 @@ services:
       - database
   frontend-app:
     container_name: seatsecure-react
-    image: react-latest-image
+    image: smallsish/seatsecure-ui-repo
     ports:
       - "3000:3000"
     networks:
