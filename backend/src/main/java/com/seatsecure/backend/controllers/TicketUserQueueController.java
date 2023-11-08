@@ -1,5 +1,6 @@
 package com.seatsecure.backend.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,10 @@ import com.seatsecure.backend.entities.TicketUserQueue;
 import com.seatsecure.backend.entities.User;
 import com.seatsecure.backend.entities.enums.Status;
 import com.seatsecure.backend.exceptions.EventCreationError;
+import com.seatsecure.backend.exceptions.QueueEntryCreationException;
 import com.seatsecure.backend.exceptions.QueueEntryNotFoundException;
 import com.seatsecure.backend.exceptions.QueueNotFoundException;
+import com.seatsecure.backend.exceptions.RunNotFoundException;
 import com.seatsecure.backend.services.Algo;
 import com.seatsecure.backend.services.QueueEntryService;
 import com.seatsecure.backend.services.RunService;
@@ -77,14 +80,30 @@ public class TicketUserQueueController {
     @PostMapping("/run/{runID}")
     public Long newQueueEntry(@PathVariable Long runID, User user, int numOfSeats, Category cat) {
         Run run = rs.getRunById(runID); 
+        if (run == null){
+            throw new RunNotFoundException(runID);
+        }
         Long queueID = ts.getQueuePerRunPerCat(cat, run);
+        if(queueID == null){
+            throw new QueueNotFoundException(queueID);
+        }
         TicketUserQueue queue = ts.getQueue(queueID);
+
         if(queue == null) throw new QueueEntryNotFoundException(queueID);
-        Long id = qs.addEntryToQueue(user, numOfSeats, queue); 
+
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime startTime = run.getStartBidTime();
+        LocalDateTime endTime = run.getEndBidTime();
+        if (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)){
+            Long id = qs.addEntryToQueue(user, numOfSeats, queue); 
         
-        if (id == null) throw new EventCreationError();
+            if (id == null) throw new EventCreationError();
+            
+            return id;
+        }   else{
+            throw new QueueEntryCreationException(user, numOfSeats, cat, run);
+        }
         
-        return id;
 
     }
 
@@ -141,7 +160,7 @@ public class TicketUserQueueController {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/queue/{queueID}")
     public TicketUserQueue deleteQueue(@PathVariable Long queueID){
-        TicketUserQueue queue = ts.getQueue(queueID); // TO BE IMPLEMENTED
+        TicketUserQueue queue = ts.getQueue(queueID); 
         if(queue == null) throw new QueueNotFoundException(queueID);
         ts.deleteQueue(queueID);
         

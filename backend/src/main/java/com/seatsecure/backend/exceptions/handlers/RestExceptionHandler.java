@@ -21,6 +21,10 @@ import com.seatsecure.backend.exceptions.UserNotFoundException;
 import com.seatsecure.backend.exceptions.UsernameAlreadyExistsException;
 import com.seatsecure.backend.exceptions.VenueCreationError;
 import com.seatsecure.backend.exceptions.VenueNotFoundException;
+import com.seatsecure.backend.exceptions.BiddingNotCloseException;
+import com.seatsecure.backend.exceptions.QueueEntryCreationException;
+import com.seatsecure.backend.exceptions.QueueEntryNotFoundException;
+import com.seatsecure.backend.exceptions.QueueNotFoundException;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -114,4 +118,23 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.NOT_FOUND, null);
   }
 
+  @ExceptionHandler(QueueNotFoundException.class)
+  public ResponseEntity<Object> handleQueueNotFoundException(QueueNotFoundException exception) {
+    return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.NOT_FOUND, null);
+  }
+
+  @ExceptionHandler(QueueEntryNotFoundException.class)
+  public ResponseEntity<Object> handleQueueEntryNotFoundException(QueueEntryNotFoundException exception) {
+    return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.NOT_FOUND, null);
+  }
+
+  @ExceptionHandler(QueueEntryCreationException.class)
+  public ResponseEntity<Object> handleQueueEntryCreationException(QueueEntryCreationException exception) {
+    return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.NOT_FOUND, null);
+  }
+
+  @ExceptionHandler(BiddingNotCloseException.class)
+  public ResponseEntity<Object> handleBiddingNotCloseException(BiddingNotCloseException exception) {
+    return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.NOT_FOUND, null);
+  }
 }

@@ -15,7 +15,6 @@ import com.seatsecure.backend.repositories.TicketQueueRepository;
 @Service
 public class TicketQueueServiceImpl implements TicketQueueService {
     private TicketQueueRepository queueRepo;
-    private RunService runSer;
     // private CategoryServiveImpl catSer;
 
     public TicketQueueServiceImpl(TicketQueueRepository queueRepo, RunService runSer){

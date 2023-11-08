@@ -80,6 +80,9 @@ public class RunServiceImpl implements RunService {
         run.setDescription(newRunInfo.getDescription());
         run.setStartDate(newRunInfo.getStartDate());
         run.setEndDate(newRunInfo.getEndDate());
+        run.setAlgoRan(newRunInfo.isAlgoRan());
+        run.setStartBidTime(newRunInfo.getStartBidTime());
+        run.setEndBidTime(newRunInfo.getEndBidTime());
         runRepo.save(run);
 
         return run;
