@@ -2,10 +2,10 @@
 ### GLOBAL VARIABLES ###
 ########################
 
-# @baseurl = http://localhost:8080/api/v1
-@baseurl = http://3.0.146.89:8080/api/v1
-@adminBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTE4MDY4MiwiZXhwIjoxNjk5MTgyMTIyfQ.xeyp_0nn_5XO_gehqsusSzuEkkskQWh0GkcyZk_RAn
-@userBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5MTgwNjgyLCJleHAiOjE2OTkxODIxMjJ9.UGRgvj4dr-GSggOHMmFndjjw-dkZfLxEuYLgBzqvdwM
+@baseurl = http://localhost:8080/api/v1
+@adminBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTQ1MDE1MywiZXhwIjoxNjk5NDUxNTkzfQ.IS7sIOHWuIzasg61V3waROozCCYQD1Zkh6BQlxhm7zU
+@userBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5NDUwMTUzLCJleHAiOjE2OTk0NTE1OTN9.9e4myv2_dCgB-czTXuiRb70i7YHlryW_unPXEzdhwCg
+
 
 ####################
 ### USER METHODS ###
@@ -34,7 +34,7 @@ Content-Type: application/json
     "email" : "evan@gmail.com",
     "password" : "password",
     "gender" : "MALE",
-    "phoneNumber" : 982471831
+    "phoneNumber" : 98247183
 
 }
 
@@ -93,7 +93,7 @@ Authorization: Bearer {{adminBearerToken}}
 ###
 
 // Update an event's venue
-PUT {{baseurl}}/events/1/venue/2
+PUT {{baseurl}}/events/3/venue/2
 Authorization: Bearer {{adminBearerToken}}
 
 ###
@@ -106,8 +106,10 @@ Authorization: Bearer {{adminBearerToken}}
 {
     "name" : "Special run for event 1",
     "description" : "The special run for event 1.",
-    "startDate" : "2023-11-04T15:00",
-    "endDate" : "2023-11-05T12:00"
+    "startRunDate" : "2023-11-04T15:00",
+    "endRunDate" : "2023-11-05T12:00",
+    "startBidDate" : "2023-11-04T15:00",
+    "endBidDate" : "2023-11-05T12:00"
 }
 
 ###
@@ -126,8 +128,10 @@ Authorization: Bearer {{adminBearerToken}}
 {
     "name" : "An updated run",
     "description" : "Run for testing update run method.",
-    "startDate" : "2023-11-04T20:00",
-    "endDate" : "2023-11-05T20:00"
+    "startRunDate" : "2023-11-04T20:00",
+    "endRunDate" : "2023-11-05T20:00",
+    "startBidDate" : "2024-11-04T15:00",
+    "endBidDate" : "2024-11-05T12:00"
 }
 
 ###
@@ -167,7 +171,7 @@ Authorization: Bearer {{adminBearerToken}}
 
 {
     "name" : "The Genesis Stadium",
-    "address" : "Your mom's house"
+    "address" : "Genesis address"
 }
 
 ###
@@ -179,7 +183,7 @@ Authorization: Bearer {{adminBearerToken}}
 
 {
     "name" : "The Genesys Stadium",
-    "address" : "Your dad's house"
+    "address" : "Genesys address"
 }
 
 ###
@@ -207,4 +211,24 @@ Authorization: Bearer {{userBearerToken}}
 
 // Get the price of a user's ticket
 GET {{baseurl}}/tickets/2
+Authorization: Bearer {{userBearerToken}}
+
+
+#######################
+### BIDDING METHODS ###
+#######################
+
+// Add new queue entry
+POST {{baseurl}}/queue-entry/4/2
+Authorization: Bearer {{userBearerToken}}
+
+###
+
+// Start bidding
+POST {{baseurl}}/run/2/biddingstart
+
+###
+
+// Get bidding entry
+GET {{baseurl}}/queue-entry/4/2
 Authorization: Bearer {{userBearerToken}}

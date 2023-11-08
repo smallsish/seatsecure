@@ -10,8 +10,10 @@ import com.seatsecure.backend.entities.TicketUserQueue;
 public interface TicketQueueService {
     List<TicketUserQueue> listAllQueues();
     List<TicketUserQueue> listAllQueuesPerRun(Run run);
-    Long addQueuePerRunPerCat(Category category, Run run);
-    Long getQueuePerRunPerCat(Category category, Run run);
+    TicketUserQueue addQueuePerRunPerCat(Category category, Run run);
+    TicketUserQueue getQueuePerRunPerCat(Long catId, Long runId);
+    Category getCatOfQueue(Long id);
+    Run getRunOfQueue(Long id);
     TicketUserQueue deleteQueue(Long queueId);
     TicketUserQueue getQueue(Long queueId);
     TicketUserQueue updateQueuewithUpdatedEntries(List<QueueEntry> updatedEntrieslist, TicketUserQueue queue);

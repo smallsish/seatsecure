@@ -3,11 +3,14 @@ package com.seatsecure.backend.controllers;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,15 +20,22 @@ import com.seatsecure.backend.entities.QueueEntry;
 import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.TicketUserQueue;
 import com.seatsecure.backend.entities.User;
+import com.seatsecure.backend.entities.DTO_mappers.bidEntry.BidEntryDTOmapper;
+import com.seatsecure.backend.entities.DTOs.bidEntry.BidEntryDetailsDTO;
 import com.seatsecure.backend.exceptions.creation.EventCreationException;
 import com.seatsecure.backend.exceptions.creation.QueueEntryCreationException;
+import com.seatsecure.backend.exceptions.not_found.CatNotFoundException;
 import com.seatsecure.backend.exceptions.not_found.QueueEntryNotFoundException;
 import com.seatsecure.backend.exceptions.QueueNotFoundException;
 import com.seatsecure.backend.exceptions.not_found.RunNotFoundException;
+import com.seatsecure.backend.security.auth.AuthenticationService;
 import com.seatsecure.backend.services.Algo;
+import com.seatsecure.backend.services.CatService;
 import com.seatsecure.backend.services.QueueEntryService;
 import com.seatsecure.backend.services.RunService;
+import com.seatsecure.backend.services.TicketMutatorService;
 import com.seatsecure.backend.services.TicketQueueService;
+import com.seatsecure.backend.services.UserService;
 
 @RequestMapping("/api/v1")
 @RestController
@@ -33,13 +43,25 @@ public class TicketUserQueueController {
     private TicketQueueService ts;
     private QueueEntryService qs;
     private RunService rs;
+    private UserService us;
+    private CatService cs;
+    private TicketMutatorService ticketMutateSer;
+    private AuthenticationService as;
     private Algo algo;
+    private BidEntryDTOmapper beDTOmapper;
 
-    public TicketUserQueueController(TicketQueueService ts, QueueEntryService qs, RunService rs, Algo algo){
+    public TicketUserQueueController(TicketQueueService ts, QueueEntryService qs,
+    RunService rs, UserService us, CatService cs, AuthenticationService as, Algo algo, 
+    BidEntryDTOmapper beDTOmapper, TicketMutatorService ticketMutateSer){
         this.ts = ts;
         this.qs = qs;
         this.rs = rs;
+        this.us = us;
+        this.cs = cs;
+        this.as = as;
         this.algo = algo;
+        this.beDTOmapper = beDTOmapper;
+        this.ticketMutateSer = ticketMutateSer;
     }
 
     /**
@@ -75,19 +97,22 @@ public class TicketUserQueueController {
      * @return The new event that was added
     */
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/run/{runID}")
-    public Long newQueueEntry(@PathVariable Long runID, User user, int numOfSeats, Category cat) {
-        Run run = rs.getRunById(runID); 
-        if (run == null){
-            throw new RunNotFoundException(runID);
-        }
-        Long queueID = ts.getQueuePerRunPerCat(cat, run);
-        if(queueID == null){
-            throw new QueueNotFoundException(queueID);
-        }
-        TicketUserQueue queue = ts.getQueue(queueID);
+    @PostMapping("/queue-entry/{catId}/{runId}")
+    public Long newQueueEntry(@PathVariable Long catId, @PathVariable Long runId, Integer numOfSeats) {
+        numOfSeats = 2;
 
-        if(queue == null) throw new QueueNotFoundException(queueID);
+        // Get current user
+        UserDetails ud = as.getCurrentUserDetails();
+        User user = us.getUserByUsername(ud.getUsername());
+
+        // Get run the user wants to bid for
+        Run run = rs.getRunById(runId); 
+
+        // Get cat the user wants to bid for
+        Category cat = cs.getCatById(catId); 
+
+        // Get queueId
+        TicketUserQueue queue = ts.getQueuePerRunPerCat(cat.getId(), run.getId()); // RETURNING NULL
 
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime startTime = run.getStartBidDate();
@@ -101,8 +126,28 @@ public class TicketUserQueueController {
         }   else{
             throw new QueueEntryCreationException(user, numOfSeats, cat, run);
         }
-        
+    
+    }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/queue-entry/{catId}/{runId}")
+    public BidEntryDetailsDTO getQueueEntry(@PathVariable Long runId, @PathVariable Long catId) {
+        // Get current user
+        UserDetails ud = as.getCurrentUserDetails();
+        User user = us.getUserByUsername(ud.getUsername());
+
+        List<QueueEntry> queueEntries = qs.getQueueEntriesOfUser(user.getId());
+        for (QueueEntry q : queueEntries) {
+            TicketUserQueue tuQueue = q.getTuQueue();
+            Category cat = tuQueue.getCat();
+            Run run = tuQueue.getRun();
+
+            if (cat.getId() == catId && run.getId() == runId) {
+                return beDTOmapper.apply(q);
+            }
+        }
+
+        throw new QueueEntryNotFoundException();
     }
 
 
@@ -178,5 +223,6 @@ public class TicketUserQueueController {
     public void biddingstart(@PathVariable Long run_id){
         Run run = rs.getRunById(run_id);
         algo.algoForBidding(run);
+        //ticketMutateSer.assignTicketToUser((long) 2, (long) 7);
     }
 }

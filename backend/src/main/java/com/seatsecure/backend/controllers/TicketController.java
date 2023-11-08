@@ -3,6 +3,7 @@ package com.seatsecure.backend.controllers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -80,12 +81,23 @@ public class TicketController {
     
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/tickets/{id}")
-    public UserTicketsDTO assignTicketToCurrentUser(@PathVariable Long id){
+    public TicketDetailsDTO assignTicketToCurrentUser(@PathVariable Long id){
         UserDetails ud = authService.getCurrentUserDetails(); // Get details of current user
         User user = userService.getUserByUsername(ud.getUsername());
-        ticketMService.assignTicketToUser(user.getId(), id);
+        Ticket t = ticketMService.assignTicketToUser(user.getId(), id);
 
-        return userTicketsDTOmapper.apply(user);
+       return ticketDetailsDTOmapper.apply(t);
     }
+
+    // @ResponseStatus(HttpStatus.OK)
+    // @DeleteMapping("/tickets/{id}")
+    // public TicketDetailsDTO unassignTicketFromCurrentUser(@PathVariable Long id){
+    //     UserDetails ud = authService.getCurrentUserDetails(); // Get details of current user
+    //     User user = userService.getUserByUsername(ud.getUsername());
+
+    //     Ticket t = ticketMService.unassignTicketFromUser(id);
+
+    //     return ticketDetailsDTOmapper.apply(t);
+    // }
 
 }

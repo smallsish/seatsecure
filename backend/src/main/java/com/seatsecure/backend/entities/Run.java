@@ -42,6 +42,12 @@ public class Run {
     @NonNull
     private LocalDateTime endRunDate;
 
+    @NonNull
+    private LocalDateTime startBidDate;
+
+    @NonNull
+    private LocalDateTime endBidDate;
+
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;
@@ -51,12 +57,6 @@ public class Run {
 
     @OneToMany(mappedBy = "run", cascade = CascadeType.ALL)
     private List<TicketUserQueue> tuQueue;
-
-    @NonNull
-    private LocalDateTime startBidDate;
-
-    @NonNull
-    private LocalDateTime endBidDate;
 
     @NonNull
     private Boolean algoRan;

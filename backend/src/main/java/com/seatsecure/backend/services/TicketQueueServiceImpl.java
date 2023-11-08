@@ -1,5 +1,6 @@
 package com.seatsecure.backend.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -14,10 +15,12 @@ import com.seatsecure.backend.repositories.TicketQueueRepository;
 public class TicketQueueServiceImpl implements TicketQueueService {
     private TicketQueueRepository queueRepo;
     private RunService runSer;
+    private CatService catSer;
 
-    public TicketQueueServiceImpl(TicketQueueRepository queueRepo, RunService runSer){
+    public TicketQueueServiceImpl(TicketQueueRepository queueRepo, RunService runSer, CatService catSer){
         this.queueRepo = queueRepo;
         this.runSer = runSer;
+        this.catSer = catSer;
     }
 
     @Override
@@ -27,30 +30,42 @@ public class TicketQueueServiceImpl implements TicketQueueService {
 
 
     @Override
-    public Long addQueuePerRunPerCat(Category category, Run run){
-        // Long UserId = user.getId();
-        // if (!userSer.validateUser(UserId)){         
-        //     throw new UserNotFoundException(UserId);
-        // }
-        // Long eventId = event.getId();
-        // if (!catSer.validateUser(cat)){
-        //     throw new CategoryNotFoundException(cat);
-        // }
-        
-        TicketUserQueue newQueueInsert = TicketUserQueue.builder().cat(category).run(run).build();
-        return newQueueInsert.getQueueNumber();
+    public TicketUserQueue addQueuePerRunPerCat(Category category, Run run){
+
+        TicketUserQueue newQueueInsert = TicketUserQueue.builder().cat(null).run(null)
+        .entries(new ArrayList<QueueEntry>()).build();
+        newQueueInsert = queueRepo.save(newQueueInsert);
+        newQueueInsert.setCat(category);
+        newQueueInsert.setRun(run);
+        newQueueInsert.setEntries(new ArrayList<QueueEntry>());
+        return queueRepo.save(newQueueInsert);
     }
 
     @Override
-    public Long getQueuePerRunPerCat(Category category, Run run){
-        Long runID = run.getId();
-        List<TicketUserQueue> queues = runSer.getTuQueueofRun(runID);
-        for(TicketUserQueue queue:queues){
-            if(queue.getCat() == category){
-                return queue.getQueueNumber();
+    public TicketUserQueue getQueuePerRunPerCat(Long catId, Long runId){
+        //Run run = runSer.getRunById(runId);
+        //Category cat = catSer.getCatById(catId);
+
+        List<TicketUserQueue> queues = runSer.getTuQueueofRun(runId);
+        for(TicketUserQueue queue : queues){
+            if(queue.getCat().getId() == catId){
+                return queue;
             }
         }
         return null;
+    }
+
+    @Override
+    public Category getCatOfQueue(Long id) {
+        TicketUserQueue queue = getQueue(id);
+        return queue.getCat();
+    }
+
+    
+    @Override
+    public Run getRunOfQueue(Long id) {
+        TicketUserQueue queue = getQueue(id);
+        return queue.getRun();
     }
 
     @Override

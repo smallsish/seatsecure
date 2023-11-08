@@ -2,6 +2,8 @@ package com.seatsecure.backend;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,9 +13,12 @@ import org.springframework.context.annotation.Bean;
 import com.seatsecure.backend.entities.Venue;
 import com.seatsecure.backend.entities.enums.Gender;
 import com.seatsecure.backend.entities.enums.Role;
+import com.seatsecure.backend.repositories.TicketQueueRepository;
 import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Event;
+import com.seatsecure.backend.entities.QueueEntry;
 import com.seatsecure.backend.entities.Run;
+import com.seatsecure.backend.entities.TicketUserQueue;
 import com.seatsecure.backend.entities.User;
 import com.seatsecure.backend.security.auth.AuthenticationService;
 import com.seatsecure.backend.security.auth.RegisterRequest;
@@ -22,6 +27,7 @@ import com.seatsecure.backend.services.EventService;
 import com.seatsecure.backend.services.RunService;
 import com.seatsecure.backend.services.SeatService;
 import com.seatsecure.backend.services.TicketMutatorService;
+import com.seatsecure.backend.services.TicketQueueService;
 import com.seatsecure.backend.services.UserService;
 import com.seatsecure.backend.services.VenueService;
 
@@ -36,7 +42,7 @@ public class SeatsecureBackendApplication {
 	@Autowired
 	public CommandLineRunner addMocks(AuthenticationService as, EventService es,
 	VenueService vs, CatService cs, RunService rs, SeatService ss,
-	TicketMutatorService ts, UserService us) {
+	TicketMutatorService ts, UserService us, TicketQueueService tqs, TicketQueueRepository tqr) {
 		return args -> {
 			// Create mock user / admin
 			RegisterRequest admin = RegisterRequest.builder().firstName("admin").lastName("Hi").email("admin@email.com")
@@ -66,12 +72,12 @@ public class SeatsecureBackendApplication {
 
 			// Create new runs - Will assign to events later
 			Run event1_run1 = Run.builder().name("Event1_Run1").description("Run 1 of event 1")
-					.startRunDate(LocalDateTime.of(2023, 11, 12, 12, 0)).endRunDate(LocalDateTime.of(2023, 11, 12, 15, 0))
-					.startBidDate(LocalDateTime.of(2023, 11, 9, 12, 0)).endBidDate(LocalDateTime.of(2023, 11, 9, 15, 0)).build();
+					.startRunDate(LocalDateTime.of(2023, 10, 12, 12, 0)).endRunDate(LocalDateTime.of(2023, 12, 12, 15, 0))
+					.startBidDate(LocalDateTime.of(2023, 10, 9, 12, 0)).endBidDate(LocalDateTime.of(2023, 12, 9, 15, 0)).build();
 
 			Run event2_run1 = Run.builder().name("Event2_Run1").description("Run 1 of event 2")
-					.startRunDate(LocalDateTime.of(2023, 11, 12, 12, 0)).endRunDate(LocalDateTime.of(2023, 11, 12, 15, 0))
-					.startBidDate(LocalDateTime.of(2023, 11, 9, 12, 0)).endBidDate(LocalDateTime.of(2023, 11, 9, 15, 0)).build();
+					.startRunDate(LocalDateTime.of(2023, 10, 12, 12, 0)).endRunDate(LocalDateTime.of(2023, 11, 12, 15, 0))
+					.startBidDate(LocalDateTime.of(2023, 10, 9, 12, 0)).endBidDate(LocalDateTime.of(2023, 11, 9, 15, 0)).build();
 
 			// Save users (and print token)
 			System.out.println("Admin token:" + as.register(admin, true).getToken());
@@ -101,7 +107,6 @@ public class SeatsecureBackendApplication {
 			event2_cat1 = cs.addNewCatToEvent(event2.getId(), event2_cat1);
 			event2_cat2 = cs.addNewCatToEvent(event2.getId(), event2_cat2);
 
-
 			// REVISE
 			// Assign cats to seats in event 1's venue
 			ss.assignCatToSeats(event1_cat1.getId(), (long) 1, (long) 5);
@@ -110,7 +115,6 @@ public class SeatsecureBackendApplication {
 			// Assign cats to seats in event 2's venue
 			ss.assignCatToSeats(event2_cat1.getId(), (long) 11, (long) 15);
 			ss.assignCatToSeats(event2_cat2.getId(), (long) 16, (long) 20);
-
 
 			// Add new runs to events
 			event1_run1 = rs.addNewRunToEvent(event1.getId(), event1_run1);
@@ -126,7 +130,13 @@ public class SeatsecureBackendApplication {
 			// Assign ticket to user
 			ts.assignTicketToUser(c.getId(), (long) 2);
 			ts.assignTicketToUser(c.getId(), (long) 3);
+			
 
+			// // Add a queue based on cat and run
+			tqs.addQueuePerRunPerCat(event2_cat2, event2_run1);
+			// TicketUserQueue newQueueInsert = TicketUserQueue.builder().cat(null).run(null)
+			// .entries(new ArrayList<QueueEntry>()).build();
+			// tqr.save(newQueueInsert);
 			
 		};
 

@@ -23,9 +23,6 @@ public class Seat {
     @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
-    private Integer seatNum;
-
     @ManyToOne
     @JoinColumn(name = "venue_id")
     private Venue venue;

@@ -11,6 +11,7 @@ import com.seatsecure.backend.entities.User;
 public interface QueueEntryService {
     List<QueueEntry> listAllQueueEntriesPerQueue(TicketUserQueue queue);
     Long addEntryToQueue(User user, int numOfSeats, TicketUserQueue queue);
+    List<QueueEntry> getQueueEntriesOfUser(long userId);
     QueueEntry deleteQueueEntry(long queueEntryID);
     QueueEntry getQueueEntry(long queueEntryID);
     QueueEntry updateEntry(long queueEntryID, QueueEntry newEntryInfo);
