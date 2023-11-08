@@ -23,7 +23,7 @@ const UserProfilePage = ()  =>{
 
         try {
             console.log(IDValue);
-            const response = await axios.get(`http://localhost:8080/api/v1/users/${IDValue}`,
+            const response = await axios.get(`/api/v1/users/${IDValue}`,
                 JSON.stringify({}),
                 {
                     headers: { 'Content-Type': 'application/json' },

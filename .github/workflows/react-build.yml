@@ -3,7 +3,7 @@ name: Build and Push React App Docker Image
 on:
   push:
     branches:
-      - master
+      - deployment-variables
 
 jobs:
   build:
