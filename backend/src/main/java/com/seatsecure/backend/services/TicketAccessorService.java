@@ -20,4 +20,5 @@ public interface TicketAccessorService {
     List<Ticket> getTicketsOfUser(Long userId);
     List<Seat> getSeatsWithoutTickets();
 
+    Boolean userOwnsTicket(Long userId, Long ticketId);
 }

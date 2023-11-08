@@ -87,7 +87,7 @@ public class TicketUserQueueController {
         }
         TicketUserQueue queue = ts.getQueue(queueID);
 
-        if(queue == null) throw new QueueEntryNotFoundException(queueID);
+        if(queue == null) throw new QueueNotFoundException(queueID);
 
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime startTime = run.getStartBidDate();

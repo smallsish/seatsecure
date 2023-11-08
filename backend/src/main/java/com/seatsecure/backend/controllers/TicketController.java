@@ -1,5 +1,6 @@
 package com.seatsecure.backend.controllers;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,10 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.seatsecure.backend.entities.Ticket;
 import com.seatsecure.backend.entities.User;
+import com.seatsecure.backend.entities.DTO_mappers.complex.TicketDetailsDTOmapper;
 import com.seatsecure.backend.entities.DTO_mappers.complex.UserTicketsDTOmapper;
+import com.seatsecure.backend.entities.DTOs.complex.TicketDetailsDTO;
 import com.seatsecure.backend.entities.DTOs.complex.UserTicketsDTO;
+import com.seatsecure.backend.exceptions.others.UnauthorizedUserException;
 import com.seatsecure.backend.security.auth.AuthenticationService;
+import com.seatsecure.backend.services.TicketAccessorService;
 import com.seatsecure.backend.services.TicketMutatorService;
 import com.seatsecure.backend.services.UserService;
 
@@ -21,15 +27,20 @@ import com.seatsecure.backend.services.UserService;
 //@PreAuthorize("hasRole('USER')")
 public class TicketController {
     private UserService userService;
-    private TicketMutatorService ticketService;
+    private TicketAccessorService ticketAService;
+    private TicketMutatorService ticketMService;
     private AuthenticationService authService;
     private UserTicketsDTOmapper userTicketsDTOmapper;
+    private TicketDetailsDTOmapper ticketDetailsDTOmapper;
 
-    public TicketController(UserService us, TicketMutatorService tms, AuthenticationService as, UserTicketsDTOmapper utDTOmapper) {
+    public TicketController(UserService us, TicketAccessorService tas, TicketMutatorService tms,
+    AuthenticationService as, UserTicketsDTOmapper utDTOmapper, TicketDetailsDTOmapper tdDTOmapper) {
         userService = us;
-        ticketService = tms;
+        ticketAService = tas;
+        ticketMService = tms;
         authService = as;
         userTicketsDTOmapper = utDTOmapper;
+        ticketDetailsDTOmapper = tdDTOmapper;
     }
 
         /**
@@ -50,12 +61,29 @@ public class TicketController {
     // USER TO BUY TICKETS - PICK A CAT AND ADD TO RAFFLE
 
 
+    // Must be authorized to do so
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/tickets/{ticketId}")
-    public UserTicketsDTO assignTicketToCurrentUser(@PathVariable("ticketId") Long ticketId){
+    @GetMapping("/tickets/{id}")
+    public TicketDetailsDTO getTicket(@PathVariable Long id){
+        // Check if user owns the ticket
+        UserDetails ud = authService.getCurrentUserDetails(); // Get details of current user
+        User currentUser = userService.getUserByUsername(ud.getUsername());
+        
+        if (ticketAService.userOwnsTicket(currentUser.getId(), id)) {
+            Ticket t = ticketAService.getTicketById(id);
+            return ticketDetailsDTOmapper.apply(t);
+        } else {
+            throw new UnauthorizedUserException();
+        }
+    }
+
+    
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/tickets/{id}")
+    public UserTicketsDTO assignTicketToCurrentUser(@PathVariable Long id){
         UserDetails ud = authService.getCurrentUserDetails(); // Get details of current user
         User user = userService.getUserByUsername(ud.getUsername());
-        ticketService.assignTicketToUser(user.getId(), ticketId);
+        ticketMService.assignTicketToUser(user.getId(), id);
 
         return userTicketsDTOmapper.apply(user);
     }

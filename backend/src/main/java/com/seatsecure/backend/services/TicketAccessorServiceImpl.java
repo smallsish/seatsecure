@@ -185,6 +185,23 @@ public class TicketAccessorServiceImpl implements TicketAccessorService {
         return seats.stream().filter(s -> s.getTicket() == null).toList();
     }
 
+    //////////
+    @Override
+    public Boolean userOwnsTicket(Long userId, Long ticketId) {
+        // Check if user exists
+        User u = userService.getUserById(userId);
+
+        // Check if ticket exists
+        Ticket t = getTicketById(ticketId);
+
+        // Get owner of ticket
+        User owner = getOwnerOfTicket(t.getId());
+
+        if (owner == null || u == null) return false;
+        
+        return owner.getId() == u.getId();
+    }
+
     /*
      * SETTER INJECTORS
      */
