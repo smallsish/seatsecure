@@ -1,5 +1,6 @@
 package com.seatsecure.backend.entities;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -51,4 +52,13 @@ public class Run {
 
     @OneToMany(mappedBy = "run", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<TicketUserQueue> tuQueue;
+
+    @NonNull
+    private LocalDateTime startBidTime;
+
+    @NonNull
+    private LocalDateTime endBidTime;
+
+    @NonNull
+    private boolean algoRan;
 }
