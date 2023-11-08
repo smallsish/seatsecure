@@ -132,22 +132,22 @@ public class SeatServiceImpl implements SeatService {
      * 
      * @param venueId
      * @param catId
-     * @param startRangeIndex
-     * @param endRangeIndex
+     * @param startSeatId
+     * @param endSeatId
      * @return A list of the updated Seats
      * @throws CatNotFoundException  If a Category with the specified id does not
      *                               exist
      * @throws SeatNotFoundException If a Seat with the specified id does not exist
      */
     @Override
-    public List<Seat> assignCatToSeats(Long catId, Long startRangeIndex, Long endRangeIndex) {
+    public List<Seat> assignCatToSeats(Long catId, Long startSeatId, Long endSeatId) {
 
         // Check if cat exists
         Category c = catService.getCatById(catId);
 
         List<Seat> updatedSeats = new ArrayList<>();
         // Assign cats to seats in range (inclusive)
-        for (long i = startRangeIndex; i <= endRangeIndex; i++) {
+        for (long i = startSeatId; i <= endSeatId; i++) {
 
             // Update the Cat property of the Seat
             Seat s = getSeatById(i);

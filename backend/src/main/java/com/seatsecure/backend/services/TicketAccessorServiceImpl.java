@@ -16,6 +16,7 @@ import com.seatsecure.backend.exceptions.not_found.RunNotFoundException;
 import com.seatsecure.backend.exceptions.not_found.TicketNotFoundException;
 import com.seatsecure.backend.exceptions.not_found.UserNotFoundException;
 import com.seatsecure.backend.exceptions.null_property.NullCatException;
+import com.seatsecure.backend.exceptions.null_property.NullSeatException;
 import com.seatsecure.backend.repositories.SeatRepository;
 import com.seatsecure.backend.repositories.TicketRepository;
 
@@ -30,6 +31,7 @@ public class TicketAccessorServiceImpl implements TicketAccessorService {
     private RunService runService;
     private UserService userService;
     private CatService catService;
+    private SeatService seatService;
     private TicketRepository ticketRepo;
     private SeatRepository seatRepo;
 
@@ -112,20 +114,27 @@ public class TicketAccessorServiceImpl implements TicketAccessorService {
      * @return The Category of the Ticket
      * @throws TicketNotFoundException If a Ticket with the specified id does not
      *                                 exist
-     * @throws NullCatException If the Ticket does not have a Category
+     * @throws NullSeatException If the Ticket does not have a Seat
+
      */
     @Override
     public Category getCatOfTicket(Long ticketId) {
         // Try to get ticket
         Ticket t = getTicketById(ticketId);
 
+        // Try to get seat
+        Seat s = t.getSeat();
+        if (s == null) {
+            throw new NullSeatException();
+        }
+
         // Try to get cat
-        Category cat = t.getCat();
-        if (cat == null)  {
+        Category c = s.getCat();
+        if (c == null) {
             throw new NullCatException();
         }
 
-        return cat;
+        return c;
 
     }
 
@@ -188,6 +197,11 @@ public class TicketAccessorServiceImpl implements TicketAccessorService {
     @Autowired
     public void injectUserService(UserService us) {
         userService = us;
+    }
+
+    @Autowired
+    public void injectSeatService(SeatService ss) {
+        seatService = ss;
     }
 
     @Autowired

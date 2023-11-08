@@ -2,8 +2,8 @@
 ### GLOBAL VARIABLES ###
 ########################
 @baseurl = http://localhost:8080/api/v1
-@adminBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTM1ODY4NywiZXhwIjoxNjk5MzYwMTI3fQ.I8Ybbak3D-gfdTh0o8usuXsOgAlxntWyt7NNKIazlhQ
-@userBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5MzU4Njg3LCJleHAiOjE2OTkzNjAxMjd9.xATxZJ53hCmaqnHPAPq_r4k6siORggIVcNESyUczqwU
+@adminBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTQyOTg3OSwiZXhwIjoxNjk5NDMxMzE5fQ.pEwMUTr9MBPQJk8KgLKWU7Jmh0D7xdQ8nf4FMPAHofU
+@userBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5NDI5ODc5LCJleHAiOjE2OTk0MzEzMTl9.WwUeV-YsGEHn0Myl81iHwFOrCGQmfuNL6OUB4JEqLKE
 
 ####################
 ### USER METHODS ###
@@ -70,6 +70,7 @@ Authorization: Bearer {{adminBearerToken}}
 
 {
     "name" : "The Genesis Event",
+    "description" : "This is the origin event",
     "startDate" : "2023-09-25T21:30",
     "endDate" : "2023-09-27T19:00"
 }
@@ -191,13 +192,13 @@ Authorization: Bearer {{adminBearerToken}}
 ######################
 
 // Get current user's tickets
-GET {{baseurl}}tickets
+GET {{baseurl}}/tickets
 Authorization: Bearer {{userBearerToken}}
 
 ###
 
 // Assign new ticket to current user
-PUT {{baseurl}}/tickets/3
+PUT {{baseurl}}/tickets/9
 Authorization: Bearer {{userBearerToken}}
 
 ###

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Run;
 import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Ticket;
@@ -33,6 +34,7 @@ public class TicketMutatorServiceImpl implements TicketMutatorService {
     private RunService runService;
     private SeatService seatService;
     private UserService userService;
+    private CatService catService;
     private TicketAccessorService ticketService;
     private TicketRepository ticketRepo;
 
@@ -94,7 +96,7 @@ public class TicketMutatorServiceImpl implements TicketMutatorService {
             }
 
             // Create a new Ticket and assign it to the seat
-            Ticket t = Ticket.builder().seat(s).run(null).user(null).build();
+            Ticket t = Ticket.builder().seat(s).user(null).run(null).build();
             ticketRepo.save(t);
             ticketList.add(t);
         }
@@ -220,6 +222,43 @@ public class TicketMutatorServiceImpl implements TicketMutatorService {
 
     }
 
+
+    // /**
+    //  * Assign Tickets to a Category, or more intuitively, giving Tickets a Category
+    //  * 
+    //  * @param catId
+    //  * @return The Tickets that have been assigned to the Run
+    //  * @throws RunNotFoundException    If a Run with the specified id does not exist
+    //  * @throws TicketNotFoundException If a Ticket with the specified id does not
+    //  *                                 exist
+    //  */
+    // @Override
+    // public List<Ticket> assignTicketsToCat(Long catId, Long fromTicketId, Long toTicketId) {
+
+    //     // Check if cat exists
+    //     Category c = catService.getCatById(catId);
+
+    //     List<Ticket> ticketList = new ArrayList<>();
+    //     // Assign tickets to cat
+    //     for (long id = fromTicketId; id <= toTicketId; id++) {
+    //         // Check if ticket exists
+    //         Ticket t = ticketService.getTicketById(id);
+
+    //         // Check if ticket is already associated with a run
+    //         if (t.getRun() != null) {
+    //             throw new TicketHasRunException(id);
+    //         }
+
+    //         // Update the run property of the ticket
+    //         t.setCat(c);
+    //         ticketList.add(ticketRepo.save(t));
+    //     }
+
+    //     return ticketList;
+    // }
+
+
+
     /**
      * Unassign a Ticket from the Run it is currently associated with
      * 
@@ -254,6 +293,7 @@ public class TicketMutatorServiceImpl implements TicketMutatorService {
      *                                 exist
      * @throws TicketNotFoundException If a Ticket with the specified id does not
      *                                 exist
+     * @throws TicketHasOwnerException If the Ticket already has an existing owner
      */
     @Override
     public Ticket assignTicketToUser(Long userId, Long ticketId) {
@@ -316,6 +356,12 @@ public class TicketMutatorServiceImpl implements TicketMutatorService {
     public void injectUserService(UserService us) {
         userService = us;
     }
+
+    @Autowired
+    public void injectCatService(CatService cs) {
+        catService = cs;
+    }
+
 
     @Autowired
     public void injectTicketAccessorService(TicketAccessorService tms) {

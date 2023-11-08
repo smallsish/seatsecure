@@ -52,7 +52,7 @@ public class TicketController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/tickets/{ticketId}")
-    public UserTicketsDTO assignTicketToCurrentUser(@PathVariable("userId") Long userId, @PathVariable("ticketId") Long ticketId){
+    public UserTicketsDTO assignTicketToCurrentUser(@PathVariable("ticketId") Long ticketId){
         UserDetails ud = authService.getCurrentUserDetails(); // Get details of current user
         User user = userService.getUserByUsername(ud.getUsername());
         ticketService.assignTicketToUser(user.getId(), ticketId);

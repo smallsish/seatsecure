@@ -80,7 +80,7 @@ public class AuthenticationService {
                 return (UserDetails) p;
             }
 
-        } catch(RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new CurrentUserException();
         }
 

@@ -27,10 +27,9 @@ public class Ticket {
     @NonNull
     private Seat seat;
 
-    @OneToOne
-    @JoinColumn(name = "cat_id")
-    @NonNull
-    private Category cat;
+    // @OneToOne
+    // @JoinColumn(name = "cat_id")
+    // private Category cat;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class TicketDetailsDTO {
 
     private Long id;
-    private CatDTO cat;
+    private Double price;
     private RunDTO run;
     private VenueDTO venue;
 }

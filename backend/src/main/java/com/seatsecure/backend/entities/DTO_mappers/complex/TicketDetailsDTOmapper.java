@@ -51,13 +51,12 @@ public class TicketDetailsDTOmapper implements Function<Ticket, TicketDetailsDTO
         RunDTO runDTO = r == null ? null : runDTOmapper.apply(r);
 
         Category c = ts.getCatOfTicket(t.getId());
-        CatDTO catDTO = c == null ? null : catDTOmapper.apply(c);
         
         Event event = runDTO == null ? null : rs.getEventOfRun(runDTO.getId());
         Venue venue = event == null ? null : es.getVenueOfEvent(event.getId());
 
         VenueDTO venueDTO = venue == null ? null : venueDTOmapper.apply(venue);
-        return new TicketDetailsDTO(t.getId(), catDTO, runDTO, venueDTO);
+        return new TicketDetailsDTO(t.getId(), c == null ? null : c.getPrice(), runDTO, venueDTO);
     }
     
 }

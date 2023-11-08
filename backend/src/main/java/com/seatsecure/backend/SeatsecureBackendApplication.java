@@ -101,6 +101,8 @@ public class SeatsecureBackendApplication {
 			event2_cat1 = cs.addNewCatToEvent(event2.getId(), event2_cat1);
 			event2_cat2 = cs.addNewCatToEvent(event2.getId(), event2_cat2);
 
+
+			// REVISE
 			// Assign cats to seats in event 1's venue
 			ss.assignCatToSeats(event1_cat1.getId(), (long) 1, (long) 5);
 			ss.assignCatToSeats(event1_cat2.getId(), (long) 6, (long) 10);
@@ -108,6 +110,7 @@ public class SeatsecureBackendApplication {
 			// Assign cats to seats in event 2's venue
 			ss.assignCatToSeats(event2_cat1.getId(), (long) 11, (long) 15);
 			ss.assignCatToSeats(event2_cat2.getId(), (long) 16, (long) 20);
+
 
 			// Add new runs to events
 			event1_run1 = rs.addNewRunToEvent(event1.getId(), event1_run1);
@@ -122,7 +125,7 @@ public class SeatsecureBackendApplication {
 
 			// Assign ticket to user
 			ts.assignTicketToUser(c.getId(), (long) 2);
-			ts.assignTicketToUser(c.getId(), (long) 3);	
+			ts.assignTicketToUser(c.getId(), (long) 3);
 
 			
 		};

@@ -13,7 +13,7 @@ public interface SeatService {
     Venue getVenueOfSeat(Long seatId);
 
     List<Seat> addNewSeatsToVenue(Long id, int numSeats);
-    List<Seat> assignCatToSeats(Long catId, Long startSeatNum, Long endSeatNum);
+    List<Seat> assignCatToSeats(Long catId, Long startSeatId, Long endSeatId);
 
     Seat deleteSeatById(Long seatId);
 
