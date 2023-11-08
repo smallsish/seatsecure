@@ -2,8 +2,9 @@
 ### GLOBAL VARIABLES ###
 ########################
 @baseurl = http://localhost:8080/api/v1
-@adminBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTQzODE0MCwiZXhwIjoxNjk5NDM5NTgwfQ.sgclEeKrM5Z7mIpTNUfVDMztlNEb2GrdGG7luZ7cmiE
-@userBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5NDM4MTQwLCJleHAiOjE2OTk0Mzk1ODB9.l1w_x9dwFAyXhztTXta0BREyOfdKcadjjaLY2SwOaH0
+@adminBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTQ0NDA3MiwiZXhwIjoxNjk5NDQ1NTEyfQ.GlYp1bi3BKO-6DgQf5flafxKd9puc_ruf_sNbPD1BVg
+@userBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5NDQ0MDcyLCJleHAiOjE2OTk0NDU1MTJ9.u2jaYZnbwGcHHRRqwNlq2wJXZ4pAAMx8GL6tPq1Q9U4
+
 
 ####################
 ### USER METHODS ###
@@ -216,18 +217,17 @@ Authorization: Bearer {{userBearerToken}}
 ### BIDDING METHODS ###
 #######################
 
-# // Add new queue entry
-# POST {{baseurl}}/queue-entry/1/1
-# Authorization: Bearer {{userBearerToken}}
+// Add new queue entry
+POST {{baseurl}}/queue-entry/4/2
+Authorization: Bearer {{userBearerToken}}
 
+###
 
-# ###
+// Start bidding
+POST {{baseurl}}/run/1/biddingstart
 
-# // Start bidding
-# POST {{baseurl}}/run/1/biddingstart
+###
 
-# ###
-
-# // Get bidding entry
-# GET {{baseurl}}/queue-entry/1/1
-# Authorization: Bearer {{userBearerToken}}
+// Get bidding entry
+GET {{baseurl}}/queue-entry/4/2
+Authorization: Bearer {{userBearerToken}}

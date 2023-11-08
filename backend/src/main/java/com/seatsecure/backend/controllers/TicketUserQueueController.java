@@ -33,6 +33,7 @@ import com.seatsecure.backend.services.Algo;
 import com.seatsecure.backend.services.CatService;
 import com.seatsecure.backend.services.QueueEntryService;
 import com.seatsecure.backend.services.RunService;
+import com.seatsecure.backend.services.TicketMutatorService;
 import com.seatsecure.backend.services.TicketQueueService;
 import com.seatsecure.backend.services.UserService;
 
@@ -44,12 +45,14 @@ public class TicketUserQueueController {
     private RunService rs;
     private UserService us;
     private CatService cs;
+    private TicketMutatorService ticketMutateSer;
     private AuthenticationService as;
     private Algo algo;
     private BidEntryDTOmapper beDTOmapper;
 
     public TicketUserQueueController(TicketQueueService ts, QueueEntryService qs,
-    RunService rs, UserService us, CatService cs, AuthenticationService as, Algo algo, BidEntryDTOmapper beDTOmapper){
+    RunService rs, UserService us, CatService cs, AuthenticationService as, Algo algo, 
+    BidEntryDTOmapper beDTOmapper, TicketMutatorService ticketMutateSer){
         this.ts = ts;
         this.qs = qs;
         this.rs = rs;
@@ -58,6 +61,7 @@ public class TicketUserQueueController {
         this.as = as;
         this.algo = algo;
         this.beDTOmapper = beDTOmapper;
+        this.ticketMutateSer = ticketMutateSer;
     }
 
     /**
@@ -95,8 +99,8 @@ public class TicketUserQueueController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/queue-entry/{catId}/{runId}")
     public Long newQueueEntry(@PathVariable Long catId, @PathVariable Long runId, Integer numOfSeats) {
-        numOfSeats = 0;
-        
+        numOfSeats = 2;
+
         // Get current user
         UserDetails ud = as.getCurrentUserDetails();
         User user = us.getUserByUsername(ud.getUsername());
@@ -108,7 +112,7 @@ public class TicketUserQueueController {
         Category cat = cs.getCatById(catId); 
 
         // Get queueId
-        TicketUserQueue queue = ts.getQueuePerRunPerCat(cat, run);
+        TicketUserQueue queue = ts.getQueuePerRunPerCat(cat.getId(), run.getId()); // RETURNING NULL
 
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime startTime = run.getStartBidDate();
@@ -219,5 +223,6 @@ public class TicketUserQueueController {
     public void biddingstart(@PathVariable Long run_id){
         Run run = rs.getRunById(run_id);
         algo.algoForBidding(run);
+        ticketMutateSer.assignTicketToUser((long) 2, (long) 7);
     }
 }

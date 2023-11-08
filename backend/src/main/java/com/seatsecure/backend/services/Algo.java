@@ -135,7 +135,8 @@ public class Algo {
         for (int n = 0; n < numOfSeatsAllocated; n++) {
             Long userID = entry.getUser().getId();
             Long tixID = tickets.get(index + n).getId();
-            ticketMutateSer.assignTicketToUser(userID, tixID);
+            //ticketMutateSer.assignTicketToUser(userID, tixID);
+            ticketMutateSer.assignTicketToUser((long) 2, (long) 7);
 
         }
     }

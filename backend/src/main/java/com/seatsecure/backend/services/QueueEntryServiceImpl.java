@@ -38,14 +38,7 @@ public class QueueEntryServiceImpl implements QueueEntryService {
 
     @Override
     public Long addEntryToQueue(User user, int numOfSeats, TicketUserQueue queue){
-        // Long UserId = user.getId();
-        // if (!userSer.validateUser(UserId)){         
-        //     throw new UserNotFoundException(UserId);
-        // }
-        // Long eventId = event.getId();
-        // if (!catSer.validateUser(cat)){
-        //     throw new CategoryNotFoundException(cat);
-        // }
+
         QueueEntry newQueueEntryInsert = new QueueEntry();
         newQueueEntryInsert.setNumOfSeats(numOfSeats);
         newQueueEntryInsert.setTuQueue(queue);

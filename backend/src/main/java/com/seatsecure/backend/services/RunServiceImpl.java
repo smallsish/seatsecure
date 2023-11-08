@@ -103,7 +103,6 @@ public class RunServiceImpl implements RunService {
     public List<TicketUserQueue> getTuQueueofRun(Long runId) {
         // Check if run exists
         Run particularRun = getRunById(runId);
-        
         return tqRepo.findByRun(particularRun);
     }
 
