@@ -18,8 +18,10 @@ function EventsPage() {
 
     const makeEventRequest = async () => {
         try {
+
             const response = await axios.get(`/api/v1/events`, {
             });
+
             const responseData = response.data;
             setData(responseData);
         }
