@@ -17,9 +17,11 @@ jobs:
       - name: Login to Docker Hub
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-      - name: Stop and Remove Existing Containers
+      - name: Stop and Remove Existing Containers, except postgres
         run: |
-          docker-compose down
+          docker stop $(docker ps -q | grep -v "$(docker ps -q -f name=postgres)")
+          docker rm -f $(docker ps -aq | grep -v "$(docker ps -q -f name=postgres)")
+          docker rmi -f $(docker images -q | grep -v "postgres")
 
       - name: Pull Docker Images
         run: |
