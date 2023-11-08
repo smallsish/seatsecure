@@ -1,9 +1,11 @@
 ########################
 ### GLOBAL VARIABLES ###
 ########################
-@baseurl = http://localhost:8080/api/v1
-@adminBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTQzMTc2OSwiZXhwIjoxNjk5NDMzMjA5fQ.cLMvLXoaSAk4pqBLZbSsh3SaM_uxp1b9yigqaykrZpg
-@userBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5NDMxNzcwLCJleHAiOjE2OTk0MzMyMTB9.qGkhtGX5K1_CtpcyCBFkt0BgFFsV7hJCtgVMXbHFsII
+
+# @baseurl = http://localhost:8080/api/v1
+@baseurl = http://3.0.146.89:8080/api/v1
+@adminBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5OTE4MDY4MiwiZXhwIjoxNjk5MTgyMTIyfQ.xeyp_0nn_5XO_gehqsusSzuEkkskQWh0GkcyZk_RAn
+@userBearerToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0IiwiaWF0IjoxNjk5MTgwNjgyLCJleHAiOjE2OTkxODIxMjJ9.UGRgvj4dr-GSggOHMmFndjjw-dkZfLxEuYLgBzqvdwM
 
 ####################
 ### USER METHODS ###

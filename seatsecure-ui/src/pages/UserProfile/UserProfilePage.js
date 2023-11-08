@@ -19,11 +19,13 @@ const UserProfilePage = () => {
     }, [])
     const makeUserRequest = async () => {
         try {
+
             const response = await axios.get(`/api/v1/users/${IDValue}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
             });
+          
             const responseData = response.data;
             setData(responseData);
         }
