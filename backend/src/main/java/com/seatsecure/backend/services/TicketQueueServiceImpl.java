@@ -56,6 +56,19 @@ public class TicketQueueServiceImpl implements TicketQueueService {
     }
 
     @Override
+    public Category getCatOfQueue(Long id) {
+        TicketUserQueue queue = getQueue(id);
+        return queue.getCat();
+    }
+
+    
+    @Override
+    public Run getRunOfQueue(Long id) {
+        TicketUserQueue queue = getQueue(id);
+        return queue.getRun();
+    }
+
+    @Override
     public TicketUserQueue getQueue(Long queueId){
         // Using Java Optional, as "findById" of Spring JPA returns an Optional object
         // Optional forces developers to explicitly handle the case of non-existent values

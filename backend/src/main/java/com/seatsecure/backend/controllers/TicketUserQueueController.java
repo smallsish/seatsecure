@@ -223,6 +223,6 @@ public class TicketUserQueueController {
     public void biddingstart(@PathVariable Long run_id){
         Run run = rs.getRunById(run_id);
         algo.algoForBidding(run);
-        ticketMutateSer.assignTicketToUser((long) 2, (long) 7);
+        //ticketMutateSer.assignTicketToUser((long) 2, (long) 7);
     }
 }

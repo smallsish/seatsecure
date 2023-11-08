@@ -12,6 +12,8 @@ public interface TicketQueueService {
     List<TicketUserQueue> listAllQueuesPerRun(Run run);
     TicketUserQueue addQueuePerRunPerCat(Category category, Run run);
     TicketUserQueue getQueuePerRunPerCat(Long catId, Long runId);
+    Category getCatOfQueue(Long id);
+    Run getRunOfQueue(Long id);
     TicketUserQueue deleteQueue(Long queueId);
     TicketUserQueue getQueue(Long queueId);
     TicketUserQueue updateQueuewithUpdatedEntries(List<QueueEntry> updatedEntrieslist, TicketUserQueue queue);
