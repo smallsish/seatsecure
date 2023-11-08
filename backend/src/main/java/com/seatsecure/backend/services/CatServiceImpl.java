@@ -1,11 +1,14 @@
 package com.seatsecure.backend.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Event;
+import com.seatsecure.backend.entities.Seat;
+import com.seatsecure.backend.entities.TicketUserQueue;
 import com.seatsecure.backend.exceptions.not_found.CatNotFoundException;
 import com.seatsecure.backend.exceptions.not_found.EventNotFoundException;
 import com.seatsecure.backend.exceptions.null_property.NullEventException;
@@ -100,11 +103,11 @@ public class CatServiceImpl implements CatService {
         Event e = eventService.getEventById(eventId);
 
         // Set cat's event to e, save new cat to database
-        Category c = Category.builder().name(catInfo.getName()).description(catInfo.getDescription()).price(catInfo.getPrice()).build();
-        c.setEvent(e);
-        catRepo.save(c);
+        Category c = Category.builder().name(catInfo.getName()).description(catInfo.getDescription())
+        .price(catInfo.getPrice()).event(e).seats(new ArrayList<Seat>()).queue(new ArrayList<Seat>())
+        .tuQueue(new ArrayList<TicketUserQueue>()).priority(0).build();
 
-        return c;
+        return catRepo.save(c);
     }
 
     /**
@@ -145,5 +148,6 @@ public class CatServiceImpl implements CatService {
 
         return c;
     }
+
 
 }

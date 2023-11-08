@@ -89,6 +89,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event addEvent(Event eventInfo) {
         Event e = Event.builder().name(eventInfo.getName())
+                .description(eventInfo.getDescription())
                 .startDate(eventInfo.getStartDate())
                 .endDate(eventInfo.getEndDate())
                 .venue(null)

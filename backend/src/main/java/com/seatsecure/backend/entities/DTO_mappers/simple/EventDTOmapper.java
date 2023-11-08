@@ -15,7 +15,9 @@ public class EventDTOmapper implements Function<Event,EventDTO>{
     @Override
     public EventDTO apply(Event event) {
         DateFormat formatter = new SimpleDateFormat("dd-MM-YYYY HH:mm"); // For formatting date
-        return new EventDTO(event.getId(), event.getName(), formatter.format(event.getStartDate()), formatter.format(event.getEndDate()));
+        return new EventDTO(event.getId(), event.getName(),
+        event.getDescription(), formatter.format(event.getStartDate()),
+        formatter.format(event.getEndDate()));
     }
     
 }

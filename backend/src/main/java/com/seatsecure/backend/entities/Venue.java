@@ -35,9 +35,6 @@ public class Venue {
     //@Pattern(regexp = "^[0-9A-Za-z-#, ]+$", message = "Invalid characters used for address!")
     private String address;
 
-    // @OneToMany(mappedBy = "venue")
-    // private List<Event> events;
-
     @OneToOne(mappedBy = "venue")
     private Event event;
 

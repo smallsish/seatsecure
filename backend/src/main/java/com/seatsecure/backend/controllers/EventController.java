@@ -163,8 +163,6 @@ public class EventController {
     @PreAuthorize("hasAuthority('admin:create')")
     public RunDTO addRunToEvent(@PathVariable Long id, @Valid @RequestBody Run runInfo) {
         Run r = runService.addNewRunToEvent(id, runInfo);
-        if (r == null)
-            throw new EventNotFoundException(id);
 
         return runDTOmapper.apply(r);
     }
@@ -188,7 +186,7 @@ public class EventController {
     }
 
     /**
-     * Update the details of an existing run
+     * Update the details of an existing run (everything)
      * 
      * @param runId
      * @return updated run (mapped to DTO)
@@ -198,8 +196,6 @@ public class EventController {
     public RunDTO updateRun(@PathVariable Long id, @Valid @RequestBody Run runInfo) {
         // Check if run exists
         Run r = runService.updateRun(id, runInfo);
-        if (r == null)
-            throw new RunNotFoundException(id);
 
         return runDTOmapper.apply(r);
     }

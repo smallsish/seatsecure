@@ -1,8 +1,7 @@
 package com.seatsecure.backend;
 
 import java.sql.Date;
-import java.util.ArrayList;
-
+import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,8 +14,6 @@ import com.seatsecure.backend.entities.enums.Role;
 import com.seatsecure.backend.entities.Category;
 import com.seatsecure.backend.entities.Event;
 import com.seatsecure.backend.entities.Run;
-import com.seatsecure.backend.entities.Seat;
-import com.seatsecure.backend.entities.Ticket;
 import com.seatsecure.backend.entities.User;
 import com.seatsecure.backend.security.auth.AuthenticationService;
 import com.seatsecure.backend.security.auth.RegisterRequest;
@@ -51,47 +48,30 @@ public class SeatsecureBackendApplication {
 					.username("cust").phoneNumber("89172382").password("abcdefgh").role(Role.USER).build();
 
 			// Create new venues
-			Venue venue1 = Venue.builder().name("National stadium").address("Address of national stadium")
-					.event(null).seats(new ArrayList<Seat>()).build();
+			Venue venue1 = Venue.builder().name("National stadium").address("Address of national stadium").build();
+			Venue venue2 = Venue.builder().name("Indoor stadium").address("Address of indoor stadium").build();
 
-			Venue venue2 = Venue.builder().name("Indoor stadium").address("Address of indoor stadium")
-					.event(null).seats(new ArrayList<Seat>()).build();
+			// Create new events - Venue will be assigned later
+			Event event1 = Event.builder().name("First event").description("This is event 1!")
+			.startDate(new Date(System.currentTimeMillis())).endDate(new Date(System.currentTimeMillis())).build();
 
-			// Create new events
-			Event event1 = Event.builder().name("First event").startDate(new Date(System.currentTimeMillis()))
-					.endDate(new Date(System.currentTimeMillis())).venue(null).cats(new ArrayList<Category>())
-					.runs(new ArrayList<Run>()).build();
-
-			Event event2 = Event.builder().name("Second event").startDate(new Date(System.currentTimeMillis()))
-					.endDate(new Date(System.currentTimeMillis())).venue(null).cats(new ArrayList<Category>())
-					.runs(new ArrayList<Run>()).build();
+			Event event2 = Event.builder().name("Second event").description("This is event 2!")
+			.startDate(new Date(System.currentTimeMillis())).endDate(new Date(System.currentTimeMillis())).build();
 
 			// Create new cats
-			Category event1_cat1 = Category.builder().name("Event1_Cat1").description("Category 1 of event 1").price(10)
-					.event(null)
-					.seats(new ArrayList<Seat>()).build();
+			Category event1_cat1 = Category.builder().name("Event1_Cat1").description("Category 1 of event 1").price(10).build();
+			Category event1_cat2 = Category.builder().name("Event1_Cat2").description("Category 2 of event 1").price(11).build();
+			Category event2_cat1 = Category.builder().name("Event2_Cat1").description("Category 2 of event 1").price(12).build();
+			Category event2_cat2 = Category.builder().name("Event2_Cat2").description("Category 2 of event 2").price(13).build();
 
-			Category event1_cat2 = Category.builder().name("Event1_Cat2").description("Category 2 of event 1").price(11)
-					.event(null)
-					.seats(new ArrayList<Seat>()).build();
-
-			Category event2_cat1 = Category.builder().name("Event2_Cat1").description("Category 2 of event 1").price(12)
-					.event(null)
-					.seats(new ArrayList<Seat>()).build();
-
-			Category event2_cat2 = Category.builder().name("Event2_Cat2").description("Category 2 of event 2").price(13)
-					.event(null)
-					.seats(new ArrayList<Seat>()).build();
-
-			// Create new runs
+			// Create new runs - Will assign to events later
 			Run event1_run1 = Run.builder().name("Event1_Run1").description("Run 1 of event 1")
-					.startDate(new Date(System.currentTimeMillis())).endDate(new Date(System.currentTimeMillis()))
-					.event(null).tickets(new ArrayList<Ticket>()).build();
+					.startRunDate(LocalDateTime.of(2023, 11, 12, 12, 0)).endRunDate(LocalDateTime.of(2023, 11, 12, 15, 0))
+					.startBidDate(LocalDateTime.of(2023, 11, 9, 12, 0)).endBidDate(LocalDateTime.of(2023, 11, 9, 15, 0)).build();
 
 			Run event2_run1 = Run.builder().name("Event2_Run1").description("Run 1 of event 2")
-					.startDate(new Date(System.currentTimeMillis())).endDate(new Date(System.currentTimeMillis()))
-					.event(null).tickets(new ArrayList<Ticket>()).build();
-
+					.startRunDate(LocalDateTime.of(2023, 11, 12, 12, 0)).endRunDate(LocalDateTime.of(2023, 11, 12, 15, 0))
+					.startBidDate(LocalDateTime.of(2023, 11, 9, 12, 0)).endBidDate(LocalDateTime.of(2023, 11, 9, 15, 0)).build();
 
 			// Save users (and print token)
 			System.out.println("Admin token:" + as.register(admin, true).getToken());

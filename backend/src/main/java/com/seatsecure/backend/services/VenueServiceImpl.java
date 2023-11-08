@@ -1,10 +1,12 @@
 package com.seatsecure.backend.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.seatsecure.backend.entities.Seat;
 import com.seatsecure.backend.entities.Venue;
 import com.seatsecure.backend.exceptions.not_found.VenueNotFoundException;
 import com.seatsecure.backend.repositories.VenueRepository;
@@ -54,7 +56,8 @@ public class VenueServiceImpl implements VenueService {
      */
     @Override
     public Venue addVenue(Venue venueInfo) {
-        Venue v = Venue.builder().name(venueInfo.getName()).address(venueInfo.getAddress()).build();
+        Venue v = Venue.builder().name(venueInfo.getName()).address(venueInfo.getAddress())
+        .event(null).seats(new ArrayList<Seat>()).build();
         
         return venueRepo.save(v);
     }

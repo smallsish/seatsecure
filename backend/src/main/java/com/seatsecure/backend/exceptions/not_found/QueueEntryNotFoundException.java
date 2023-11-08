@@ -4,6 +4,6 @@ public class QueueEntryNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     public QueueEntryNotFoundException(Long id) {
-        super("Could not find event " + id);
+        super("Could not find entry " + id);
     }
 }

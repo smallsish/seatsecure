@@ -1,6 +1,7 @@
 package com.seatsecure.backend.services;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,7 +93,34 @@ public class RunServiceImpl implements RunService {
     }
 
     /**
-     * Add a new Run to an Event
+     * Get the TicketUserQueues associated with a Run
+     * 
+     * @param runId
+     * @return A list of TicketUserQueues of the Run with the specified id
+     * @throws RunNotFoundException If the Run with the specified id does not exist
+     */
+    @Override
+    public List<TicketUserQueue> getTuQueueofRun(Long runId) {
+        // Check if run exists
+        Run particularRun = getRunById(runId);
+        
+        return tqRepo.findByRun(particularRun);
+    }
+
+
+    // @Override
+    // public List<TicketUserQueue> getQueuesOfRun(Long runId) {
+    //     // Check if run exists
+    //     Run r = getRunById(runId);
+
+    //     return tqRepo.findByRun(r);
+    // }
+
+
+
+
+    /**
+     * Add a new Run to an Event (name, description, event, startRunDate, endRunDate)
      * 
      * @param runId
      * @return The Run that was newly added to the Event
@@ -105,14 +133,16 @@ public class RunServiceImpl implements RunService {
         Event e = eventService.getEventById(eventId);
 
         // Add new run to database
-        Run r = Run.builder().name(runInfo.getName()).description(runInfo.getDescription())
-                .startDate(runInfo.getStartDate()).endDate(runInfo.getEndDate()).event(e).build();
+        Run r = Run.builder().name(runInfo.getName()).description(runInfo.getDescription()).event(e)
+                .startRunDate(runInfo.getStartRunDate()).endRunDate(runInfo.getEndRunDate())
+                .startBidDate(runInfo.getStartBidDate()).endBidDate(runInfo.getEndBidDate())
+                .tickets(new ArrayList<Ticket>()).tuQueue(new ArrayList<TicketUserQueue>()).algoRan(false).build();
         return runRepo.save(r);
 
     }
 
     /**
-     * Update a Run with new info
+     * Update a Run with new info (everything)
      * 
      * @param runId
      * @param runInfo
@@ -127,8 +157,11 @@ public class RunServiceImpl implements RunService {
         // Update run
         run.setName(runInfo.getName());
         run.setDescription(runInfo.getDescription());
-        run.setStartDate(runInfo.getStartDate());
-        run.setEndDate(runInfo.getEndDate());
+        run.setStartRunDate(runInfo.getStartRunDate());
+        run.setEndRunDate(runInfo.getEndRunDate());
+        run.setAlgoRan(runInfo.isAlgoRan());
+        run.setStartBidDate(runInfo.getStartBidDate());
+        run.setEndBidDate(runInfo.getEndBidDate());
         runRepo.save(run);
 
         return run;
@@ -160,21 +193,6 @@ public class RunServiceImpl implements RunService {
         return run;
     }
 
-    /**
-     * Get the TicketUserQueues associated with a Run
-     * 
-     * @param runId
-     * @return A list of TicketUserQueues of the Run with the specified id
-     * @throws RunNotFoundException If the Run with the specified id does not exist
-     */
-    @Override
-    public List<TicketUserQueue> getTuQueueofRun(Long runId) {
-        Run particularRun = getRunById(runId);
-        
-        return tqRepo.findByRun(particularRun);
-    }
-
-
     // Validation methods
     /**
      * Check whether a Venue is free over a period of time
@@ -185,7 +203,7 @@ public class RunServiceImpl implements RunService {
      * @throws VenueNotFoundException If a Venue with the specified id does not exist
     */
     @Override
-    public Boolean dateValidAtVenue(Long venueId, Date startDate, Date endDate) {
+    public Boolean dateValidAtVenue(Long venueId, LocalDateTime startRunDate, LocalDateTime endRunDate) {
         // Get event at venue
         Event e = eventService.getEventAtVenue(venueId);
 
@@ -196,15 +214,15 @@ public class RunServiceImpl implements RunService {
             List<Run> runs = getRunsOfEvent(e.getId());
             if (runs.size() == 0) return true; // If no runs at the event, return true
 
-            List<Date> startDates = runs.stream().map(Run::getStartDate).toList();
-            List<Date> endDates = runs.stream().map(Run::getEndDate).toList();
+            List<LocalDateTime> startDates = runs.stream().map(Run::getStartRunDate).toList();
+            List<LocalDateTime> endDates = runs.stream().map(Run::getEndRunDate).toList();
 
             // Check if any run intercepts with specified date
             for (int i = 0; i < runs.size(); i++) {
-                Date sd = startDates.get(i);
-                Date ed = endDates.get(i);
+                LocalDateTime sd = startDates.get(i);
+                LocalDateTime ed = endDates.get(i);
 
-                if (endDate.compareTo(sd) == 1 || startDate.compareTo(ed) == -1) {
+                if (endRunDate.compareTo(sd) == 1 || startRunDate.compareTo(ed) == -1) {
                     return false;
                 }
             }
@@ -223,7 +241,7 @@ public class RunServiceImpl implements RunService {
 
     @Override
     public Boolean runDatesAreValid(Run run) {
-        return run.getStartDate().compareTo(run.getEndDate()) == -1;
+        return run.getStartRunDate().compareTo(run.getEndRunDate()) == -1;
     }
 
     /*

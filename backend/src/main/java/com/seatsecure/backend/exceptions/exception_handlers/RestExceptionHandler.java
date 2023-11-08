@@ -3,7 +3,6 @@ package com.seatsecure.backend.exceptions.exception_handlers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties.Registration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -12,9 +11,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.seatsecure.backend.entities.Event;
-import com.seatsecure.backend.exceptions.creation.EventCreationException;
-import com.seatsecure.backend.exceptions.creation.VenueCreationException;
+import com.seatsecure.backend.exceptions.BiddingNotCloseException;
+import com.seatsecure.backend.exceptions.QueueNotFoundException;
+import com.seatsecure.backend.exceptions.creation.QueueEntryCreationException;
 import com.seatsecure.backend.exceptions.existence.SeatHasTicketException;
 import com.seatsecure.backend.exceptions.existence.TicketHasOwnerException;
 import com.seatsecure.backend.exceptions.existence.TicketHasRunException;
@@ -97,7 +96,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.UNAUTHORIZED, null);
   }
 
-  // This exception indicates that there is an error with getting the user in the current security context
+  // This exception indicates that there is an error with getting the user in the
+  // current security context
   @ExceptionHandler(CurrentUserException.class)
   public ResponseEntity<Object> handleCurrentUserException(CurrentUserException exception) {
     return ResponseHandler.generateResponse(exception.getMessage(),
@@ -110,4 +110,25 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleUsernameAlreadyExistsException(UsernameAlreadyExistsException exception) {
     return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.CONFLICT, null);
   }
+
+  // BIDDING EXCEPTIONS //
+  // @ExceptionHandler(QueueNotFoundException.class)
+  // public ResponseEntity<Object> handleQueueNotFoundException(QueueNotFoundException exception) {
+  //   return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.NOT_FOUND, null);
+  // }
+
+  // @ExceptionHandler(QueueEntryNotFoundException.class)
+  // public ResponseEntity<Object> handleQueueEntryNotFoundException(QueueEntryNotFoundException exception) {
+  //   return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.NOT_FOUND, null);
+  // }
+
+  // @ExceptionHandler(QueueEntryCreationException.class)
+  // public ResponseEntity<Object> handleQueueEntryCreationException(QueueEntryCreationException exception) {
+  //   return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.NOT_FOUND, null);
+  // }
+
+  // @ExceptionHandler(BiddingNotCloseException.class)
+  // public ResponseEntity<Object> handleBiddingNotCloseException(BiddingNotCloseException exception) {
+  //   return ResponseHandler.generateResponse(exception.getMessage(), HttpStatus.NOT_FOUND, null);
+  // }
 }
